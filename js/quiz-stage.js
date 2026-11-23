@@ -17,7 +17,7 @@
   function pad(v) { return String(v).padStart(2, '0'); }
   function optsHtml(q) {
     return q.options.map(function (o) {
-      return '<button class="quiz__opt" type="button" aria-haspopup="dialog"><b>' + o.label + '</b><small>' + o.hint + '</small></button>';
+      return '<button class="quiz__opt" type="button" aria-haspopup="dialog" title="' + o.hint + '">' + o.label + '</button>';
     }).join('');
   }
 
