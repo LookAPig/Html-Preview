@@ -85,7 +85,15 @@
   text-align: center;
   text-transform: uppercase;
   color: transparent;
-  background: linear-gradient(180deg, var(--text) 40%, rgba(34, 34, 34, .6) 58%, rgba(34, 34, 34, .25) 72%, rgba(34, 34, 34, .1) 82%);
+  --fade: 0;
+  background: linear-gradient(180deg,
+    rgba(34, 34, 34, 1) 0%,
+    rgba(34, 34, 34, calc(1 - var(--fade) * .2)) 6%,
+    rgba(34, 34, 34, calc(1 - var(--fade) * .55)) 13%,
+    rgba(34, 34, 34, calc(1 - var(--fade) * .82)) 20%,
+    rgba(34, 34, 34, calc(1 - var(--fade) * .96)) 26%,
+    rgba(34, 34, 34, calc(1 - var(--fade))) 30%,
+    rgba(34, 34, 34, calc(1 - var(--fade))) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   white-space: nowrap;

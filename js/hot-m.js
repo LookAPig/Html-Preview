@@ -6,6 +6,17 @@
   window.TESWAY_HOTM = function (slides, bikes, mq, reduce) {
     var stages = slides.map(function (s) { return s.querySelector('.hot__stage'); });
     var pos = slides.map(function () { return reduce ? 0 : -1; });
+    var titles = slides.map(function (s) { return s.querySelector('.hot__title'); });
+
+    function fade() {
+      var vh = window.innerHeight;
+      titles.forEach(function (t) {
+        var y = t.getBoundingClientRect().top;
+        if (y > vh * 1.2 || y < -vh) return;
+        var f = reduce ? 1 : Math.min(1, Math.max(0, (vh * 0.85 - y) / (vh * 0.5)));
+        t.style.setProperty('--fade', f.toFixed(3));
+      });
+    }
 
     function offset(i) { return -pos[i] * slides[i].offsetWidth * 1.15; }
 
@@ -40,6 +51,7 @@
 
     return {
       draw: draw,
+      fade: fade,
       layout: function () { slides.forEach(function (s, i) { draw(i); }); },
       reset: function () { stages.forEach(function (s) { s.style.transform = ''; }); }
     };

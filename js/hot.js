@@ -45,6 +45,7 @@
     track.style.transform = '';
     slides.forEach(function (s, i) { titles[i].style.transform = ''; copies[i].style.opacity = ''; });
     mob.layout();
+    mob.fade();
   }
 
   function measure() {
@@ -61,7 +62,7 @@
 
   function update() {
     queued = false;
-    if (mobile.matches) return;
+    if (mobile.matches) return mob.fade();
     var top = section.getBoundingClientRect().top;
     var enter = clamp(1 - top / vh, 0, 1);
     var x = clamp(-top, 0, dist);
@@ -73,6 +74,7 @@
       if (Math.abs(rel) > 1.6) return;
       titles[i].style.transform = 'translate3d(' + (rel * slideW * 0.16).toFixed(1) + 'px,' + lift.toFixed(1) + 'px,0)';
       copies[i].style.opacity = clamp(1 - Math.abs(rel) * 1.6, 0, 1).toFixed(3);
+      titles[i].style.setProperty('--fade', reduce ? 1 : (clamp(1 - Math.abs(rel), 0, 1) * enter).toFixed(3));
       var angle = reduce ? 0 : -x / bikes[i].radius();
       bikes[i].draw(angle);
     });
