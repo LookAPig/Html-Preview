@@ -1,12 +1,15 @@
 .foot__cols { border-top: 1px solid var(--line); }
 .foot__grp { border-bottom: 1px solid var(--line); }
 .foot__mid { margin-top: 0; border-top: 0; }
+.foot__mid .loc { grid-row: 1; grid-column: 2; }
+.foot__mid .loc__btn { height: 2.375rem; padding: 0 0.875rem; font-size: 0.75rem; }
+.foot__mid .loc__menu { left: auto; right: 0; }
 .foot__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 1.125rem 0;
+  padding: 0.8125rem 0;
   border: 0;
   background: none;
   color: var(--text);
@@ -63,7 +66,9 @@
 @media (min-aspect-ratio: 1/1) {
   .foot__cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; padding-top: 0.5rem; border: 0; }
   .foot__grp { border: 0; }
-  .foot__mid { margin-top: 5rem; border-top: 1px solid var(--line); }
+  .foot__mid { margin-top: 3rem; border-top: 1px solid var(--line); }
+  .foot__mid .loc { grid-row: auto; grid-column: auto; }
+  .foot__mid .loc__btn { height: 2.75rem; padding: 0 1rem; font-size: 0.8125rem; }
   .foot__head { padding: 0 0 1rem; pointer-events: none; }
   .foot__head .eyebrow, .foot__grp.is-open .foot__head .eyebrow { font-size: 0.6875rem; color: var(--muted); }
   .foot__pm { display: none; }
