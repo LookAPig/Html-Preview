@@ -146,7 +146,7 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--volt), var(--volt));
+  background: var(--text);
   transform-origin: left;
   transition: transform .3s var(--ease);
 }

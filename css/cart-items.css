@@ -72,7 +72,7 @@
 
 .cart__empty { display: none; justify-items: center; padding: 3.5rem 0 1rem; text-align: center; }
 .is-empty .cart__empty { display: grid; animation: ci-in .5s var(--ease) both; }
-.cart__empty-ico { display: grid; place-items: center; width: 4.5rem; height: 4.5rem; border-radius: 50%; background: var(--page); color: var(--volt); }
+.cart__empty-ico { display: grid; place-items: center; width: 4.5rem; height: 4.5rem; border-radius: 50%; background: var(--page); color: var(--text); }
 .cart__empty-ico svg { width: 2rem; height: 2rem; }
 .cart__empty b { margin-top: 1.25rem; font-size: 1.125rem; font-weight: 700; }
 .cart__empty p { margin-top: 0.375rem; font-size: 0.8125rem; color: var(--muted); }

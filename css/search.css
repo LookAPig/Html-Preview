@@ -116,7 +116,7 @@
 
 .srch__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
 .srch__head .eyebrow { font-size: 0.6875rem; }
-.srch__head .eyebrow i { margin-left: 0.25rem; font-style: normal; color: var(--volt); }
+.srch__head .eyebrow i { margin-left: 0.25rem; font-style: normal; color: var(--text); }
 .srch__clr { font-size: 0.75rem; font-weight: 600; color: var(--muted); transition: color .25s; }
 
 @media (hover: hover) {

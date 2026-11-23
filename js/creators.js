@@ -33,8 +33,8 @@
     '<div class="cr__ctrl"><b class="cr__now">01</b><span class="cr__bar"><i></i></span>' +
       '<small class="cr__total">01</small>' +
       '<div class="hero__arrows cr__arrows">' +
-        '<button type="button" data-dir="-1" aria-label="Previous videos"><span>&#8592;</span></button>' +
-        '<button type="button" data-dir="1" aria-label="Next videos"><span>&#8594;</span></button>' +
+        '<button class="arw" type="button" data-dir="-1" aria-label="Previous videos"><span>&#8592;</span></button>' +
+        '<button class="arw" type="button" data-dir="1" aria-label="Next videos"><span>&#8594;</span></button>' +
       '</div></div>';
 
   var list = box.querySelector('.cr__people');

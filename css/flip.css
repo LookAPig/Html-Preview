@@ -1,5 +1,5 @@
 .flip-group { display: inline-flex; gap: var(--fgap, 2px); }
-.flip-sep { color: var(--volt-2); font-weight: 800; }
+.flip-sep { color: rgba(255, 255, 255, .5); font-weight: 800; }
 .flip-unit { display: inline-flex; flex-direction: column; align-items: center; gap: 0.375rem; }
 .flip-unit small {
   font-size: 0.6875rem;

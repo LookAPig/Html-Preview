@@ -1,50 +1,7 @@
-.hbtn,
-.hero__arrows button {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  transition:
-    color .35s var(--ease),
-    border-color .35s var(--ease),
-    box-shadow .35s var(--ease),
-    translate .35s var(--ease),
-    scale .2s var(--ease);
-}
-.hbtn::before,
-.hero__arrows button::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  z-index: -1;
-  border-radius: inherit;
-  background: var(--volt);
-  transform: scaleX(0);
-  transform-origin: right center;
-  transition: transform .45s var(--ease);
-}
-.hero__arrows button span { display: block; transition: translate .35s var(--ease); }
 .hero__dots button:not(.is-on) { transition: width .5s var(--ease), background .35s var(--ease), scale .35s var(--ease); }
 
 @media (hover: hover) {
-  .hbtn:hover,
-  .hero__arrows button:hover {
-    color: #FFF;
-    border-color: var(--volt);
-    translate: 0 -0.125rem;
-    box-shadow: 0 0.5rem 1.25rem rgba(254, 84, 22, .28);
-  }
-  .hbtn:hover::before,
-  .hero__arrows button:hover::before {
-    transform: scaleX(1);
-    transform-origin: left center;
-  }
-  .hero__arrows [data-dir="-1"]:hover span { translate: -0.1875rem 0; }
-  .hero__arrows [data-dir="1"]:hover span { translate: 0.1875rem 0; }
   .hero__dots button:not(.is-on):hover { background: var(--volt); scale: 1.25; }
 }
 
-.hbtn:active,
-.hero__arrows button:active { translate: 0 0; scale: .96; }
-.hbtn:focus-visible,
-.hero__arrows button:focus-visible,
 .hero__dots button:focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }

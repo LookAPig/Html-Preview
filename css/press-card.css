@@ -42,7 +42,6 @@
   border-bottom: 1px solid var(--line);
 }
 .pcard__bar i { width: 0.45em; height: 0.45em; border-radius: 50%; background: #DEDEDE; }
-.pcard__bar i:first-child { background: var(--volt); }
 .pcard__bar em {
   display: flex;
   flex: 1;
@@ -97,7 +96,7 @@
   font-weight: 700;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--volt);
+  color: var(--muted);
 }
 .pcard__title {
   display: -webkit-box;
@@ -127,7 +126,7 @@
   bottom: 0.6em;
   padding: 0.35em 0.8em;
   border-radius: var(--r-pill);
-  background: var(--volt);
+  background: var(--text);
   color: #FFF;
   font-size: 0.5em;
   font-weight: 700;

@@ -63,7 +63,7 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
-  .pcard__hit b { margin-right: 0.4em; color: var(--volt); font-weight: 800; }
+  .pcard__hit b { margin-right: 0.4em; color: var(--text); font-weight: 800; }
   .pcard__ad {
     display: grid;
     gap: 0.25em;
@@ -77,5 +77,5 @@
     line-height: 1;
     letter-spacing: .02em;
   }
-  .pcard__ad b { font-family: "Inter", sans-serif; font-size: 0.55em; font-weight: 700; letter-spacing: .04em; color: var(--volt); }
+  .pcard__ad b { font-family: "Inter", sans-serif; font-size: 0.55em; font-weight: 700; letter-spacing: .04em; color: var(--muted); }
 }

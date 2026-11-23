@@ -43,8 +43,8 @@
     return '<div class="hero__dots">' + dots + '</div>' +
       '<p class="hero__count"><b>01</b> / ' + String(n).padStart(2, '0') + '</p>' +
       '<div class="hero__arrows">' +
-        '<button type="button" data-dir="-1" aria-label="Previous slide"><span>&#8592;</span></button>' +
-        '<button type="button" data-dir="1" aria-label="Next slide"><span>&#8594;</span></button>' +
+        '<button class="arw" type="button" data-dir="-1" aria-label="Previous slide"><span>&#8592;</span></button>' +
+        '<button class="arw" type="button" data-dir="1" aria-label="Next slide"><span>&#8594;</span></button>' +
       '</div>';
   }
 

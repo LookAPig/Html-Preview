@@ -12,9 +12,9 @@
   }).join('');
 
   root.innerHTML =
-    '<button class="notice__arrow" data-dir="-1" aria-label="Previous notice">‹</button>' +
+    '<button class="arw notice__arrow" data-dir="-1" aria-label="Previous notice"><span>‹</span></button>' +
     '<div class="notice__track" aria-live="polite">' + slidesHtml + '</div>' +
-    '<button class="notice__arrow" data-dir="1" aria-label="Next notice">›</button>';
+    '<button class="arw notice__arrow" data-dir="1" aria-label="Next notice"><span>›</span></button>';
 
   var slides = root.querySelectorAll('.notice__slide');
   var cd = root.querySelector('.notice__cd');

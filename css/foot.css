@@ -54,7 +54,7 @@
   outline: none;
 }
 .foot__field input::placeholder { color: rgba(34, 34, 34, .45); }
-.foot__send { flex: none; gap: 0.5rem; padding: 0 1.25rem; border-color: var(--volt); background: var(--volt); }
+.foot__send { flex: none; gap: 0.5rem; padding: 0 1.25rem; }
 .foot__send svg { width: 0.875rem; height: 0.875rem; transition: translate .3s var(--ease); }
 .foot__msg { min-height: 1.25rem; margin-top: 0.625rem; font-size: 0.8125rem; font-weight: 600; color: var(--text); }
 .foot__msg.is-err { color: var(--volt); }

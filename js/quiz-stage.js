@@ -31,8 +31,8 @@
     '<p class="quiz__roll quiz__line" aria-live="polite"><span class="quiz__q">' + qs[0].q + '</span></p>' +
     '<div class="quiz__nav">' +
       '<i class="quiz__bar"><i></i></i>' +
-      '<button class="quiz__arw" type="button" aria-label="Previous question">' + back + '</button>' +
-      '<button class="quiz__arw" type="button" aria-label="Next question">' + arrow + '</button>' +
+      '<button class="arw quiz__arw" type="button" aria-label="Previous question">' + back + '</button>' +
+      '<button class="arw quiz__arw" type="button" aria-label="Next question">' + arrow + '</button>' +
     '</div>' +
     '<div class="quiz__act">' +
       '<button class="hbtn quiz__cta" type="button" data-quiz-open aria-haspopup="dialog">' + b.cta + arrow + '</button>' +

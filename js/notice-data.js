@@ -1,5 +1,10 @@
 window.TESWAY_NOTICE = {
-  deadline: '2026-11-30T23:59:59+08:00',
+  deadline: (function () {
+    var now = new Date();
+    var end = new Date(now.getFullYear(), 10, 30, 23, 59, 59);
+    if (end < now) end.setFullYear(end.getFullYear() + 1);
+    return end.toISOString();
+  })(),
   interval: 5000,
   slides: [
     {

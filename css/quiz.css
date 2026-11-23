@@ -48,7 +48,7 @@
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: 0;
-  color: var(--volt);
+  color: var(--text);
   font-variant-numeric: tabular-nums;
 }
 .quiz__line { min-height: 2.5em; margin: 0.625rem 0 0; font-size: 1.375rem; font-weight: 800; line-height: 1.25; letter-spacing: -.02em; color: var(--text); }
@@ -73,27 +73,10 @@
 .quiz__bar i {
   position: absolute;
   inset: 0;
-  background: var(--volt);
+  background: var(--text);
   transform-origin: left;
   transition: transform .6s var(--ease);
 }
-.quiz__arw {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 2.75rem;
-  height: 2.75rem;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, .7);
-  box-shadow: 0 0 0 1px var(--line);
-  color: var(--text);
-  cursor: pointer;
-  transition: background .3s var(--ease), color .3s var(--ease);
-}
-.quiz__arw svg { width: 1rem; height: 1rem; }
-.quiz__arw:active { transform: scale(.94); }
 
 .quiz__act { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 1.75rem; }
 .quiz__cta { flex: none; gap: 0.5rem; padding: 0 1.5rem; }
@@ -101,7 +84,6 @@
 .quiz__act small { font-size: 0.75rem; color: var(--muted); }
 @media (hover: hover) {
   .quiz__cta:hover svg { transform: translateX(0.25rem); }
-  .quiz__arw:hover { background: var(--text); color: #FFF; }
 }
 
 @media (min-aspect-ratio: 1/1) {

@@ -97,8 +97,8 @@
   height: 1.5rem;
   padding: 0 0.625rem;
   border-radius: var(--r-pill);
-  background: var(--volt);
-  color: var(--text);
+  background: var(--text);
+  color: #FFF;
   font-size: 0.6875rem;
   font-weight: 600;
 }
@@ -150,7 +150,6 @@
   font-size: 0.8125rem;
   font-weight: 600;
   white-space: nowrap;
-  transition: background .3s, border-color .3s, color .3s;
 }
 .hbtn--line {
   background: rgba(255, 255, 255, .6);

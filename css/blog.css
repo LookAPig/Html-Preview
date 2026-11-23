@@ -19,10 +19,7 @@
   color: var(--muted);
   font-size: 0.8125rem;
   font-weight: 600;
-  transition: background .3s, color .3s, border-color .3s;
 }
-.blog__cat.is-on { border-color: var(--text); background: var(--text); color: #FFF; }
-.blog__cat:focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
 .blog__all { order: 2; gap: 0.5rem; }
 .blog__all svg, .bpost__more svg { width: 0.875rem; height: 0.875rem; transition: translate .3s var(--ease); }
 
@@ -46,7 +43,7 @@
   text-transform: uppercase;
   color: var(--muted);
 }
-.bpost__meta b { color: var(--volt); font-weight: 700; }
+.bpost__meta b { color: var(--text); font-weight: 700; }
 .bpost__meta i { width: 0.1875rem; height: 0.1875rem; border-radius: 50%; background: currentColor; opacity: .5; }
 .bpost__title { font-size: 1.375rem; font-weight: 800; line-height: 1.25; letter-spacing: -.01em; }
 .bpost__title span {
@@ -72,7 +69,6 @@
   font-weight: 700;
   letter-spacing: .04em;
 }
-.bpost__ava--guides, .bpost__ava--news { background: var(--volt); }
 .bpost--lead .bpost__ava { width: 2.25rem; height: 2.25rem; font-size: 0.75rem; }
 .bpost__more { display: inline-flex; flex: none; align-items: center; gap: 0.5rem; font-size: 0.8125rem; font-weight: 700; }
 
@@ -102,7 +98,6 @@
   .bpost:hover .bpost__title span { background-size: 100% 0.09em; }
   .bpost:hover .bpost__more { color: var(--volt); }
   .bpost:hover .bpost__more svg, .blog__all:hover svg { translate: 0.1875rem 0; }
-  .blog__cat:not(.is-on):hover { border-color: var(--volt); color: var(--volt); }
 }
 .bpost:focus-visible { outline: 2px solid var(--volt); outline-offset: 0.25rem; border-radius: var(--r-lg); }
 

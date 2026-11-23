@@ -85,7 +85,7 @@
   width: 220%;
   aspect-ratio: 2.4;
   translate: -50% 50%;
-  background: radial-gradient(closest-side, rgba(254, 84, 22, .42), rgba(254, 84, 22, .12) 55%, transparent);
+  background: radial-gradient(closest-side, rgba(34, 34, 34, .1), rgba(34, 34, 34, .03) 55%, transparent);
   animation: footBreath 6s ease-in-out infinite alternate;
   pointer-events: none;
 }
@@ -99,7 +99,7 @@
   white-space: nowrap;
   text-align: center;
   color: transparent;
-  background: linear-gradient(180deg, rgba(34, 34, 34, .1) 0%, rgba(254, 84, 22, .14) 85%);
+  background: linear-gradient(180deg, rgba(34, 34, 34, .1) 0%, rgba(34, 34, 34, .04) 85%);
   -webkit-background-clip: text;
   background-clip: text;
   user-select: none;

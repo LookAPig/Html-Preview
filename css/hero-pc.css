@@ -29,7 +29,7 @@
   inset: 0;
   width: 0;
   border-radius: inherit;
-  background: var(--text);
+  background: var(--volt);
   transition: none;
 }
 .hero__dots button.is-on.is-run::after {
@@ -45,19 +45,6 @@
 }
 .hero__count b { color: var(--text); }
 .hero__arrows { display: none; gap: 0.5rem; }
-.hero__arrows button {
-  display: grid;
-  place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 50%;
-  border: 1.5px solid rgba(34, 34, 34, .2);
-  background: rgba(255, 255, 255, .7);
-  font-size: 1rem;
-  backdrop-filter: blur(0.5rem);
-  -webkit-backdrop-filter: blur(0.5rem);
-  transition: background .3s, border-color .3s, color .3s;
-}
 @media (min-aspect-ratio: 1/1) {
   .hs__media img, .hs__media video { object-position: var(--pos); }
   .hs__media::after {

@@ -57,7 +57,7 @@ body:not(.is-ready) .dock__rail {
 
 .dock__ring { position: absolute; inset: 0; width: 100% !important; height: 100% !important; rotate: -90deg; }
 .dock__ring circle { fill: none; stroke: var(--bg-3); stroke-width: 2.5; }
-.dock__ring .dock__prog { stroke: var(--volt); stroke-linecap: round; transition: stroke-dashoffset .15s linear; }
+.dock__ring .dock__prog { stroke: var(--text); stroke-linecap: round; transition: stroke-dashoffset .15s linear; }
 .dock.is-top .dock__top { margin-bottom: calc(-1 * (var(--btn) + var(--gap))); scale: .3; opacity: 0; pointer-events: none; }
 
 .dock__help.dock__btn { background: var(--text); color: var(--bg); }

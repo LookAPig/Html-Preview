@@ -95,7 +95,7 @@
     margin-top: 1.25rem;
     font-size: 0.8125rem;
     font-weight: 600;
-    color: var(--volt);
+    color: var(--text);
   }
   .tmega__more::after {
     content: "";
