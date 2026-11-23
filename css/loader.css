@@ -1,0 +1,101 @@
+.loader {
+  --p: 0;
+  --curtain: cubic-bezier(.76, 0, .24, 1);
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+.loader.is-out { pointer-events: none; }
+.loader__panel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--bg);
+  transition: translate .9s var(--curtain), border-radius .9s var(--curtain);
+}
+.is-out .loader__panel { translate: 0 -100%; border-radius: 0 0 50% 50% / 0 0 6rem 6rem; }
+.loader__cv { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.loader__stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  width: min(78vw, 22rem);
+  transition: opacity .4s .55s;
+}
+.is-out .loader__stage { opacity: 0; transition: opacity .3s; }
+.lb { width: 100%; overflow: visible; }
+.lb path, .lb circle { fill: none; stroke: var(--text); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.lb .lb-ln { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.lb circle.lb-ln:nth-of-type(-n+2) { stroke-width: 4.5; }
+.lb circle.lb-ln:nth-of-type(n+3) { stroke-width: 1.25; stroke: rgba(34, 34, 34, .5); }
+.lb-spokes path { stroke: rgba(34, 34, 34, .28); stroke-width: 1; }
+.lb-spokes, .lb-crank, .lb-hub { opacity: calc(var(--p) * 1.6 - .4); }
+.lb .lb-bat-out { stroke-width: 11; }
+.lb .lb-bat-in { stroke: var(--bg); stroke-width: 7.5; }
+.lb .lb-bat-ch { stroke: var(--volt); stroke-width: 4.5; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.lb-bat, .lb .lb-bat-ch { opacity: calc(var(--p) * 2.5 - 1); }
+.lb .lb-light { opacity: calc(var(--p) * 3 - 2); }
+.lb .lb-hub { stroke: var(--volt); }
+.lb .lb-light { fill: var(--bg); stroke: var(--volt); stroke-width: 1.5; transition: fill .2s; }
+.lb .lb-beam { fill: rgba(254, 84, 22, .14); stroke: none; opacity: 0; transform-origin: 176px 34px; scale: .3 1; transition: opacity .25s, scale .35s var(--ease); }
+.is-done .lb .lb-light { fill: var(--volt); }
+.is-done .lb .lb-beam { opacity: 1; scale: 1 1; }
+.lb { transition: transform 1s cubic-bezier(.55, -0.35, .75, .15); }
+.is-go .lb { transform: translateX(130vw) skewX(-14deg); }
+
+.loader__road {
+  display: block;
+  width: 150%;
+  height: 2px;
+  margin-top: -0.75rem;
+  background: repeating-linear-gradient(90deg, rgba(34, 34, 34, .28) 0 12px, transparent 12px 26px);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent);
+}
+
+.loader__meta { display: grid; justify-items: center; gap: 0.375rem; margin-top: 1.75rem; }
+.loader__pct { display: flex; align-items: flex-start; font-family: var(--font-en); line-height: .9; }
+.loader__pct b { min-width: 2ch; font-size: 4.25rem; font-weight: 400; text-align: right; font-variant-numeric: tabular-nums; }
+.loader__pct small { margin: 0.375rem 0 0 0.125rem; font-size: 1.5rem; color: var(--volt); }
+.loader__tip {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.loader__tip i { width: 0.25rem; height: 0.25rem; border-radius: 50%; background: var(--volt); animation: ldBlink 1s ease-in-out infinite alternate; }
+.is-done .loader__state { color: var(--volt); }
+
+.loader__word {
+  position: absolute;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom) + 1.5rem);
+  translate: -50% 0;
+  white-space: nowrap;
+  font-family: var(--font-en);
+  font-size: 3.5rem;
+  line-height: 1;
+  text-align: center;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(34, 34, 34, .14);
+  background: linear-gradient(90deg, var(--volt), var(--volt)) 0 0 / calc(var(--p) * 100%) 100% no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: translate .9s var(--curtain), opacity .5s;
+}
+.is-go .loader__word { translate: -50% -1rem; opacity: 0; }
+
+@keyframes ldBlink { from { opacity: .25; } to { opacity: 1; } }
+@media (min-aspect-ratio: 1/1) {
+  .loader__stage { width: min(40vw, 30rem); }
+  .loader__pct b { font-size: 5.5rem; }
+  .loader__pct small { font-size: 1.875rem; }
+  .loader__word { bottom: 2rem; font-size: 8rem; }
+}

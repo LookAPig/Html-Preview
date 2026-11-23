@@ -1,0 +1,75 @@
+@keyframes qrise { from { opacity: 0; transform: translateY(1rem); } }
+
+.qmodal { transition: opacity .3s var(--ease), visibility .3s, backdrop-filter .3s; }
+.qmodal.is-on { backdrop-filter: blur(0.25rem); -webkit-backdrop-filter: blur(0.25rem); }
+.qmodal__panel { transition: transform .45s var(--ease), opacity .3s var(--ease); opacity: 0; }
+.qmodal.is-on .qmodal__panel { opacity: 1; }
+.qmodal__body { transition: height .38s var(--ease); }
+.qmodal__body[style*="height"] { overflow: hidden; }
+
+.qmodal__body.is-in > *,
+.qmodal__body.is-in .qmodal__opt,
+.qmodal__body.is-in .qmodal__form > *,
+.qmodal__body.is-in .qmodal__done > * {
+  animation: qin .5s var(--ease) both;
+  animation-delay: calc(var(--d, 0) * 1ms);
+}
+.qmodal__body.is-in > .qmodal__opts,
+.qmodal__body.is-in > .qmodal__form,
+.qmodal__body.is-in > .qmodal__done { animation: none; }
+.qmodal__body.is-in .qmodal__sub { --d: 60; }
+.qmodal__body.is-in .qmodal__opt { --d: calc(90 + var(--i) * 55); }
+.qmodal__body.is-in .qmodal__form > :nth-child(1) { --d: 120; }
+.qmodal__body.is-in .qmodal__form > :nth-child(2) { --d: 170; }
+.qmodal__body.is-in .qmodal__done > :nth-child(2) { --d: 120; }
+.qmodal__body.is-in .qmodal__done > :nth-child(3) { --d: 170; }
+.qmodal__body.is-in .qmodal__done > :nth-child(4) { --d: 220; }
+.qmodal__body.is-in .qmodal__badge { animation: qpop .6s var(--ease) both; }
+
+.qmodal__body > *,
+.qmodal__opt { transition: opacity .22s var(--ease), transform .22s var(--ease); }
+.qmodal__body.is-out > *,
+.qmodal__body.is-out .qmodal__opt { opacity: 0; transform: translateX(-1.25rem); }
+
+.qmodal__opt { position: relative; padding-right: 3.25rem; transition: border-color .25s, background .25s, transform .22s var(--ease), opacity .22s var(--ease); }
+.qmodal__tick {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  display: grid;
+  place-items: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border: 1.5px solid rgba(34, 34, 34, .18);
+  border-radius: 50%;
+  color: #FFF;
+  translate: 0 -50%;
+  transition: background .25s, border-color .25s;
+}
+.qmodal__tick svg { width: 0.75rem; height: 0.75rem; scale: 0; transition: scale .35s cubic-bezier(.3, 1.6, .5, 1); }
+.qmodal__opt.is-on .qmodal__tick { background: var(--volt); border-color: var(--volt); }
+.qmodal__opt.is-on .qmodal__tick svg { scale: 1; }
+.qmodal__body .qmodal__opt.is-on { animation: qpick .36s var(--ease); }
+.qmodal__body.is-picked .qmodal__opt:not(.is-on) { opacity: .45; }
+
+.qmodal__done { display: grid; justify-items: center; text-align: center; padding: 0.5rem 0 0.25rem; }
+.qmodal__done .qmodal__sub { max-width: 22rem; }
+.qmodal__done .hbtn { width: 100%; height: 3rem; margin-top: 1.5rem; }
+.qmodal__badge {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 1.25rem;
+  border-radius: 50%;
+  background: var(--volt);
+  color: #FFF;
+  box-shadow: 0 0 0 0.5rem rgba(254, 84, 22, .14);
+}
+.qmodal__badge svg { width: 1.5rem; height: 1.5rem; }
+.qmodal__form.is-shake input { animation: qshake .4s; border-color: var(--volt); }
+
+@keyframes qin { from { opacity: 0; transform: translateX(1.5rem); } }
+@keyframes qpop { from { opacity: 0; transform: scale(.4); } 70% { transform: scale(1.08); } }
+@keyframes qpick { 40% { transform: scale(.97); } }
+@keyframes qshake { 20%, 60% { transform: translateX(-0.375rem); } 40%, 80% { transform: translateX(0.375rem); } }

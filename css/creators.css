@@ -1,0 +1,179 @@
+.cr { margin-top: 1.75rem; }
+
+.cr__people, .cr__track {
+  display: flex;
+  margin: 0 calc(var(--pad) * -1);
+  padding: 0 var(--pad);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cr__people::-webkit-scrollbar, .cr__track::-webkit-scrollbar { display: none; }
+.cr__people { gap: 0.25rem; padding-block: 0.375rem; }
+.cr__person {
+  flex: 0 0 5rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.125rem;
+  text-align: center;
+  color: var(--text);
+}
+.cr__ava {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 50%;
+  background: #222222;
+  color: #FFF;
+  box-shadow: 0 0 0 2px var(--page), 0 0 0 2px transparent;
+  transition: box-shadow .4s var(--ease), scale .4s var(--ease), translate .35s var(--ease);
+}
+.cr__ava b { font-family: var(--font-en); font-size: 1.25rem; font-weight: 400; letter-spacing: .02em; }
+.cr__pf {
+  position: absolute;
+  right: -0.125rem;
+  bottom: -0.125rem;
+  display: grid;
+  place-items: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 50%;
+  background: #FFF;
+  box-shadow: 0 0.125rem 0.375rem rgba(34, 34, 34, .18);
+}
+.cr__pf svg { width: 0.8125rem; height: 0.8125rem; }
+.is-youtube, .is-tiktok, .is-instagram { color: var(--text); }
+.cr__name, .cr__person small {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  opacity: 0;
+  translate: 0 -0.25rem;
+  transition: opacity .35s var(--ease), translate .35s var(--ease);
+}
+.cr__name { font-size: 0.6875rem; font-weight: 600; line-height: 1.25; white-space: normal; text-wrap: balance; }
+.cr__person small { font-size: 0.625rem; color: var(--muted); }
+.cr__person.is-on .cr__ava { box-shadow: 0 0 0 2px var(--page), 0 0 0 4px var(--volt); scale: 1.06; }
+.cr__person.is-on .cr__name, .cr__person.is-on small { opacity: 1; translate: 0; }
+.cr__person:focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; border-radius: var(--r-sm); }
+
+.cr__track { gap: 1rem; margin-top: 1.25rem; scroll-snap-type: x mandatory; scroll-padding: 0 var(--pad); }
+.cr__card { flex: 0 0 86%; display: block; text-align: left; color: var(--text); scroll-snap-align: start; }
+.cr__thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--r-lg);
+  background: var(--bg-3);
+}
+.cr__thumb img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; transition: scale .8s var(--ease); }
+.cr__thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(34, 34, 34, .28) 0%, rgba(34, 34, 34, 0) 35%, rgba(34, 34, 34, 0) 60%, rgba(34, 34, 34, .45) 100%);
+}
+.cr__tag, .cr__dur {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  height: 1.625rem;
+  padding: 0 0.625rem;
+  border-radius: var(--r-pill);
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+.cr__tag { top: 0.75rem; left: 0.75rem; background: rgba(255, 255, 255, .92); color: var(--text); }
+.cr__tag svg { width: 0.875rem; height: 0.875rem; }
+.cr__dur { right: 0.75rem; bottom: 0.75rem; background: rgba(34, 34, 34, .62); color: #FFF; font-variant-numeric: tabular-nums; }
+.cr__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .45);
+  border-radius: 50%;
+  background: rgba(34, 34, 34, .3);
+  backdrop-filter: blur(0.5rem);
+  -webkit-backdrop-filter: blur(0.5rem);
+  color: #FFF;
+  translate: -50% -50%;
+  isolation: isolate;
+  transition: border-color .35s var(--ease), scale .35s var(--ease), box-shadow .35s var(--ease);
+}
+.cr__play::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--volt);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform .45s var(--ease);
+}
+.cr__play svg { width: 1.25rem; height: 1.25rem; margin-left: 0.125rem; }
+.cr__info { display: grid; gap: 0.375rem; padding: 0.875rem 0.25rem 0; }
+.cr__info strong {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.cr__info small { font-size: 0.75rem; color: var(--muted); }
+.cr__info b { font-weight: 600; color: var(--text); }
+.cr__card:active .cr__thumb { scale: .985; }
+.cr__card:focus-visible { outline: 2px solid var(--volt); outline-offset: 4px; border-radius: var(--r-lg); }
+
+.cr__ctrl { display: flex; align-items: center; gap: 0.875rem; margin-top: 1.5rem; font-size: 0.8125rem; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+.cr__now { color: var(--text); font-weight: 700; }
+.cr__bar { flex: 1; height: 0.25rem; overflow: hidden; border-radius: var(--r-pill); background: rgba(34, 34, 34, .1); }
+.cr__bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--volt), var(--volt));
+  transform-origin: left;
+  transition: transform .3s var(--ease);
+}
+.cr__arrows button:disabled { opacity: .35; pointer-events: none; }
+
+@media (hover: hover) {
+  .cr__person:not(.is-on):hover .cr__ava { translate: 0 -0.125rem; box-shadow: 0 0 0 2px var(--page), 0 0 0 4px rgba(254, 84, 22, .35); }
+  .cr__card:hover .cr__thumb img { scale: 1.05; }
+  .cr__card:hover .cr__play { border-color: var(--volt); scale: 1.08; box-shadow: 0 0.5rem 1.25rem rgba(254, 84, 22, .35); }
+  .cr__card:hover .cr__play::before { transform: scaleX(1); transform-origin: left center; }
+}
+
+@media (min-aspect-ratio: 1/1) {
+  .cr { margin-top: 3rem; }
+  .cr__people { gap: 0.75rem; }
+  .cr__person { flex-basis: 7rem; }
+  .cr__ava { width: 4.5rem; height: 4.5rem; }
+  .cr__ava b { font-size: 1.5rem; }
+  .cr__pf { width: 1.625rem; height: 1.625rem; }
+  .cr__pf svg { width: 0.9375rem; height: 0.9375rem; }
+  .cr__name { font-size: 0.8125rem; }
+  .cr__person small { font-size: 0.6875rem; }
+  .cr__track { gap: 1.5rem; margin-top: 2rem; }
+  .cr__card { flex-basis: calc((100% - 3rem) / 3); }
+  .cr__play { width: 4rem; height: 4rem; }
+  .cr__info strong { font-size: 1.0625rem; }
+  .cr__info small { font-size: 0.8125rem; }
+  .cr__ctrl { gap: 1.25rem; margin-top: 2.25rem; }
+  .cr__arrows { margin-left: 1rem; }
+}

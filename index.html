@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>TESWAY · Go Far Away | High-Performance Ebikes</title>
+  <meta name="description" content="TESWAY high-performance multi-purpose ebikes: ultra-long range, dual motor drive, built for city and outdoors.">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,wght@0,400;0,600;0,800;1,800&display=swap">
+  <link rel="stylesheet" href="css/base.css"><link rel="stylesheet" href="css/loader.css">
+  <link rel="stylesheet" href="css/notice.css">
+  <link rel="stylesheet" href="css/nav.css"><link rel="stylesheet" href="css/nav-pc.css"><link rel="stylesheet" href="css/mnav.css"><link rel="stylesheet" href="css/mnav-more.css">
+  <link rel="stylesheet" href="css/mega.css"><link rel="stylesheet" href="css/mega-info.css"><link rel="stylesheet" href="css/tmega.css"><link rel="stylesheet" href="css/tmega-img.css">
+  <link rel="stylesheet" href="css/flip.css">
+  <link rel="stylesheet" href="css/hero.css"><link rel="stylesheet" href="css/hero-pc.css"><link rel="stylesheet" href="css/hero-fx.css">
+  <link rel="stylesheet" href="css/hot.css"><link rel="stylesheet" href="css/hot-m.css">
+  <link rel="stylesheet" href="css/uses.css"><link rel="stylesheet" href="css/uses-pc.css">
+  <link rel="stylesheet" href="css/film.css">
+  <link rel="stylesheet" href="css/quiz.css"><link rel="stylesheet" href="css/quiz-modal.css"><link rel="stylesheet" href="css/quiz-fx.css">
+  <link rel="stylesheet" href="css/press.css"><link rel="stylesheet" href="css/press-card.css"><link rel="stylesheet" href="css/press-pc.css">
+  <link rel="stylesheet" href="css/creators.css"><link rel="stylesheet" href="css/creators-fx.css"><link rel="stylesheet" href="css/creators-modal.css">
+  <link rel="stylesheet" href="css/brand.css"><link rel="stylesheet" href="css/brand-hero.css"><link rel="stylesheet" href="css/blog.css"><link rel="stylesheet" href="css/join.css">
+  <link rel="stylesheet" href="css/foot.css"><link rel="stylesheet" href="css/foot-fx.css"><link rel="stylesheet" href="css/foot-acc.css">
+  <link rel="stylesheet" href="css/cart.css"><link rel="stylesheet" href="css/cart-items.css"><link rel="stylesheet" href="css/search.css"><link rel="stylesheet" href="css/search-list.css">
+  <link rel="stylesheet" href="css/dock.css"><link rel="stylesheet" href="css/dock-card.css"><link rel="stylesheet" href="css/scrollbar.css">
+</head>
+<body class="is-loading">
+  <div class="loader" id="loader" aria-hidden="true"></div><script src="js/loader.js"></script>
+  <div class="battery" aria-hidden="true"><i id="batteryFill"></i></div>
+  <aside class="notice" id="notice" aria-label="Announcements"></aside>
+
+  <header class="nav" id="nav">
+    <a class="nav__logo" href="#top" aria-label="TESWAY home"><img src="Images/logo.png" alt="TESWAY · Go Far Away" width="2875" height="624" decoding="async"></a>
+    <nav class="nav__menu" id="navMenu">
+      <a href="#hot" data-mega aria-haspopup="true" aria-expanded="false">Bikes</a>
+      <a href="#hot" data-tmega="performance">Performance</a>
+      <a href="#hot">Dual Drive</a>
+      <a href="#uses" data-tmega="scenes">Scenes</a>
+      <a href="#uses">Range</a>
+      <a href="#brand" data-tmega="brand">Brand</a>
+    </nav>
+    <div class="nav__tools" aria-label="Account tools">
+      <button class="nav__icon" id="navSearch" type="button" aria-label="Search" title="Search (/)" aria-controls="search" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <g class="ico-base"><circle cx="11" cy="11" r="5"/><path d="M15.2 15.2 19.2 19.2"/></g>
+          <g class="ico-draw"><circle cx="11" cy="11" r="5" pathLength="1"/><path d="M15.2 15.2 19.2 19.2" pathLength="1"/></g>
+        </svg>
+      </button>
+      <a class="nav__icon" href="#foot" aria-label="Sign in" title="Sign in">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <g class="ico-base"><circle cx="12" cy="8.5" r="3.2"/><path d="M6.2 18.6c1.2-2.6 3.3-3.9 5.8-3.9s4.6 1.3 5.8 3.9"/></g>
+          <g class="ico-draw"><circle cx="12" cy="8.5" r="3.2" pathLength="1"/><path d="M6.2 18.6c1.2-2.6 3.3-3.9 5.8-3.9s4.6 1.3 5.8 3.9" pathLength="1"/></g>
+        </svg>
+      </a>
+      <button class="nav__icon" id="navCart" type="button" aria-label="Cart" title="Cart" aria-controls="cart" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <g class="ico-base"><path d="M3.8 5.2h2l2 9.4h10l1.7-6.6H8.4"/><circle cx="10" cy="17.6" r="1.2"/><circle cx="16.4" cy="17.6" r="1.2"/></g>
+          <g class="ico-draw"><path d="M3.8 5.2h2l2 9.4h10l1.7-6.6H8.4" pathLength="1"/><circle cx="10" cy="17.6" r="1.2" pathLength="1"/><circle cx="16.4" cy="17.6" r="1.2" pathLength="1"/></g>
+        </svg>
+        <i class="nav__badge" data-count="0">0</i>
+      </button>
+    </div>
+    <button class="nav__toggle" id="navToggle" aria-label="Open menu"><span></span><span></span></button>
+  </header>
+
+  <main>
+    <section class="hero" id="top" aria-roledescription="carousel" aria-label="TESWAY highlights">
+      <div class="hero__slides" id="heroSlides"></div>
+      <div class="hero__ctrl" id="heroCtrl"></div>
+    </section>
+
+    <section class="hot" id="hot" aria-label="Best sellers">
+      <div class="hot__pin">
+        <p class="hot__head eyebrow eyebrow--dot">Best sellers</p>
+        <div class="hot__track"></div>
+        <div class="hot__ctrl"><b class="hot__now">01</b><span class="hot__bar"><i></i></span><small class="hot__total"></small></div>
+      </div>
+    </section>
+
+    <section class="uses" id="uses" aria-label="Ride scenes">
+      <header class="sec-head reveal">
+        <p class="eyebrow eyebrow--dot">Ride scenes</p>
+        <h2>Eight Ways <em>To Ride</em></h2>
+        <p class="sec-sub">One TESWAY, tuned for wherever you are headed.</p>
+      </header>
+      <div class="uses__tabs" id="usesTabs" role="tablist" aria-label="Ride scenes"></div>
+      <div class="uses__list reveal" id="usesList"></div>
+    </section>
+
+    <section class="quiz" id="quiz" aria-label="Find your eBike">
+      <div class="quiz__wrap" id="quizMount">
+        <header class="sec-head reveal">
+          <p class="eyebrow eyebrow--dot">Ride finder</p>
+          <h2>Not Sure <em>Which One?</em></h2>
+          <p class="sec-sub">A few quick questions to match you with the right TESWAY.</p>
+        </header>
+      </div>
+    </section>
+
+    <section class="film" id="film" aria-label="Brand film">
+      <header class="sec-head reveal">
+        <p class="eyebrow eyebrow--dot">Brand film</p>
+        <h2>Built To <em>Go Far</em></h2>
+        <p class="sec-sub">Keep scrolling. The ride starts when the screen is yours.</p>
+      </header>
+      <div class="film__track">
+        <div class="film__pin">
+          <div class="film__frame">
+            <img src="Images/hero-desktop.jpg" alt="" loading="lazy" decoding="async">
+            <video data-src="Images/hero.mp4" muted loop playsinline preload="none" aria-label="TESWAY brand film"></video>
+          </div>
+          <div class="film__hint" aria-hidden="true"><i><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg></i><span>Scroll to play</span></div>
+          <div class="film__ui">
+            <div><p>TESWAY · Brand film 2026</p><strong>Go far <em>away.</em></strong></div>
+            <button class="film__sound" type="button" aria-pressed="false" aria-label="Turn sound on">
+              <svg class="ico-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="m16 9.5 5 5M21 9.5l-5 5"/></svg>
+              <svg class="ico-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9a4.5 4.5 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="press" id="press" aria-label="Press">
+      <div class="press__box" id="pressBox">
+        <div class="press__side">
+          <header class="sec-head reveal">
+            <p class="eyebrow eyebrow--dot">In the press</p>
+            <h2>Trusted By <em>Top Media</em></h2>
+            <p class="sec-sub">Tested on real roads and trails by the editors riders trust.</p>
+          </header>
+          <div class="press__pick reveal" data-delay="1" id="pressPick"></div>
+        </div>
+        <div class="press__stage reveal" data-delay="2" id="pressStage"></div>
+      </div>
+    </section>
+
+    <section class="creators" id="creators" aria-label="Creator reviews">
+      <header class="sec-head reveal">
+        <p class="eyebrow eyebrow--dot">Creator reviews</p>
+        <h2>Ridden By <em>Real Creators</em></h2>
+        <p class="sec-sub">First rides and long-term tests from the channels riders follow.</p>
+      </header>
+      <div class="cr reveal" id="creatorsBox"></div>
+    </section>
+
+    <section class="brand" id="brand" aria-label="About TESWAY">
+      <header class="sec-head reveal">
+        <p class="eyebrow eyebrow--dot">Why TESWAY</p>
+        <h2>More Than <em>A Bike</em></h2>
+        <p class="sec-sub">The brand behind the ride, and the service that rides with you.</p>
+      </header>
+      <div class="bento" id="brandBox"></div>
+    </section>
+    <section class="blog" id="blog" aria-label="Journal">
+      <header class="sec-head reveal">
+        <p class="eyebrow eyebrow--dot">The journal</p>
+        <h2>Stories From <em>The Road</em></h2>
+        <p class="sec-sub">Ride reports, how-to guides and news from the TESWAY crew.</p>
+      </header>
+      <div class="blog__box reveal" data-delay="1" id="blogBox"></div>
+    </section>
+    <section class="join" id="join" aria-label="Community"><div class="join__box sec-head reveal" id="joinBox"></div></section>
+  </main>
+
+  <footer class="foot" id="foot"></footer>
+
+  <script src="js/notice-data.js" defer></script>
+  <script src="js/flip.js" defer></script>
+  <script src="js/notice.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/mega-data.js" defer></script><script src="js/mega.js" defer></script><script src="js/tmega-data.js" defer></script><script src="js/tmega.js" defer></script><script src="js/mnav.js" defer></script>
+  <script src="js/hero-data.js" defer></script><script src="js/hero-render.js" defer></script><script src="js/hero.js" defer></script>
+  <script src="js/hot-data.js" defer></script><script src="js/hot-canvas.js" defer></script><script src="js/hot-m.js" defer></script><script src="js/hot.js" defer></script>
+  <script src="js/uses-data.js" defer></script><script src="js/uses.js" defer></script>
+  <script src="js/film.js" defer></script>
+  <script src="js/quiz-data.js" defer></script><script src="js/quiz-stage.js" defer></script><script src="js/quiz.js" defer></script>
+  <script src="js/press-data.js" defer></script><script src="js/press.js" defer></script>
+  <script src="js/creators-data.js" defer></script><script src="js/creators-icons.js" defer></script><script src="js/creators-modal.js" defer></script><script src="js/creators.js" defer></script>
+  <script src="js/brand-data.js" defer></script><script src="js/brand-hero.js" defer></script><script src="js/brand.js" defer></script><script src="js/blog-data.js" defer></script><script src="js/blog.js" defer></script><script src="js/join-data.js" defer></script><script src="js/join.js" defer></script>
+  <script src="js/foot-data.js" defer></script><script src="js/foot.js" defer></script>
+  <script src="js/cart-data.js" defer></script><script src="js/cart-view.js" defer></script><script src="js/cart.js" defer></script>
+  <script src="js/search-data.js" defer></script><script src="js/search-index.js" defer></script><script src="js/search-view.js" defer></script><script src="js/search.js" defer></script>
+  <script src="js/dock-data.js" defer></script><script src="js/dock.js" defer></script><script src="js/scrollbar.js" defer></script>
+  <script src="js/reveal.js" defer></script>
+</body>
+</html>
