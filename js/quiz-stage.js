@@ -15,6 +15,11 @@
   });
   function picOf(i) { return pics.indexOf(qs[i].img || b.scenes[i % b.scenes.length]); }
   function pad(v) { return String(v).padStart(2, '0'); }
+  function optsHtml(q) {
+    return q.options.map(function (o) {
+      return '<button class="quiz__opt" type="button" aria-haspopup="dialog"><b>' + o.label + '</b><small>' + o.hint + '</small></button>';
+    }).join('');
+  }
 
   var scene = document.createElement('div');
   scene.className = 'quiz__scene';
@@ -23,20 +28,28 @@
     return '<img class="quiz__img' + (i === picOf(0) ? ' is-on' : '') + '" src="' + src + '" alt="" loading="lazy" decoding="async">';
   }).join('');
 
+  var segs = '';
+  for (var k = 0; k < n; k++) segs += '<i' + (k === 0 ? ' class="is-on"' : '') + '></i>';
+
   var copy = document.createElement('div');
   copy.className = 'quiz__copy reveal';
   copy.setAttribute('data-delay', '1');
   copy.innerHTML =
-    '<p class="quiz__count">' + b.label + ' <span class="quiz__roll"><b class="quiz__num">01</b></span> / ' + pad(n) + '</p>' +
-    '<p class="quiz__roll quiz__line" aria-live="polite"><span class="quiz__q">' + qs[0].q + '</span></p>' +
-    '<div class="quiz__nav">' +
-      '<i class="quiz__bar"><i></i></i>' +
-      '<button class="arw quiz__arw" type="button" aria-label="Previous question">' + back + '</button>' +
-      '<button class="arw quiz__arw" type="button" aria-label="Next question">' + arrow + '</button>' +
-    '</div>' +
-    '<div class="quiz__act">' +
-      '<button class="hbtn quiz__cta" type="button" data-quiz-open aria-haspopup="dialog">' + b.cta + arrow + '</button>' +
-      '<small>' + b.meta.replace('{n}', n) + '</small>' +
+    '<div class="quiz__card">' +
+      '<div class="quiz__top">' +
+        '<p class="quiz__count">' + b.label + ' <span class="quiz__roll"><b class="quiz__num">01</b></span> / ' + pad(n) + '</p>' +
+        '<span class="quiz__segs" aria-hidden="true">' + segs + '</span>' +
+      '</div>' +
+      '<p class="quiz__roll quiz__line" aria-live="polite"><span class="quiz__q">' + qs[0].q + '</span></p>' +
+      '<div class="quiz__opts">' + optsHtml(qs[0]) + '</div>' +
+      '<div class="quiz__act">' +
+        '<button class="hbtn quiz__cta" type="button" data-quiz-open aria-haspopup="dialog">' + b.cta + arrow + '</button>' +
+        '<small>' + b.meta.replace('{n}', n) + '</small>' +
+        '<span class="quiz__arws">' +
+          '<button class="arw quiz__arw" type="button" aria-label="Previous question">' + back + '</button>' +
+          '<button class="arw quiz__arw" type="button" aria-label="Next question">' + arrow + '</button>' +
+        '</span>' +
+      '</div>' +
     '</div>';
 
   mount.insertBefore(scene, mount.firstChild);
@@ -45,7 +58,8 @@
   var imgs = scene.querySelectorAll('.quiz__img');
   var num = copy.querySelector('.quiz__num');
   var line = copy.querySelector('.quiz__q');
-  var fill = copy.querySelector('.quiz__bar i');
+  var opts = copy.querySelector('.quiz__opts');
+  var bars = copy.querySelectorAll('.quiz__segs i');
   var arws = copy.querySelectorAll('.quiz__arw');
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
   var cur = 0, timer = 0, seen = false;
@@ -70,7 +84,8 @@
     cur = i;
     roll(num, pad(cur + 1), dir);
     roll(line, qs[cur].q, dir);
-    fill.style.transform = 'scaleX(' + ((cur + 1) / n).toFixed(4) + ')';
+    roll(opts, optsHtml(qs[cur]), dir);
+    bars.forEach(function (s, k) { s.classList.toggle('is-on', k <= cur); });
   }
 
   function stop() { clearInterval(timer); timer = 0; }
@@ -80,9 +95,15 @@
     timer = setInterval(function () { go(cur + 1, 1); }, HOLD);
   }
 
-  fill.style.transform = 'scaleX(' + (1 / n).toFixed(4) + ')';
   arws[0].addEventListener('click', function () { go(cur - 1, -1); play(); });
   arws[1].addEventListener('click', function () { go(cur + 1, 1); play(); });
+  opts.addEventListener('click', function (e) {
+    if (!e.target.closest('.quiz__opt') || !window.TeswayQuizOpen) return;
+    stop();
+    window.TeswayQuizOpen(cur);
+  });
+  copy.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') stop(); });
+  copy.addEventListener('pointerleave', play);
 
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (en) {
