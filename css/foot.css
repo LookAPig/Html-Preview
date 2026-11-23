@@ -11,7 +11,9 @@
   color: var(--text);
   box-shadow: 0 -1.5rem 4rem -1rem rgba(34, 34, 34, .28);
 }
-.foot__in { transform: translate3d(0, calc((1 - var(--f)) * -3rem), 0); opacity: calc(.4 + var(--f) * .6); }
+@media (min-aspect-ratio: 1/1) and (prefers-reduced-motion: no-preference) {
+  .foot__in { transform: translate3d(0, calc((1 - var(--f)) * -3rem), 0); opacity: calc(.4 + var(--f) * .6); }
+}
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 .foot__top { display: grid; gap: 3rem; }

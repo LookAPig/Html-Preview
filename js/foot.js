@@ -121,8 +121,9 @@
     prev.style.setProperty('--f', f.toFixed(4));
     prev.style.setProperty('--fy', (dist * 0.6).toFixed(1) + 'px');
   }
+  var desk = window.matchMedia('(min-aspect-ratio: 1/1)');
   function onScroll() {
-    if (ticking || calm.matches) return;
+    if (ticking || calm.matches || !desk.matches) return;
     ticking = true;
     requestAnimationFrame(update);
   }

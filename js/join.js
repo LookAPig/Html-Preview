@@ -4,6 +4,7 @@
   if (!data || !box) return;
 
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var desk = window.matchMedia('(min-aspect-ratio: 1/1)');
 
   function svg(paths, draw) {
     return '<svg viewBox="0 0 24 24" aria-hidden="true"><g class="ico-base">' + paths + '</g>' +
@@ -41,7 +42,7 @@
     box.style.setProperty('--p', Math.min(1, Math.max(0, p)).toFixed(4));
   }
   function onScroll() {
-    if (ticking || calm.matches) return;
+    if (ticking || calm.matches || !desk.matches) return;
     ticking = true;
     requestAnimationFrame(update);
   }

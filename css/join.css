@@ -35,8 +35,7 @@
   flex-direction: column;
   gap: 0.625rem;
   height: max-content;
-  transform: translate3d(0, calc(-50% + (var(--p, .5) - .5) * var(--dir) * var(--amp)), 0);
-  will-change: transform;
+  transform: translate3d(0, -50%, 0);
 }
 .join__ph {
   display: block;
@@ -70,8 +69,11 @@
   .join__ph:hover img { scale: 1.06; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .join__col { transform: translate3d(0, -50%, 0); }
+@media (min-aspect-ratio: 1/1) and (prefers-reduced-motion: no-preference) {
+  .join__col {
+    transform: translate3d(0, calc(-50% + (var(--p, .5) - .5) * var(--dir) * var(--amp)), 0);
+    will-change: transform;
+  }
 }
 
 @media (min-aspect-ratio: 1/1) {
