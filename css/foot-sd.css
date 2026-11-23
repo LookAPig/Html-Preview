@@ -9,7 +9,7 @@
         animation-timing-function: linear;
         animation-fill-mode: both;
         animation-timeline: scroll(root);
-        animation-range: var(--fs, 0px) var(--fe, 1px);
+        animation-range: var(--foot-s, 0px) var(--foot-e, 1px);
       }
       main > section:last-child {
         transform-origin: 50% 100%;
@@ -31,7 +31,7 @@
   }
 }
 
-@keyframes footPush { to { transform: translate3d(0, calc(var(--fr, 0px) * .6), 0) scale(.92); } }
+@keyframes footPush { to { transform: translate3d(0, calc(var(--foot-r, 0px) * .6), 0) scale(.92); } }
 @keyframes footShade { to { opacity: .7; } }
 @keyframes footIn { from { transform: translate3d(0, -3rem, 0); opacity: .4; } }
 @keyframes footWord { from { transform: translate3d(0, 2.5rem, 0); } }
