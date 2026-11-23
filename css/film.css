@@ -23,7 +23,9 @@
   height: 100%;
   object-fit: cover;
 }
-.film__frame video { opacity: 0; transition: opacity .6s var(--ease); }
+.film__frame video { opacity: 0; transition: opacity .6s var(--ease); pointer-events: none; }
+.film__frame video::-webkit-media-controls,
+.film__frame video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
 .film__frame video.is-ready { opacity: 1; }
 .film__frame::after {
   content: "";
@@ -69,6 +71,7 @@
 }
 
 .film__ui {
+  display: none;
   position: absolute;
   left: 1.25rem;
   right: 1.25rem;
@@ -129,7 +132,7 @@
   .film__track { margin: 0 calc(var(--pad) * -1); height: 280svh; }
   .film__pin { position: sticky; top: 0; height: 100svh; max-height: none; aspect-ratio: auto; border-radius: 0; }
   .film__hint { display: grid; }
-  .film__ui { left: var(--pad); right: var(--pad); bottom: 2.5rem; }
+  .film__ui { display: flex; left: var(--pad); right: var(--pad); bottom: 2.5rem; }
   .film__ui strong { font-size: 4rem; }
   .film__sound { width: 3rem; height: 3rem; }
 }
