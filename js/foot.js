@@ -131,6 +131,20 @@
   window.addEventListener('resize', onScroll);
   onScroll();
 
+  var root = document.documentElement.style;
+  function range() {
+    var vh = window.innerHeight;
+    var top = foot.getBoundingClientRect().top + window.scrollY;
+    var reach = Math.min(foot.offsetHeight, vh);
+    root.setProperty('--fs', Math.max(0, top - vh).toFixed(0) + 'px');
+    root.setProperty('--fe', Math.max(1, top - vh + reach).toFixed(0) + 'px');
+    root.setProperty('--fr', reach.toFixed(0) + 'px');
+  }
+  window.addEventListener('resize', range);
+  window.addEventListener('load', range);
+  if (window.ResizeObserver) new ResizeObserver(range).observe(document.body);
+  range();
+
   var word = foot.querySelector('.foot__word');
   var span = word.firstChild;
   function fit() {
