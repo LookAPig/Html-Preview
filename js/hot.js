@@ -71,7 +71,7 @@
 
     slides.forEach(function (s, i) {
       var rel = (i * slideW - x) / slideW;
-      titles[i].style.setProperty('--fade', reduce ? 1 : (clamp(1 - Math.abs(rel), 0, 1) * enter).toFixed(3));
+      titles[i].style.setProperty('--fade', reduce ? 1 : enter.toFixed(3));
       if (Math.abs(rel) > 1.6) return;
       titles[i].style.transform = 'translate3d(' + (rel * slideW * 0.16).toFixed(1) + 'px,' + lift.toFixed(1) + 'px,0)';
       copies[i].style.opacity = clamp(1 - Math.abs(rel) * 1.6, 0, 1).toFixed(3);

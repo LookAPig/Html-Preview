@@ -75,9 +75,9 @@
   left: 50%;
   margin-left: -50vw;
   width: 100vw;
-  margin-top: -.12em;
-  margin-bottom: -.12em;
-  padding: .12em 0;
+  margin-top: -.2em;
+  margin-bottom: -.2em;
+  padding: .2em 0;
   font-family: var(--font-en);
   font-size: var(--title-size);
   font-weight: 400;
@@ -89,10 +89,10 @@
   white-space: nowrap;
   will-change: transform;
   --fade: 0;
-  --mask: linear-gradient(180deg, #000 0%, #000 59%,
-    rgba(0, 0, 0, .96) 64%, rgba(0, 0, 0, .85) 69%, rgba(0, 0, 0, .69) 74%,
-    rgba(0, 0, 0, .5) 79.5%, rgba(0, 0, 0, .31) 85%, rgba(0, 0, 0, .15) 90%,
-    rgba(0, 0, 0, .04) 95%, rgba(0, 0, 0, 0) 100%);
+  --mask: linear-gradient(180deg, #000 0%, #000 75%,
+    rgba(0, 0, 0, .96) 77.25%, rgba(0, 0, 0, .85) 79.5%, rgba(0, 0, 0, .69) 81.75%,
+    rgba(0, 0, 0, .5) 84%, rgba(0, 0, 0, .31) 86.25%, rgba(0, 0, 0, .15) 88.5%,
+    rgba(0, 0, 0, .04) 90.75%, rgba(0, 0, 0, 0) 93%);
   -webkit-mask-image: var(--mask);
   mask-image: var(--mask);
   -webkit-mask-size: 100% 200%;
