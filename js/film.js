@@ -15,6 +15,13 @@
   function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
 
   function measure() {
+    if (!desk.matches) {
+      track.style.height = '';
+      track.style.marginTop = '';
+      frame.style.clipPath = '';
+      sec.style.removeProperty('--hy');
+      return update();
+    }
     var rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
     var pad = parseFloat(getComputedStyle(sec).paddingLeft);
     vh = pin.offsetHeight;
@@ -42,8 +49,28 @@
     }
   }
 
+  function setFull(on) {
+    if (on === full) return;
+    full = on;
+    sec.classList.toggle('is-full', full);
+  }
+
+  function updateMobile() {
+    var r = pin.getBoundingClientRect();
+    var wh = window.innerHeight;
+    if (r.top < wh * 1.5 && r.bottom > -wh * 0.5 && !video.src) {
+      video.src = video.dataset.src;
+      video.preload = 'auto';
+    }
+    var seen = Math.min(r.bottom, wh) - Math.max(r.top, 0);
+    var on = seen >= r.height * 0.5;
+    setFull(on);
+    setPlaying(on);
+  }
+
   function update() {
     queued = false;
+    if (!desk.matches) return updateMobile();
     var r = track.getBoundingClientRect();
     var p = clamp(-r.top / dist, 0, 1);
     var e = p * p * (3 - 2 * p);
@@ -57,11 +84,7 @@
       video.src = video.dataset.src;
       video.preload = 'auto';
     }
-    var nowFull = p >= 0.995;
-    if (nowFull !== full) {
-      full = nowFull;
-      sec.classList.toggle('is-full', full);
-    }
+    setFull(p >= 0.995);
     setPlaying(visible && (full || (playing && p > 0.9)));
   }
 

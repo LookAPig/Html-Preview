@@ -1,6 +1,13 @@
 .film { --p: 0; }
-.film__track { position: relative; margin: 0 calc(var(--pad) * -1); height: 280svh; }
-.film__pin { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.film__track { position: relative; margin-top: 1.75rem; }
+.film__pin {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  max-height: 75svh;
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+}
 .film__frame {
   position: absolute;
   inset: 0;
@@ -28,6 +35,7 @@
 }
 
 .film__hint {
+  display: none;
   position: absolute;
   top: var(--hy, 50%);
   left: 50%;
@@ -62,9 +70,9 @@
 
 .film__ui {
   position: absolute;
-  left: var(--pad);
-  right: var(--pad);
-  bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  left: 1.25rem;
+  right: 1.25rem;
+  bottom: 1.25rem;
   z-index: 1;
   display: flex;
   align-items: flex-end;
@@ -88,7 +96,7 @@
   display: block;
   margin-top: 0.5rem;
   font-family: var(--font-en);
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 400;
   line-height: 1;
   text-transform: uppercase;
@@ -118,7 +126,10 @@
 }
 
 @media (min-aspect-ratio: 1/1) {
-  .film__ui { bottom: 2.5rem; }
+  .film__track { margin: 0 calc(var(--pad) * -1); height: 280svh; }
+  .film__pin { position: sticky; top: 0; height: 100svh; max-height: none; aspect-ratio: auto; border-radius: 0; }
+  .film__hint { display: grid; }
+  .film__ui { left: var(--pad); right: var(--pad); bottom: 2.5rem; }
   .film__ui strong { font-size: 4rem; }
   .film__sound { width: 3rem; height: 3rem; }
 }
