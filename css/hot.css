@@ -84,7 +84,10 @@
   letter-spacing: -.01em;
   text-align: center;
   text-transform: uppercase;
-  color: var(--text);
+  color: transparent;
+  background: linear-gradient(180deg, var(--text) 40%, rgba(34, 34, 34, .6) 58%, rgba(34, 34, 34, .25) 72%, rgba(34, 34, 34, .1) 82%);
+  -webkit-background-clip: text;
+  background-clip: text;
   white-space: nowrap;
   will-change: transform;
 }
