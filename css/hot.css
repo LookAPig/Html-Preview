@@ -90,9 +90,9 @@
   will-change: transform;
   --fade: 0;
   --mask: linear-gradient(180deg, #000 0%, #000 75%,
-    rgba(0, 0, 0, .96) 77.25%, rgba(0, 0, 0, .85) 79.5%, rgba(0, 0, 0, .69) 81.75%,
-    rgba(0, 0, 0, .5) 84%, rgba(0, 0, 0, .31) 86.25%, rgba(0, 0, 0, .15) 88.5%,
-    rgba(0, 0, 0, .04) 90.75%, rgba(0, 0, 0, 0) 93%);
+    rgba(0, 0, 0, .96) 76.9%, rgba(0, 0, 0, .85) 78.75%, rgba(0, 0, 0, .69) 80.6%,
+    rgba(0, 0, 0, .5) 82.5%, rgba(0, 0, 0, .31) 84.4%, rgba(0, 0, 0, .15) 86.25%,
+    rgba(0, 0, 0, .04) 88.1%, rgba(0, 0, 0, 0) 90%);
   -webkit-mask-image: var(--mask);
   mask-image: var(--mask);
   -webkit-mask-size: 100% 200%;
