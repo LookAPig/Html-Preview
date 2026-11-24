@@ -33,7 +33,7 @@
 .reveal[data-delay="4"] { transition-delay: .4s; }
 .btile__body { position: relative; z-index: 2; display: grid; justify-items: start; padding: 1rem; }
 .btile__title { font-size: 1rem; font-weight: 700; line-height: 1.25; }
-.btile__big { font-size: 1.75rem; font-weight: 800; line-height: 1.1; letter-spacing: -.01em; transition: color .35s var(--ease); }
+.btile__big { font-size: 1.75rem; font-weight: 800; line-height: 1.1; letter-spacing: -.01em; }
 .btile__sub { margin-top: 0.25rem; font-size: 0.75rem; line-height: 1.4; color: rgba(255, 255, 255, .78); }
 
 .btile__ico { display: block; margin-bottom: 0.625rem; }
@@ -52,7 +52,6 @@
   :is(.btile:not(.btile--hero), .bhero__values li):hover .btile__ico--pulse svg { animation: icoPulse .8s var(--ease); }
   :is(.btile:not(.btile--hero), .bhero__values li):hover .btile__ico--hop svg { animation: icoHop .8s var(--ease); }
   :is(.btile:not(.btile--hero), .bhero__values li):hover .btile__ico--tilt svg { animation: icoTilt .9s var(--ease); }
-  :is(.btile:not(.btile--hero), .bhero__values li):hover .btile__big { color: var(--volt); }
 }
 @keyframes icoRoll {
   0% { translate: 0 0; }
