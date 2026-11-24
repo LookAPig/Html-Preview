@@ -3,7 +3,7 @@
 
   function ease(t) { return 1 - Math.pow(1 - t, 3); }
 
-  window.TESWAY_HOTM = function (slides, bikes, mq, reduce) {
+  window.TESWAY_HOTM = function (slides, bikes, mq, reduce, scenes) {
     var stages = slides.map(function (s) { return s.querySelector('.hot__stage'); });
     var pos = slides.map(function () { return reduce ? 0 : -1; });
     var titles = slides.map(function (s) { return s.querySelector('.hot__title'); });
@@ -25,6 +25,7 @@
       var o = offset(i);
       stages[i].style.transform = o ? 'translate3d(' + o.toFixed(1) + 'px,0,0)' : '';
       bikes[i].draw(o / bikes[i].radius());
+      scenes[i].draw(o);
     }
 
     function play(i) {

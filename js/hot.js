@@ -13,7 +13,7 @@
   track.innerHTML = data.items.map(function (it, i) {
     return '<article class="hot__slide" aria-label="' + it.name + '">' +
       '<h2 class="hot__title" aria-hidden="true">' + it.model + '</h2>' +
-      '<div class="hot__stage"><i class="hot__shadow"></i><canvas class="hot__cv" role="img" aria-label="' + it.name + '"></canvas></div>' +
+      '<div class="hot__stage"><canvas class="hot__scene" aria-hidden="true"></canvas><i class="hot__shadow"></i><canvas class="hot__cv" role="img" aria-label="' + it.name + '"></canvas></div>' +
       '<div class="hot__copy"><h3>' + it.name + '</h3><p class="hot__tag">' + it.tagline + '</p>' +
       '<p class="hot__meta">From <b>' + it.price + '</b><span>' + it.specs + '</span></p><div class="hot__cta">' +
       '<a class="hbtn" href="' + it.cta[0].href + '">' + it.cta[0].label + '</a>' +
@@ -36,7 +36,10 @@
       if (mobile.matches) mob.draw(i); else schedule();
     });
   });
-  mob = window.TESWAY_HOTM(slides, bikes, mobile, reduce);
+  var scenes = slides.map(function (s, i) {
+    return window.TESWAY_HOTSCENE.create(s.querySelector('.hot__scene'), data.items[i]);
+  });
+  mob = window.TESWAY_HOTM(slides, bikes, mobile, reduce, scenes);
 
   function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
 
@@ -50,6 +53,7 @@
 
   function measure() {
     bikes.forEach(function (b) { b.resize(); });
+    scenes.forEach(function (s) { s.resize(); });
     current = -1;
     if (mobile.matches) return flat();
     mob.reset();
@@ -78,6 +82,7 @@
       copies[i].style.opacity = clamp(1 - Math.abs(rel) * 1.6, 0, 1).toFixed(3);
       var angle = reduce ? 0 : -x / bikes[i].radius();
       bikes[i].draw(angle);
+      scenes[i].draw(reduce ? 0 : rel * slideW);
     });
 
     var idx = clamp(Math.round(x / slideW), 0, slides.length - 1);
