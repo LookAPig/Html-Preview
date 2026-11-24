@@ -6,6 +6,7 @@
   var b = data.banner, qs = data.questions, n = qs.length, E = data.email, D = data.done;
   var arrow = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
   var tick = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg>';
+  var left = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4"/></svg>';
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   var pics = [];
@@ -24,9 +25,6 @@
     return '<img class="quiz__img' + (i === picOf(0) ? ' is-on' : '') + '" src="' + src + '" alt="" loading="lazy" decoding="async">';
   }).join('');
 
-  var segs = '';
-  for (var k = 0; k < n; k++) segs += '<i></i>';
-
   var copy = document.createElement('div');
   copy.className = 'quiz__copy reveal';
   copy.setAttribute('data-delay', '1');
@@ -34,7 +32,7 @@
     '<div class="quiz__card">' +
       '<div class="quiz__top">' +
         '<p class="quiz__count"><span class="quiz__roll"><span class="quiz__lab"></span></span></p>' +
-        '<span class="quiz__segs" aria-hidden="true">' + segs + '</span>' +
+        '<button class="quiz__back" type="button" disabled>' + left + b.back + '</button>' +
       '</div>' +
       '<div class="quiz__body" aria-live="polite"></div>' +
     '</div>';
@@ -45,7 +43,7 @@
   var imgs = scene.querySelectorAll('.quiz__img');
   var lab = copy.querySelector('.quiz__lab');
   var body = copy.querySelector('.quiz__body');
-  var bars = copy.querySelectorAll('.quiz__segs i');
+  var back = copy.querySelector('.quiz__back');
   var step = 0, picks = [], busy = false, pic = picOf(0);
 
   function labHtml(s) {
@@ -62,8 +60,7 @@
         return '<button class="quiz__opt" type="button" role="radio" aria-checked="false" title="' + o.hint + '" style="--i:' + j + '">' +
           '<i class="quiz__key" aria-hidden="true">' + String.fromCharCode(65 + j) + '</i><span>' + o.label + '</span>' +
           '<i class="quiz__go" aria-hidden="true">' + arrow + tick + '</i></button>';
-      }).join('') + '</div>' +
-      '<p class="quiz__meta"><span>' + b.meta.replace('{n}', n) + '</span><span>' + b.tip + '</span></p>';
+      }).join('') + '</div>';
   }
 
   function emailView() {
@@ -93,8 +90,7 @@
   }
 
   function paint() {
-    var on = step === 'done' || step >= n ? n : step;
-    bars.forEach(function (s, k) { s.classList.toggle('is-on', k < on); s.classList.toggle('is-cur', k === on); });
+    back.disabled = !(typeof step === 'number' && step > 0);
     copy.classList.toggle('is-done', step === 'done');
   }
 
@@ -178,6 +174,7 @@
     if (opt) return pick(opt);
     if (e.target.closest('.quiz__again') && !busy) { picks = []; swap(0); }
   });
+  back.addEventListener('click', function () { if (!busy && step > 0) swap(step - 1); });
   body.addEventListener('submit', function (e) { e.preventDefault(); if (!busy) submit(e.target); });
   body.addEventListener('input', function (e) {
     var form = e.target.closest('.quiz__form');

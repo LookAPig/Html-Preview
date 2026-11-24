@@ -2,8 +2,7 @@ window.TESWAY_QUIZ = {
   banner: {
     label: 'Question',
     scenes: ['Images/hero-desktop.jpg', 'Images/brand-beyond.jpg', 'Images/hero-trail.jpg', 'Images/story-delivery.jpg'],
-    meta: '{n} questions · about 60 seconds',
-    tip: 'Tap an answer to continue'
+    back: 'Back'
   },
   questions: [
     {
