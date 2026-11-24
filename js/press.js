@@ -5,17 +5,20 @@
   var stage = document.getElementById('pressStage');
   if (!data || !box || !pick || !stage) return;
 
-  var DURATION = 6000;
-  var PULL = 900;
+  var DURATION = 5000;
+  var PULL = 700;
   var n = data.length;
   var REST = [[0, 0, -2], [1.4, 0.8, 4], [-1.5, 1.4, -6.5], [2.1, 2, 8]];
+  var REST_M = [[0, 0, -2], [3.85, 0.9, 5.5], [-3.6, 1.6, -8], [1.2, 2.4, 10]];
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var mobile = window.matchMedia('(max-aspect-ratio: 999/1000)');
   var arrow = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
   var lock = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>';
   function pad(v) { return String(v).padStart(2, '0'); }
   function mark(d) { return '<span class="press__mark press__mark--' + d.kind + '">' + d.mark + '</span>'; }
   function rest(depth) {
-    var r = REST[Math.min(depth, REST.length - 1)];
+    var list = mobile.matches ? REST_M : REST;
+    var r = list[Math.min(depth, list.length - 1)];
     return 'translate3d(' + r[0] + 'em, ' + r[1] + 'em, ' + (-depth * 2.5) + 'em) rotate(' + r[2] + 'deg)';
   }
 
@@ -104,6 +107,7 @@
   cards.forEach(function (c) {
     c.addEventListener('animationend', function () { c.classList.remove('is-pull'); });
   });
+  mobile.addEventListener('change', function () { stack(-1); });
 
   function run() {
     clearTimeout(timer);

@@ -73,9 +73,9 @@
 }
 .press__cards .pcard {
   grid-area: 1 / 1;
-  transition: transform .7s var(--ease), opacity .5s var(--ease), box-shadow .5s var(--ease);
+  transition: transform .55s var(--ease), opacity .4s var(--ease), box-shadow .5s var(--ease);
 }
-.press__cards .pcard.is-pull { animation: pressPull var(--press-pull, .9s) cubic-bezier(.45, 0, .2, 1) both; }
+.press__cards .pcard.is-pull { animation: pressPull var(--press-pull, .7s) cubic-bezier(.45, 0, .2, 1) both; }
 
 @keyframes pressPull {
   from { transform: var(--from); }
