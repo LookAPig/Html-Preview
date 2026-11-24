@@ -9,6 +9,7 @@
     return '<article class="btile btile--hero reveal">' +
       '<div class="bscene" aria-hidden="true">' +
         '<img src="' + h.img + '" alt="" loading="lazy" decoding="async">' +
+        '<span class="bscene__night"></span><span class="bscene__stars"></span>' +
         '<span class="bsun__glow"></span>' +
         '<span class="bsun__clip"><span class="bsun__disc"></span></span>' +
         '<span class="bscene__light"></span>' +
@@ -54,6 +55,7 @@
       var r = tile.getBoundingClientRect();
       var rise = reduce ? 1 : Math.max(0, Math.min(1, (innerHeight - r.top - r.height * 0.3) / (innerHeight * 0.75)));
       tile.style.setProperty('--rise', rise.toFixed(4));
+      tile.classList.toggle('is-night', rise < 0.45);
     }
     function onScroll() {
       if (!ticking) { ticking = true; requestAnimationFrame(frame); }

@@ -1,0 +1,59 @@
+.btile--hero { --night: clamp(0, 1 - var(--rise) * 1.15, 1); }
+.btile--hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  background: linear-gradient(180deg, #141C36 0%, #25305A 60%, #3A3F63 100%);
+  opacity: var(--night);
+  pointer-events: none;
+}
+.btile--hero::after { opacity: calc(1 - var(--night)); }
+.bscene img { filter: saturate(calc(1 - var(--night) * .45)) brightness(calc(1 - var(--night) * .2)); }
+.bscene__night {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #1B2550 0%, #34407A 46%, #46507E 100%);
+  mix-blend-mode: multiply;
+  opacity: calc(var(--night) * .82);
+}
+.bscene__stars {
+  position: absolute;
+  inset: 0 0 50%;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, #FFF 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 27% 42%, #FFF 50%, transparent 52%),
+    radial-gradient(2.5px 2.5px at 38% 12%, #FFF 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 46% 58%, #FFF 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 63% 26%, #FFF 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 72% 8%, #FFF 50%, transparent 52%),
+    radial-gradient(2.5px 2.5px at 84% 36%, #FFF 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 93% 16%, #FFF 50%, transparent 52%);
+  background-size: 24rem 14rem;
+  -webkit-mask-image: linear-gradient(180deg, #000 30%, transparent);
+  mask-image: linear-gradient(180deg, #000 30%, transparent);
+  opacity: calc(var(--night) * 1.6 - .6);
+}
+
+.btile--hero .eyebrow,
+.btile--hero .btile__title,
+.bhero__sub,
+.btile--hero .btile__sub,
+.bhero__tag { transition: color .6s var(--ease); }
+.btile--hero .eyebrow--dot::before { transition: background .6s var(--ease), box-shadow .6s var(--ease); }
+.bhero__tag::after,
+.bhero__tag i { transition: background .6s var(--ease), color .6s var(--ease); }
+
+.btile--hero.is-night .eyebrow,
+.btile--hero.is-night .btile__title,
+.btile--hero.is-night .bhero__sub,
+.btile--hero.is-night .bhero__tag { color: #FFF; }
+.btile--hero.is-night .btile__sub { color: rgba(255, 255, 255, .78); }
+.btile--hero.is-night .eyebrow--dot::before { background: #FFF; box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, .18); }
+.btile--hero.is-night .bhero__tag i { color: rgba(255, 255, 255, .45); }
+.btile--hero.is-night .bhero__tag::after { background: #FFF; }
+.btile--hero.is-night .bhero__cta { background: #FFF; border-color: #FFF; color: var(--text); }
+
+@media (hover: hover) {
+  .btile--hero.is-night .bhero__cta:hover { border-color: var(--volt); color: #FFF; }
+}
