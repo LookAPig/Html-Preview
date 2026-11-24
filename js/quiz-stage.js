@@ -59,7 +59,9 @@
     return '<p class="quiz__line" id="quizQ">' + q.q + '</p>' +
       '<div class="quiz__opts" role="radiogroup" aria-labelledby="quizQ">' +
       q.options.map(function (o, j) {
-        return '<button class="quiz__opt" type="button" role="radio" aria-checked="false" data-i="' + j + '" title="' + o.hint + '" style="--i:' + j + '">' + o.label + '</button>';
+        return '<button class="quiz__opt" type="button" role="radio" aria-checked="false" title="' + o.hint + '" style="--i:' + j + '">' +
+          '<i class="quiz__key" aria-hidden="true">' + String.fromCharCode(65 + j) + '</i><span>' + o.label + '</span>' +
+          '<i class="quiz__go" aria-hidden="true">' + arrow + tick + '</i></button>';
       }).join('') + '</div>' +
       '<p class="quiz__meta"><span>' + b.meta.replace('{n}', n) + '</span><span>' + b.tip + '</span></p>';
   }
@@ -92,18 +94,14 @@
 
   function paint() {
     var on = step === 'done' || step >= n ? n : step;
-    bars.forEach(function (s, k) {
-      s.classList.toggle('is-on', k < on);
-      s.classList.toggle('is-cur', k === on);
-    });
+    bars.forEach(function (s, k) { s.classList.toggle('is-on', k < on); s.classList.toggle('is-cur', k === on); });
     copy.classList.toggle('is-done', step === 'done');
   }
 
   function showPic(i) {
     if (i === pic || !imgs[i]) return;
     imgs[pic].classList.remove('is-on');
-    imgs[i].classList.add('is-on');
-    pic = i;
+    imgs[pic = i].classList.add('is-on');
   }
 
   function roll(el, html) {
@@ -154,7 +152,7 @@
       o.setAttribute('aria-checked', o === btn);
     });
     body.classList.add('is-picked');
-    picks[step] = btn.textContent;
+    picks[step] = btn.querySelector('span').textContent;
     wait(420).then(function () {
       body.classList.remove('is-picked');
       swap(step + 1);
@@ -180,10 +178,7 @@
     if (opt) return pick(opt);
     if (e.target.closest('.quiz__again') && !busy) { picks = []; swap(0); }
   });
-  body.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (!busy) submit(e.target);
-  });
+  body.addEventListener('submit', function (e) { e.preventDefault(); if (!busy) submit(e.target); });
   body.addEventListener('input', function (e) {
     var form = e.target.closest('.quiz__form');
     if (form && form.classList.contains('is-err')) {
@@ -195,4 +190,10 @@
   lab.innerHTML = labHtml(0);
   render();
   paint();
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (en) {
+      if (en[0].isIntersecting) { body.classList.add('is-in'); io.disconnect(); }
+    }, { threshold: 0.6 });
+    io.observe(body);
+  }
 })();

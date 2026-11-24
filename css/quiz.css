@@ -85,42 +85,10 @@
 .is-done .quiz__segs i::after { background: var(--volt); }
 
 .quiz__line { margin: 0.75rem 0 0; font-size: 1.25rem; font-weight: 800; line-height: 1.25; letter-spacing: -.02em; color: var(--text); }
-.quiz__opts { display: flex; flex-wrap: wrap; gap: 0.25rem 0; margin-top: 0.625rem; }
-.quiz__opt {
-  position: relative;
-  padding: 0.5rem 0;
-  border: 0;
-  background: linear-gradient(var(--volt), var(--volt)) left calc(100% - 0.3125rem) / 0 1.5px no-repeat;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--muted);
-  white-space: nowrap;
-  -webkit-tap-highlight-color: transparent;
-  transition: color .3s var(--ease), background-size .35s var(--ease), opacity .3s var(--ease);
-}
-.quiz__opt:not(:last-child) { margin-right: 1.75rem; }
-.quiz__opt:not(:last-child)::after {
-  content: "/";
-  position: absolute;
-  right: -1.125rem;
-  color: rgba(34, 34, 34, .2);
-  pointer-events: none;
-}
-.quiz__opt:active,
-.quiz__opt.is-on { color: var(--volt); }
-.quiz__opt.is-on { background-size: 100% 1.5px; }
-.quiz__opt:focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; border-radius: 0.25rem; }
-.is-picked .quiz__opt:not(.is-on) { opacity: .35; }
-
 .quiz__meta { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; margin: 1rem 0 0; font-size: 0.6875rem; line-height: 1.35; color: var(--muted); }
 .quiz__meta span + span { display: inline-flex; align-items: center; gap: 0.375rem; }
 .quiz__meta span + span::before { content: ""; width: 0.3125rem; height: 0.3125rem; border-radius: 50%; background: var(--volt); animation: qblink 1.6s ease-in-out infinite; }
 @keyframes qblink { 50% { opacity: .25; } }
-
-@media (hover: hover) {
-  .quiz__opt:hover { color: var(--volt); background-size: 100% 1.5px; }
-}
 
 @media (min-aspect-ratio: 1/1) {
   .quiz__wrap {
@@ -147,8 +115,5 @@
   .quiz__segs i { width: 1.75rem; }
   .quiz__segs i.is-cur { width: 2.75rem; }
   .quiz__line { margin-top: 1rem; font-size: 1.625rem; }
-  .quiz__opts { margin-top: 0.75rem; }
-  .quiz__opt:not(:last-child) { margin-right: 1.5rem; }
-  .quiz__opt:not(:last-child)::after { right: -1rem; }
   .quiz__meta { margin-top: 1.25rem; font-size: 0.75rem; }
 }
