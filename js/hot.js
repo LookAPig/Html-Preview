@@ -13,7 +13,7 @@
   track.innerHTML = data.items.map(function (it, i) {
     return '<article class="hot__slide" aria-label="' + it.name + '">' +
       '<h2 class="hot__title" aria-hidden="true">' + it.model + '</h2>' +
-      '<div class="hot__stage"><canvas class="hot__scene" aria-hidden="true"></canvas><i class="hot__shadow"></i><canvas class="hot__cv" role="img" aria-label="' + it.name + '"></canvas></div>' +
+      '<div class="hot__stage"><canvas class="hot__scene" aria-hidden="true"></canvas><i class="hot__shadow"></i><canvas class="hot__cv" style="top:' + window.TESWAY_HOTSCENE.lift(it) + '%" role="img" aria-label="' + it.name + '"></canvas></div>' +
       '<div class="hot__copy"><h3>' + it.name + '</h3><p class="hot__tag">' + it.tagline + '</p>' +
       '<p class="hot__meta">From <b>' + it.price + '</b><span>' + it.specs + '</span></p><div class="hot__cta">' +
       '<a class="hbtn" href="' + it.cta[0].href + '">' + it.cta[0].label + '</a>' +

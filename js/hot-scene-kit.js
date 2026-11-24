@@ -82,15 +82,24 @@
   }
 
   function pin(c, cx, cy, r) {
-    c.fillStyle = ink(0.08);
-    c.beginPath(); c.ellipse(cx, cy + r * 3.7, r * 1.1, r * 0.3, 0, 0, PI * 2); c.fill();
-    c.fillStyle = volt(0.6);
+    var sy = cy + r * 3.3;
+    c.fillStyle = volt(0.1);
+    c.beginPath(); c.ellipse(cx, sy, r * 1.5, r * 0.42, 0, 0, PI * 2); c.fill();
+    c.fillStyle = volt(0.22);
+    c.beginPath(); c.ellipse(cx, sy, r * 0.7, r * 0.2, 0, 0, PI * 2); c.fill();
+    c.fillStyle = volt(0.12);
+    c.beginPath(); c.arc(cx, cy, r * 1.85, 0, PI * 2); c.fill();
+    c.fillStyle = volt(0.92);
     c.beginPath();
-    c.moveTo(cx, cy + r * 2.2);
-    c.bezierCurveTo(cx - r * 1.4, cy + r * 0.9, cx - r * 1.1, cy - r, cx, cy - r);
-    c.bezierCurveTo(cx + r * 1.1, cy - r, cx + r * 1.4, cy + r * 0.9, cx, cy + r * 2.2);
+    c.moveTo(cx, cy + r * 2.3);
+    c.bezierCurveTo(cx - r * 0.5, cy + r * 1.5, cx - r * 1.25, cy + r * 0.75, cx - r * 1.25, cy);
+    c.arc(cx, cy, r * 1.25, PI, 0);
+    c.bezierCurveTo(cx + r * 1.25, cy + r * 0.75, cx + r * 0.5, cy + r * 1.5, cx, cy + r * 2.3);
     c.fill();
-    cut(c, function () { c.beginPath(); c.arc(cx, cy + r * 0.2, r * 0.4, 0, PI * 2); c.fill(); });
+    c.fillStyle = 'rgba(255, 255, 255, 0.95)';
+    c.beginPath(); c.arc(cx, cy, r * 0.52, 0, PI * 2); c.fill();
+    c.fillStyle = volt(0.92);
+    c.beginPath(); c.arc(cx, cy, r * 0.22, 0, PI * 2); c.fill();
   }
 
   function box(c, x, y, s) {

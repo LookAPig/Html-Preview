@@ -1,5 +1,6 @@
 (function () {
   var MAX_W = 1600;
+  var GROUND = 0.82;
 
   function seed(n) {
     return function () { n = n * 16807 % 2147483647; return (n - 1) / 2147483646; };
@@ -9,11 +10,15 @@
     return item.wheels.reduce(function (m, w) { return Math.max(m, w.y + w.r * 4 / 3); }, 0);
   }
 
+  function lift(item) {
+    return ((GROUND - groundOf(item)) * 100).toFixed(2);
+  }
+
   function create(canvas, item) {
     var art = window.TESWAY_HOTART;
     var spec = art && art[item.scene];
     var ctx = canvas.getContext('2d');
-    var gy = groundOf(item);
+    var gy = GROUND;
     var W = 0, H = 0, dpr = 1, y0 = 0, layers = null, last = null;
 
     function build() {
@@ -66,5 +71,5 @@
     return { draw: draw, resize: resize };
   }
 
-  window.TESWAY_HOTSCENE = { create: create };
+  window.TESWAY_HOTSCENE = { create: create, lift: lift };
 })();
