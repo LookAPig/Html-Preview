@@ -1,4 +1,4 @@
-.quiz__body { transition: height .42s var(--ease); }
+.quiz__body { margin: -0.875rem; padding: 0.875rem; transition: height .42s var(--ease); }
 .quiz__body[style*="height"] { overflow: hidden; }
 .quiz__body > * { transition: opacity .24s var(--ease), transform .26s var(--ease); }
 .quiz__body.is-out > * { opacity: 0; transform: translateY(-0.75rem); }
