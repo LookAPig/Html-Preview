@@ -1,5 +1,6 @@
 (function () {
   var SPOKES = 36;
+  var CRANK_RATIO = 0.4;
 
   function load(src) {
     var img = new Image();
@@ -29,12 +30,16 @@
 
   function create(canvas, item, onReady) {
     var ctx = canvas.getContext('2d');
-    var body = load(item.img + '.webp');
+    var bb = item.bb;
+    var body = load(item.img + (bb ? '-base.webp' : '.webp'));
     var frame = load(item.img + '-frame.webp');
+    var crank = bb ? load(item.img + '-crank.webp') : null;
     var W = 0, H = 0, last = null;
 
+    function loaded() { return ready(body) && ready(frame) && (!crank || ready(crank)); }
+
     function draw(angle) {
-      if (!W || !ready(body) || !ready(frame)) return;
+      if (!W || !loaded()) return;
       if (angle === last) return;
       last = angle;
       ctx.clearRect(0, 0, W, H);
@@ -57,6 +62,14 @@
         ctx.restore();
       });
       ctx.drawImage(frame, 0, 0, W, H);
+      if (crank) {
+        var bx = bb.x * W, by = bb.y * H;
+        ctx.save();
+        ctx.translate(bx, by);
+        ctx.rotate(angle * CRANK_RATIO);
+        ctx.drawImage(crank, -bx, -by, W, H);
+        ctx.restore();
+      }
     }
 
     function resize() {
@@ -69,9 +82,10 @@
     }
 
     function done() {
-      if (ready(body) && ready(frame)) { last = null; onReady(); }
+      if (loaded()) { last = null; onReady(); }
     }
     body.onload = frame.onload = done;
+    if (crank) crank.onload = done;
 
     return {
       draw: draw,
