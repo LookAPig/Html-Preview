@@ -3,10 +3,10 @@
   var mount = document.getElementById('quizMount');
   if (!data || !mount || !data.questions.length) return;
 
-  var b = data.banner, qs = data.questions, n = qs.length;
-  var HOLD = 4200;
+  var b = data.banner, qs = data.questions, n = qs.length, E = data.email, D = data.done;
   var arrow = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
-  var back = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4"/></svg>';
+  var tick = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg>';
+  var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   var pics = [];
   qs.forEach(function (q, i) {
@@ -15,11 +15,7 @@
   });
   function picOf(i) { return pics.indexOf(qs[i].img || b.scenes[i % b.scenes.length]); }
   function pad(v) { return String(v).padStart(2, '0'); }
-  function optsHtml(q) {
-    return q.options.map(function (o) {
-      return '<button class="quiz__opt" type="button" aria-haspopup="dialog" title="' + o.hint + '">' + o.label + '</button>';
-    }).join('');
-  }
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, calm.matches ? 0 : ms); }); }
 
   var scene = document.createElement('div');
   scene.className = 'quiz__scene';
@@ -29,7 +25,7 @@
   }).join('');
 
   var segs = '';
-  for (var k = 0; k < n; k++) segs += '<i' + (k === 0 ? ' class="is-on"' : '') + '></i>';
+  for (var k = 0; k < n; k++) segs += '<i></i>';
 
   var copy = document.createElement('div');
   copy.className = 'quiz__copy reveal';
@@ -37,78 +33,166 @@
   copy.innerHTML =
     '<div class="quiz__card">' +
       '<div class="quiz__top">' +
-        '<p class="quiz__count">' + b.label + ' <span class="quiz__roll"><b class="quiz__num">01</b></span> / ' + pad(n) + '</p>' +
+        '<p class="quiz__count"><span class="quiz__roll"><span class="quiz__lab"></span></span></p>' +
         '<span class="quiz__segs" aria-hidden="true">' + segs + '</span>' +
       '</div>' +
-      '<p class="quiz__roll quiz__line" aria-live="polite"><span class="quiz__q">' + qs[0].q + '</span></p>' +
-      '<div class="quiz__opts">' + optsHtml(qs[0]) + '</div>' +
-      '<div class="quiz__act">' +
-        '<button class="hbtn quiz__cta" type="button" data-quiz-open aria-haspopup="dialog">' + b.cta + arrow + '</button>' +
-        '<small>' + b.meta.replace('{n}', n) + '</small>' +
-        '<span class="quiz__arws">' +
-          '<button class="arw quiz__arw" type="button" aria-label="Previous question">' + back + '</button>' +
-          '<button class="arw quiz__arw" type="button" aria-label="Next question">' + arrow + '</button>' +
-        '</span>' +
-      '</div>' +
+      '<div class="quiz__body" aria-live="polite"></div>' +
     '</div>';
 
   mount.insertBefore(scene, mount.firstChild);
   mount.appendChild(copy);
 
   var imgs = scene.querySelectorAll('.quiz__img');
-  var num = copy.querySelector('.quiz__num');
-  var line = copy.querySelector('.quiz__q');
-  var opts = copy.querySelector('.quiz__opts');
+  var lab = copy.querySelector('.quiz__lab');
+  var body = copy.querySelector('.quiz__body');
   var bars = copy.querySelectorAll('.quiz__segs i');
-  var arws = copy.querySelectorAll('.quiz__arw');
-  var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var cur = 0, timer = 0, seen = false;
+  var step = 0, picks = [], busy = false, pic = picOf(0);
 
-  function roll(el, text, dir) {
-    el.style.setProperty('--dir', dir);
+  function labHtml(s) {
+    if (s === 'done') return D.label;
+    if (s >= n) return E.label;
+    return b.label + ' <b class="quiz__num">' + pad(s + 1) + '</b> / ' + pad(n);
+  }
+
+  function qView(i) {
+    var q = qs[i];
+    return '<p class="quiz__line" id="quizQ">' + q.q + '</p>' +
+      '<div class="quiz__opts" role="radiogroup" aria-labelledby="quizQ">' +
+      q.options.map(function (o, j) {
+        return '<button class="quiz__opt" type="button" role="radio" aria-checked="false" data-i="' + j + '" title="' + o.hint + '" style="--i:' + j + '">' + o.label + '</button>';
+      }).join('') + '</div>' +
+      '<p class="quiz__meta"><span>' + b.meta.replace('{n}', n) + '</span><span>' + b.tip + '</span></p>';
+  }
+
+  function emailView() {
+    return '<p class="quiz__line">' + E.title + '</p>' +
+      '<p class="quiz__sub">' + E.sub + '</p>' +
+      '<p class="quiz__tags">' + picks.map(function (t) { return '<span>' + t + '</span>'; }).join('') + '</p>' +
+      '<form class="quiz__form" novalidate>' +
+        '<span class="quiz__field">' +
+          '<input type="email" name="email" placeholder="' + E.placeholder + '" autocomplete="email" aria-label="Email" required>' +
+          '<button class="hbtn quiz__send" type="submit">' + E.submit + arrow + '</button>' +
+        '</span>' +
+        '<small class="quiz__msg" aria-live="assertive"></small>' +
+      '</form>';
+  }
+
+  function doneView() {
+    return '<div class="quiz__done"><i class="quiz__badge">' + tick + '</i>' +
+      '<div><p class="quiz__line">' + D.title + '</p><p class="quiz__sub">' + D.sub + '</p></div></div>' +
+      '<div class="quiz__act">' +
+        '<a class="hbtn quiz__cta" href="' + D.href + '">' + D.btn + arrow + '</a>' +
+        '<button class="quiz__again" type="button">' + D.again + '</button>' +
+      '</div>';
+  }
+
+  function render() {
+    body.innerHTML = step === 'done' ? doneView() : step >= n ? emailView() : qView(step);
+  }
+
+  function paint() {
+    var on = step === 'done' || step >= n ? n : step;
+    bars.forEach(function (s, k) {
+      s.classList.toggle('is-on', k < on);
+      s.classList.toggle('is-cur', k === on);
+    });
+    copy.classList.toggle('is-done', step === 'done');
+  }
+
+  function showPic(i) {
+    if (i === pic || !imgs[i]) return;
+    imgs[pic].classList.remove('is-on');
+    imgs[i].classList.add('is-on');
+    pic = i;
+  }
+
+  function roll(el, html) {
     el.classList.add('is-out');
     setTimeout(function () {
-      el.innerHTML = text;
+      el.innerHTML = html;
       el.classList.remove('is-out');
       el.classList.add('is-pre');
       void el.offsetWidth;
       el.classList.remove('is-pre');
-    }, 280);
+    }, calm.matches ? 0 : 260);
   }
 
-  function go(i, dir) {
-    i = (i + n) % n;
-    if (i === cur) return;
-    var a = picOf(cur), z = picOf(i);
-    if (a !== z) { imgs[a].classList.remove('is-on'); imgs[z].classList.add('is-on'); }
-    cur = i;
-    roll(num, pad(cur + 1), dir);
-    roll(line, qs[cur].q, dir);
-    roll(opts, optsHtml(qs[cur]), dir);
-    bars.forEach(function (s, k) { s.classList.toggle('is-on', k <= cur); });
+  function swap(next) {
+    var prev = step;
+    busy = true;
+    body.classList.remove('is-in');
+    body.classList.add('is-out');
+    var same = typeof prev === 'number' && typeof next === 'number' && prev < n && next < n;
+    var num = lab.querySelector('.quiz__num');
+    if (same && num) roll(num, pad(next + 1)); else roll(lab, labHtml(next));
+    step = next;
+    paint();
+    if (typeof next === 'number' && next < n) showPic(picOf(next));
+    else if (next === 'done') showPic(0);
+    return wait(260).then(function () {
+      var h0 = body.offsetHeight;
+      render();
+      body.style.height = h0 + 'px';
+      body.classList.remove('is-out');
+      void body.offsetWidth;
+      body.style.height = body.scrollHeight + 'px';
+      body.classList.add('is-in');
+      return wait(460);
+    }).then(function () {
+      body.style.height = '';
+      busy = false;
+      var input = body.querySelector('input');
+      if (input && window.matchMedia('(hover: hover)').matches) input.focus({ preventScroll: true });
+    });
   }
 
-  function stop() { clearInterval(timer); timer = 0; }
-  function play() {
-    stop();
-    if (!seen || calm.matches || n < 2) return;
-    timer = setInterval(function () { go(cur + 1, 1); }, HOLD);
+  function pick(btn) {
+    if (busy) return;
+    busy = true;
+    body.querySelectorAll('.quiz__opt').forEach(function (o) {
+      o.classList.toggle('is-on', o === btn);
+      o.setAttribute('aria-checked', o === btn);
+    });
+    body.classList.add('is-picked');
+    picks[step] = btn.textContent;
+    wait(420).then(function () {
+      body.classList.remove('is-picked');
+      swap(step + 1);
+    });
   }
 
-  arws[0].addEventListener('click', function () { go(cur - 1, -1); play(); });
-  arws[1].addEventListener('click', function () { go(cur + 1, 1); play(); });
-  opts.addEventListener('click', function (e) {
-    if (!e.target.closest('.quiz__opt') || !window.TeswayQuizOpen) return;
-    stop();
-    window.TeswayQuizOpen(cur);
+  function submit(form) {
+    var input = form.querySelector('input');
+    var msg = form.querySelector('.quiz__msg');
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) {
+      form.classList.add('is-sending');
+      return wait(380).then(function () { swap('done'); });
+    }
+    msg.textContent = E.err;
+    form.classList.remove('is-shake');
+    void form.offsetWidth;
+    form.classList.add('is-shake', 'is-err');
+    input.focus();
+  }
+
+  body.addEventListener('click', function (e) {
+    var opt = e.target.closest('.quiz__opt');
+    if (opt) return pick(opt);
+    if (e.target.closest('.quiz__again') && !busy) { picks = []; swap(0); }
   });
-  copy.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') stop(); });
-  copy.addEventListener('pointerleave', play);
+  body.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!busy) submit(e.target);
+  });
+  body.addEventListener('input', function (e) {
+    var form = e.target.closest('.quiz__form');
+    if (form && form.classList.contains('is-err')) {
+      form.classList.remove('is-err');
+      form.querySelector('.quiz__msg').textContent = '';
+    }
+  });
 
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (en) {
-      seen = en[0].isIntersecting;
-      if (seen) play(); else stop();
-    }, { threshold: 0.3 }).observe(mount);
-  } else { seen = true; play(); }
+  lab.innerHTML = labHtml(0);
+  render();
+  paint();
 })();

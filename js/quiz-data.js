@@ -2,8 +2,8 @@ window.TESWAY_QUIZ = {
   banner: {
     label: 'Question',
     scenes: ['Images/hero-desktop.jpg', 'Images/brand-beyond.jpg', 'Images/hero-trail.jpg', 'Images/story-delivery.jpg'],
-    cta: 'Find my ride',
-    meta: '{n} questions · about 60 seconds'
+    meta: '{n} questions · about 60 seconds',
+    tip: 'Tap an answer to continue'
   },
   questions: [
     {
@@ -44,6 +44,7 @@ window.TESWAY_QUIZ = {
     }
   ],
   email: {
+    label: 'Almost there',
     title: 'Your match is ready',
     sub: 'Leave your email and we will send a shortlist with the right TESWAY for your ride.',
     placeholder: 'Your email',
@@ -51,8 +52,11 @@ window.TESWAY_QUIZ = {
     err: 'Please enter a valid email.'
   },
   done: {
+    label: 'Subscribed',
     title: 'You are on the list',
     sub: 'Your personal TESWAY match is on its way. Check your inbox in a few minutes.',
-    btn: 'Back to bikes'
+    btn: 'Back to bikes',
+    href: '#hot',
+    again: 'Retake the quiz'
   }
 };

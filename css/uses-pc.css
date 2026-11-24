@@ -23,12 +23,16 @@
     transition: clip-path 1s var(--curtain) calc(var(--i) * 70ms), transform 1s var(--curtain) calc(var(--i) * 70ms), filter .6s var(--ease);
   }
   .uses__list.is-in .use { clip-path: inset(0 round var(--r-lg)); transform: none; }
-  .use::before { background: rgba(34, 34, 34, .28); opacity: 1; transition: opacity .55s var(--ease); }
-  .use.is-on::before { opacity: 0; }
-  .use::after {
-    background: linear-gradient(180deg, rgba(34, 34, 34, .2) 0%, rgba(34, 34, 34, 0) 28%,
-      rgba(34, 34, 34, .55) 58%, rgba(34, 34, 34, .92) 100%);
+  .use::before {
+    inset: 0 0 auto;
+    height: 150%;
+    background: linear-gradient(180deg, rgba(34, 34, 34, 0) 0%, rgba(34, 34, 34, .45) 20%,
+      rgba(34, 34, 34, .7) 60%, rgba(34, 34, 34, .9) 100%);
+    translate: 0 36.67%;
+    transition: translate .8s var(--curtain);
   }
+  .use.is-on::before { translate: 0 -20%; }
+  .use::after { background: linear-gradient(180deg, rgba(34, 34, 34, .25) 0%, rgba(34, 34, 34, 0) 22%); }
   .uses__list:has(.is-on) .use:not(.is-on) { filter: saturate(.45) brightness(.9); }
 
   .use img {
@@ -88,7 +92,7 @@
   .use__link { height: 2.25rem; margin-top: 0.75rem; padding: 0 1rem; font-size: 0.75rem; }
 }
 @media (min-aspect-ratio: 1/1) and (prefers-reduced-motion: reduce) {
-  .use, .use img, .use__desc, .use__tags, .use__link, .use__more { transition: none; }
+  .use, .use::before, .use img, .use__desc, .use__tags, .use__link, .use__more { transition: none; }
   .use { clip-path: none; transform: none; }
   .use img { scale: 1; }
 }
