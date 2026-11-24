@@ -21,7 +21,7 @@
   }
   .nav.is-mega [data-mega] { color: var(--text); }
   .nav.is-mega [data-mega]::after { transform: scaleX(1); }
-  .nav.is-mega .nav__caret { rotate: 180deg; }
+  .nav.is-mega [data-mega] .nav__caret { rotate: 180deg; }
 
   .mega-scrim {
     display: block;
