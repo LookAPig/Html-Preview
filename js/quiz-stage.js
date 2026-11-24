@@ -32,7 +32,6 @@
     '<div class="quiz__card">' +
       '<div class="quiz__top">' +
         '<p class="quiz__count"><span class="quiz__roll"><span class="quiz__lab"></span></span></p>' +
-        '<button class="quiz__back" type="button" disabled>' + left + b.back + '</button>' +
       '</div>' +
       '<div class="quiz__body" aria-live="polite"></div>' +
     '</div>';
@@ -43,7 +42,6 @@
   var imgs = scene.querySelectorAll('.quiz__img');
   var lab = copy.querySelector('.quiz__lab');
   var body = copy.querySelector('.quiz__body');
-  var back = copy.querySelector('.quiz__back');
   var step = 0, picks = [], busy = false, pic = picOf(0);
 
   function labHtml(s) {
@@ -51,6 +49,8 @@
     if (s >= n) return E.label;
     return b.label + ' <b class="quiz__num">' + pad(s + 1) + '</b> / ' + pad(n);
   }
+
+  function backBtn() { return '<button class="quiz__back" type="button">' + left + '<span>' + b.back + '</span></button>'; }
 
   function qView(i) {
     var q = qs[i];
@@ -60,7 +60,7 @@
         return '<button class="quiz__opt" type="button" role="radio" aria-checked="false" title="' + o.hint + '" style="--i:' + j + '">' +
           '<i class="quiz__key" aria-hidden="true">' + String.fromCharCode(65 + j) + '</i><span>' + o.label + '</span>' +
           '<i class="quiz__go" aria-hidden="true">' + arrow + tick + '</i></button>';
-      }).join('') + '</div>';
+      }).join('') + '</div>' + (i > 0 ? backBtn() : '');
   }
 
   function emailView() {
@@ -73,7 +73,7 @@
           '<button class="hbtn quiz__send" type="submit">' + E.submit + arrow + '</button>' +
         '</span>' +
         '<small class="quiz__msg" aria-live="assertive"></small>' +
-      '</form>';
+      '</form>' + backBtn();
   }
 
   function doneView() {
@@ -90,7 +90,6 @@
   }
 
   function paint() {
-    back.disabled = !(typeof step === 'number' && step > 0);
     copy.classList.toggle('is-done', step === 'done');
   }
 
@@ -172,9 +171,9 @@
   body.addEventListener('click', function (e) {
     var opt = e.target.closest('.quiz__opt');
     if (opt) return pick(opt);
+    if (e.target.closest('.quiz__back') && !busy && step > 0) return swap(step - 1);
     if (e.target.closest('.quiz__again') && !busy) { picks = []; swap(0); }
   });
-  back.addEventListener('click', function () { if (!busy && step > 0) swap(step - 1); });
   body.addEventListener('submit', function (e) { e.preventDefault(); if (!busy) submit(e.target); });
   body.addEventListener('input', function (e) {
     var form = e.target.closest('.quiz__form');
