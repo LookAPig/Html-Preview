@@ -114,7 +114,8 @@ main { overflow-x: clip; }
 }
 
 @media (min-aspect-ratio: 1/1) {
-  :root { --pad: 3.5rem; --sec-y: 12.5rem; }
+  :root { --pad: 6.25rem; --sec-y: 12.5rem; }
+  .cart, .cf, .qmodal { --pad: 3.5rem; }
   .sec-head h2 { margin-top: 1rem; font-size: 4rem; line-height: 1; }
   .sec-sub { margin-top: 0.875rem; font-size: 1rem; }
 }
