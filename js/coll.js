@@ -149,8 +149,9 @@
 
   var svc = document.getElementById('collSvc');
   if (svc) svc.innerHTML = d.perks.map(function (p, i) {
+    var strokes = p.icon.split(/(?=M)/).map(function (s) { return '<path d="' + s + '" pathLength="1"/>'; }).join('');
     return '<li class="csvc__item" style="--i:' + i + '"><span class="csvc__ico"><svg viewBox="0 0 24 24" aria-hidden="true">' +
-      '<path class="ico-base" d="' + p.icon + '"/><path class="ico-draw" d="' + p.icon + '" pathLength="1"/></svg></span>' +
+      '<path class="ico-base" d="' + p.icon + '"/><g class="ico-draw">' + strokes + '</g></svg></span>' +
       '<span class="csvc__txt"><b>' + p.title + '</b><small>' + p.text + '</small></span></li>';
   }).join('');
 
