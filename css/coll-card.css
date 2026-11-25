@@ -168,12 +168,12 @@
     gap: 0.5rem;
     width: auto;
     height: 2.75rem;
-    padding: 0 1.25rem;
+    padding: 0 1rem;
     border-radius: var(--r-pill);
     font-size: 0.8125rem;
     font-weight: 600;
   }
   .pc__add svg { width: 1rem; height: 1rem; }
-  .pc__add svg + svg { position: absolute; left: 1.25rem; }
+  .pc__add svg + svg { position: absolute; left: 1rem; }
   .pc__add span { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
 }

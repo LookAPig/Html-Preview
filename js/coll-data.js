@@ -41,7 +41,7 @@ window.TESWAY_COLL = {
     blue: { name: 'Mist Blue', hex: '#9DB7C9' },
     volt: { name: 'Volt Orange', hex: '#FE5416' }
   },
-  apr: { months: 24, by: 'Klarna' },
+  apr: { months: 24, by: 'Affirm', logo: 'Images/affirm.svg' },
   items: [
     { id: 'dual', name: 'X1 Dual-Drive', img: 'Images/hot/bike-dual', price: 1899, was: 2299, tag: 'Best seller',
       rate: 4.9, reviews: 328, colors: ['black', 'grey', 'volt'],
