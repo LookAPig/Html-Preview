@@ -141,19 +141,6 @@
 .cr__card:active .cr__thumb { scale: .985; }
 .cr__card:focus-visible { outline: 2px solid var(--volt); outline-offset: 4px; border-radius: var(--r-lg); }
 
-.cr__ctrl { display: flex; align-items: center; gap: 0.875rem; margin-top: 1.5rem; font-size: 0.8125rem; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
-.cr__now { color: var(--text); font-weight: 700; }
-.cr__bar { flex: 1; height: 0.25rem; overflow: hidden; border-radius: var(--r-pill); background: rgba(34, 34, 34, .1); }
-.cr__bar i {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--text);
-  transform-origin: left;
-  transition: transform .3s var(--ease);
-}
-.cr__arrows button:disabled { opacity: .35; pointer-events: none; }
-
 @media (hover: hover) {
   .cr__person:not(.is-on):hover .cr__ava { translate: 0 -0.125rem; box-shadow: 0 0 0 2px var(--page), 0 0 0 4px rgba(254, 84, 22, .35); }
   .cr__card:hover .cr__thumb img { scale: 1.05; }
@@ -176,8 +163,6 @@
   .cr__play { width: 4rem; height: 4rem; }
   .cr__info strong { font-size: 1.0625rem; }
   .cr__info small { font-size: 0.8125rem; }
-  .cr__ctrl { gap: 1.25rem; margin-top: 2.25rem; }
-  .cr__arrows { margin-left: 1rem; }
 }
 
 /* ==== creators-fx.css ==== */
@@ -186,9 +171,6 @@
 .cr__track.is-in .cr__card { animation: crIn .75s var(--ease) calc(var(--k, 0) * 80ms) backwards; }
 .cr__track.is-in .cr__thumb img { animation: crImg 1.1s var(--ease) calc(var(--k, 0) * 80ms) backwards; }
 .cr__track.is-in .cr__info { animation: crFade .6s var(--ease) calc(var(--k, 0) * 80ms + .15s) backwards; }
-
-.cr__bar i { transition: transform .5s var(--ease); }
-
 @keyframes crOut { to { opacity: 0; transform: translateX(-1.5rem); } }
 @keyframes crIn { from { opacity: 0; transform: translateX(2.5rem); } }
 @keyframes crImg { from { scale: 1.12; } }

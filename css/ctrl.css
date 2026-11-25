@@ -1,0 +1,18 @@
+/* ==== carousel control: index + progress bar + arrows ==== */
+.cr__ctrl { display: flex; align-items: center; gap: 0.875rem; margin-top: 1.5rem; font-size: 0.8125rem; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+.cr__now { color: var(--text); font-weight: 700; }
+.cr__bar { flex: 1; height: 0.25rem; overflow: hidden; border-radius: var(--r-pill); background: rgba(34, 34, 34, .1); }
+.cr__bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--text);
+  transform-origin: left;
+  transition: transform .5s var(--ease);
+}
+.cr__arrows button:disabled { opacity: .35; pointer-events: none; }
+
+@media (min-aspect-ratio: 1/1) {
+  .cr__ctrl { gap: 1.25rem; margin-top: 2.25rem; }
+  .cr__arrows { margin-left: 1rem; }
+}
