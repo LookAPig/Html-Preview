@@ -1,5 +1,6 @@
 .btile--hero {
   --rise: 0;
+  --arc: 0;
   grid-column: 1 / -1;
   align-items: flex-start;
   min-height: 44rem;
@@ -17,8 +18,8 @@
 .bsun__clip { position: absolute; top: 0; left: 0; right: 0; height: 46.6%; overflow: hidden; }
 .bsun__disc {
   position: absolute;
-  top: calc(100% - var(--rise) * 34%);
-  left: 56%;
+  top: calc(100% - var(--arc) * 34%);
+  left: calc(56% - (1 - var(--rise)) * 12%);
   width: 5.2%;
   aspect-ratio: 1;
   border-radius: 50%;
@@ -28,8 +29,8 @@
 }
 .bsun__glow {
   position: absolute;
-  top: calc(46.6% - var(--rise) * 14%);
-  left: 56%;
+  top: calc(46.6% - var(--arc) * 14%);
+  left: calc(56% - (1 - var(--rise)) * 12%);
   width: 60%;
   aspect-ratio: 1;
   border-radius: 50%;

@@ -50,12 +50,30 @@
       scene.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0)';
     }
 
-    function frame() {
-      ticking = false;
+    var cur = -1;
+
+    function target() {
+      if (reduce) return 1;
       var r = tile.getBoundingClientRect();
-      var rise = reduce ? 1 : Math.max(0, Math.min(1, (innerHeight - r.top - r.height * 0.3) / (innerHeight * 0.75)));
-      tile.style.setProperty('--rise', rise.toFixed(4));
-      tile.classList.toggle('is-night', rise < 0.45);
+      var start = innerHeight - r.height * 0.15;
+      var end = (innerHeight - r.height) / 2;
+      var t = Math.max(0, Math.min(1, (start - r.top) / Math.max(1, start - end)));
+      return t * t * (3 - 2 * t);
+    }
+
+    function paint(v) {
+      tile.style.setProperty('--rise', v.toFixed(4));
+      tile.style.setProperty('--arc', Math.sin(v * Math.PI / 2).toFixed(4));
+      tile.classList.toggle('is-night', v < 0.45);
+    }
+
+    function frame() {
+      var goal = target();
+      cur = cur < 0 ? goal : cur + (goal - cur) * 0.08;
+      if (Math.abs(goal - cur) < 0.002) cur = goal;
+      paint(cur);
+      ticking = cur !== goal;
+      if (ticking) requestAnimationFrame(frame);
     }
     function onScroll() {
       if (!ticking) { ticking = true; requestAnimationFrame(frame); }
