@@ -30,18 +30,33 @@
   var countEl = bar.querySelector('.coll__count');
   var act = bar.querySelector('.coll__active');
 
+  var star = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5l1.9 4 4.4.5-3.3 3 .9 4.3L8 11.1l-3.9 2.2.9-4.3-3.3-3 4.4-.5z"/></svg>';
+  var sw = function (k) { return d.swatches[k]; };
+
+  function meta(p) {
+    var c = p.colors || [];
+    return '<div class="pc__meta">' +
+      (c.length ? '<div class="pc__sw" role="radiogroup" aria-label="Color for ' + p.name + '">' + c.map(function (k, j) {
+        return '<button class="pc__dot' + (j ? '' : ' is-on') + '" type="button" role="radio" aria-checked="' + !j + '" data-sw="' + k + '" aria-label="' + sw(k).name + '" title="' + sw(k).name + '" style="--c:' + sw(k).hex + '"></button>';
+      }).join('') + '</div><span class="pc__cname"><span>' + sw(c[0]).name + '</span></span>' : '') +
+      '<p class="pc__rate" aria-label="Rated ' + p.rate + ' out of 5 from ' + p.reviews + ' reviews">' + star + '<b>' + p.rate.toFixed(1) + '</b><small>(' + p.reviews + ')</small></p>' +
+      '</div>';
+  }
+
   function card(p, i) {
     var tag = p.tag ? '<i class="pc__tag">' + p.tag + '</i>' : '';
     var save = p.was ? '<i class="pc__save">Save ' + money(p.was - p.price) + '</i>' : '';
-    return '<article class="pc" style="--i:' + i + '">' +
+    var tone = p.colors ? sw(p.colors[0]).hex : '#F5F5F5';
+    return '<article class="pc" style="--i:' + i + ';--tone:' + tone + '">' +
       '<div class="pc__pic">' + tag + save +
         '<img class="pc__img" src="' + p.img + '.webp" alt="' + p.name + '" loading="lazy" decoding="async">' +
         '<img class="pc__frame" src="' + p.img + '-frame.webp" alt="" loading="lazy" decoding="async"></div>' +
-      '<div class="pc__body">' +
+      '<div class="pc__body">' + meta(p) +
         '<h3 class="pc__name">' + p.name + '</h3>' +
         '<p class="pc__line">' + p.line + '</p>' +
         '<ul class="pc__specs">' + p.specs.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ul>' +
-        '<div class="pc__row"><p class="pc__price"><em>' + money(p.price) + '</em>' + (p.was ? '<s>' + money(p.was) + '</s>' : '') + '</p>' +
+        '<div class="pc__row"><div class="pc__buy"><p class="pc__price"><em>' + money(p.price) + '</em>' + (p.was ? '<s>' + money(p.was) + '</s>' : '') + '</p>' +
+          '<p class="pc__apr" title="' + d.apr.months + ' months at 0% APR with ' + d.apr.by + '">or <b>' + money(Math.ceil(p.price / d.apr.months)) + '/mo</b><span> · 0% APR</span></p></div>' +
           '<button class="pc__add" type="button" data-add="' + p.id + '" aria-label="Add ' + p.name + ' to cart">' +
             ico.plus + ico.done + '<span>Add to cart</span></button></div>' +
       '</div></article>';
@@ -94,7 +109,30 @@
     else F.clear();
   });
 
+  function pickColor(dot) {
+    if (dot.classList.contains('is-on')) return;
+    var pc = dot.closest('.pc'), name = pc.querySelector('.pc__cname > span'), pic = pc.querySelector('.pc__pic');
+    pc.querySelectorAll('.pc__dot').forEach(function (x) {
+      x.classList.toggle('is-on', x === dot);
+      x.setAttribute('aria-checked', String(x === dot));
+    });
+    pc.style.setProperty('--tone', sw(dot.dataset.sw).hex);
+    pic.classList.remove('is-swap');
+    void pic.offsetWidth;
+    pic.classList.add('is-swap');
+    name.classList.add('is-out');
+    clearTimeout(name._t);
+    name._t = setTimeout(function () {
+      name.textContent = sw(dot.dataset.sw).name;
+      name.classList.replace('is-out', 'is-pre');
+      void name.offsetWidth;
+      name.classList.remove('is-pre');
+    }, 180);
+  }
+
   grid.addEventListener('click', function (e) {
+    var dot = e.target.closest('.pc__dot');
+    if (dot) return pickColor(dot);
     var b = e.target.closest('[data-add], [data-clear]');
     if (!b) return;
     if (!b.dataset.add) return F.clear();
