@@ -71,10 +71,8 @@
   cursor: pointer;
   outline: none;
 }
-.loc__menu li b { font-weight: 600; color: var(--muted); }
 .loc__menu li:focus-visible, .loc__menu li:hover { background: var(--bg-2); }
 .loc__menu li[aria-selected="true"] { color: var(--volt); }
-.loc__menu li[aria-selected="true"] b { color: var(--volt); }
 
 .foot::before {
   content: "";

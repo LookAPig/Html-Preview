@@ -15,14 +15,12 @@ window.TESWAY_FOOT = {
     { title: 'Follow us', links: [['Instagram', '#join'], ['YouTube', '#join'], ['TikTok', '#join'], ['Strava club', '#join']] }
   ],
   locales: [
-    { country: 'United States', cur: 'USD', sym: '$' },
-    { country: 'Canada', cur: 'CAD', sym: '$' },
-    { country: 'United Kingdom', cur: 'GBP', sym: '£' },
-    { country: 'Germany', cur: 'EUR', sym: '€' },
-    { country: 'France', cur: 'EUR', sym: '€' },
-    { country: 'Australia', cur: 'AUD', sym: '$' },
-    { country: 'Japan', cur: 'JPY', sym: '¥' }
+    { country: 'Australia' },
+    { country: 'United States' },
+    { country: 'France' },
+    { country: 'Germany' }
   ],
+  locale: 'United States',
   pays: [
     { name: 'Visa', html: '<b class="pay--visa">VISA</b>' },
     { name: 'Mastercard', html: '<svg viewBox="0 0 32 20"><circle cx="12" cy="10" r="7" fill="#222" opacity=".9"/><circle cx="20" cy="10" r="7" fill="#FE5416" opacity=".9"/></svg>' },

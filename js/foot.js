@@ -3,13 +3,14 @@
   var foot = document.getElementById('foot');
   if (!d || !foot) return;
 
-  var KEY = 'tesway-locale';
+  var KEY = 'tesway-country';
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
   var arrow = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
   var globe = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.3 3.6 5.1 3.6 8.5s-1.2 6.2-3.6 8.5c-2.4-2.3-3.6-5.1-3.6-8.5s1.2-6.2 3.6-8.5z"/></svg>';
   var chev = '<svg class="loc__chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m4 10 4-4 4 4"/></svg>';
-  var saved = Number(localStorage.getItem(KEY)) || 0;
-  function label(l) { return l.country + ' · ' + l.cur + ' ' + l.sym; }
+  var names = d.locales.map(function (l) { return l.country; });
+  var saved = Math.max(0, names.indexOf(localStorage.getItem(KEY) || d.locale));
+  function label(l) { return l.country; }
 
   foot.innerHTML =
     '<div class="foot__in">' +
@@ -41,9 +42,9 @@
         }).join('') + '</ul>' +
         '<div class="loc">' +
           '<button class="loc__btn" type="button" aria-haspopup="listbox" aria-expanded="false">' + globe +
-            '<span class="loc__now">' + label(d.locales[saved] || d.locales[0]) + '</span>' + chev + '</button>' +
-          '<ul class="loc__menu" role="listbox" aria-label="Country / region and currency">' + d.locales.map(function (l, i) {
-            return '<li role="option" data-i="' + i + '" tabindex="-1"><span>' + l.country + '</span><b>' + l.cur + ' ' + l.sym + '</b></li>';
+            '<span class="loc__now">' + label(d.locales[saved]) + '</span>' + chev + '</button>' +
+          '<ul class="loc__menu" role="listbox" aria-label="Country / region">' + d.locales.map(function (l, i) {
+            return '<li role="option" data-i="' + i + '" tabindex="-1"><span>' + l.country + '</span></li>';
           }).join('') + '</ul>' +
         '</div>' +
       '</div>' +
@@ -87,7 +88,7 @@
     if (v) (opts.filter(function (o) { return o.getAttribute('aria-selected') === 'true'; })[0] || opts[0]).focus();
   }
   function pick(i) {
-    localStorage.setItem(KEY, i);
+    localStorage.setItem(KEY, names[i]);
     loc.querySelector('.loc__now').textContent = label(d.locales[i]);
     mark(i);
     open(false);
