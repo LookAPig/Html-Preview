@@ -55,11 +55,11 @@
         '<h3 class="pc__name">' + p.name + '</h3>' +
         '<p class="pc__line">' + p.line + '</p>' +
         '<ul class="pc__specs">' + p.specs.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ul>' +
-        '<div class="pc__row"><div class="pc__buy"><p class="pc__price"><em>' + money(p.price) + '</em>' + (p.was ? '<s>' + money(p.was) + '</s>' : '') + '</p></div>' +
+        '<div class="pc__row"><div class="pc__buy"><p class="pc__price"><em>' + money(p.price) + '</em>' + (p.was ? '<s>' + money(p.was) + '</s>' : '') + '</p>' +
+          '<p class="pc__apr" title="' + d.apr.months + ' months at 0% APR with ' + d.apr.by + '">or <b>' + money(Math.ceil(p.price / d.apr.months)) + '/mo</b><span>· 0% APR with</span>' +
+            '<img class="pc__affirm" src="' + d.apr.logo + '" alt="' + d.apr.by + '" width="420" height="167" loading="lazy" decoding="async"></p></div>' +
           '<button class="pc__add" type="button" data-add="' + p.id + '" aria-label="Add ' + p.name + ' to cart">' +
             ico.plus + ico.done + '<span>Add to cart</span></button></div>' +
-        '<p class="pc__apr" title="' + d.apr.months + ' months at 0% APR with ' + d.apr.by + '">or <b>' + money(Math.ceil(p.price / d.apr.months)) + '/mo</b><span>· 0% APR with</span>' +
-          '<img class="pc__affirm" src="' + d.apr.logo + '" alt="' + d.apr.by + '" width="420" height="167" loading="lazy" decoding="async"></p>' +
       '</div></article>';
   }
 
