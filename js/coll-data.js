@@ -42,6 +42,14 @@ window.TESWAY_COLL = {
     volt: { name: 'Volt Orange', hex: '#FE5416' }
   },
   apr: { months: 24, by: 'Affirm', logo: 'Images/affirm.svg' },
+  reels: {
+    dual: [[0, 0], [0, 1], [6, 1]],
+    trail: [[2, 0], [2, 2], [7, 0]],
+    city: [[3, 0], [5, 1]],
+    family: [[1, 1], [1, 2], [1, 0]],
+    citystep: [[3, 2], [5, 2]],
+    cargo: [[4, 0], [4, 2], [5, 0]]
+  },
   items: [
     { id: 'dual', name: 'X1 Dual-Drive', img: 'Images/hot/bike-dual', price: 1899, was: 2299, tag: 'Best seller',
       rate: 4.9, reviews: 328, colors: ['black', 'grey', 'volt'],

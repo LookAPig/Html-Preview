@@ -48,7 +48,7 @@
     var save = p.was ? '<i class="pc__save"><small>Save</small><b>' + money(p.was - p.price) + '</b></i>' : '';
     var tone = p.colors ? sw(p.colors[0]).hex : '#F5F5F5';
     return '<article class="pc" style="--i:' + i + ';--tone:' + tone + '">' +
-      '<div class="pc__pic">' + tag + save +
+      '<div class="pc__pic">' + tag + save + (window.TeswayReel ? window.TeswayReel.chip(p) : '') +
         '<img class="pc__img" src="' + p.img + '.webp" alt="' + p.name + '" loading="lazy" decoding="async">' +
         '<img class="pc__frame" src="' + p.img + '-frame.webp" alt="" loading="lazy" decoding="async"></div>' +
       '<div class="pc__body">' + meta(p) +
