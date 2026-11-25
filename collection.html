@@ -12,8 +12,8 @@
   <link rel="stylesheet" href="css/base.css?v=20">
   <link rel="stylesheet" href="css/notice.css?v=20">
   <link rel="stylesheet" href="css/nav.css?v=20">
-  <link rel="stylesheet" href="css/mnav.css?v=20">
-  <link rel="stylesheet" href="css/mega.css?v=20">
+  <link rel="stylesheet" href="css/mnav.css?v=22">
+  <link rel="stylesheet" href="css/mega.css?v=22">
   <link rel="stylesheet" href="css/tmega.css?v=20">
   <link rel="stylesheet" href="css/hero.css?v=20">
   <link rel="stylesheet" href="css/foot.css?v=20">
@@ -21,12 +21,11 @@
   <link rel="stylesheet" href="css/search.css?v=20">
   <link rel="stylesheet" href="css/dock.css?v=20">
   <link rel="stylesheet" href="css/scrollbar.css?v=20">
-  <link rel="stylesheet" href="css/coll.css?v=2">
-  <link rel="stylesheet" href="css/coll-card.css?v=2">
+  <link rel="stylesheet" href="css/coll.css?v=3">
+  <link rel="stylesheet" href="css/coll-card.css?v=3">
   <link rel="stylesheet" href="css/csvc.css?v=2">
-  <link rel="stylesheet" href="css/faq.css?v=3">
-  <link rel="stylesheet" href="css/faq-panel.css?v=2">
-  <link rel="stylesheet" href="css/btn.css?v=21">
+  <link rel="stylesheet" href="css/faq.css?v=4">
+  <link rel="stylesheet" href="css/btn.css?v=22">
 </head>
 <body>
   <div class="battery" aria-hidden="true"><i id="batteryFill"></i></div>
@@ -94,19 +93,16 @@
     </section>
 
     <section class="faq" id="faq" aria-label="Frequently asked questions">
-      <div class="faq__head">
-        <header class="sec-head reveal">
-          <p class="eyebrow eyebrow--dot">FAQ</p>
-          <h2>Questions? <em>Answered.</em></h2>
-          <p class="sec-sub">Everything you need to know before your first ride.</p>
-        </header>
-        <div class="faq__search reveal" data-delay="1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="5.5"/><path d="m15.2 15.2 4 4"/></svg>
-          <input id="faqInput" type="search" placeholder="Search shipping, battery, warranty…" aria-label="Search questions" autocomplete="off">
-          <button class="faq__wipe" type="button" aria-label="Clear search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg></button>
+      <header class="sec-head reveal">
+        <p class="eyebrow eyebrow--dot">FAQ</p>
+        <h2>Questions? <em>Answered.</em></h2>
+        <p class="sec-sub">Everything you need to know before your first ride.</p>
+        <div class="faq__more">
+          <p>Still curious? Our riders' crew replies in minutes.</p>
+          <a class="hbtn hbtn--line" href="#faq" data-chat>Chat with us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
-      </div>
-      <div class="faq__box reveal" data-delay="2" id="faqBox"></div>
+      </header>
+      <ol class="faq__list reveal" data-delay="1" id="faqList"></ol>
     </section>
   </main>
 
@@ -124,8 +120,8 @@
   <script src="js/scrollbar.js?v=20" defer></script>
   <script src="js/coll-data.js?v=1" defer></script>
   <script src="js/coll.js?v=3" defer></script>
-  <script src="js/faq-data.js?v=1" defer></script>
-  <script src="js/faq.js?v=2" defer></script>
+  <script src="js/faq-data.js?v=2" defer></script>
+  <script src="js/faq.js?v=3" defer></script>
   <script src="js/reveal.js?v=20" defer></script>
   <script src="js/xlink.js?v=1" defer></script>
 </body>

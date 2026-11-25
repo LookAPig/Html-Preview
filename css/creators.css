@@ -91,8 +91,9 @@
   font-size: 0.6875rem;
   font-weight: 600;
 }
-.cr__tag { top: 0.75rem; left: 0.75rem; background: rgba(255, 255, 255, .92); color: var(--text); }
+.cr__tag { top: 0.75rem; left: 0.75rem; background: var(--volt); color: #FFF; }
 .cr__tag svg { width: 0.875rem; height: 0.875rem; }
+.cr__tag svg path[fill="#FFF"] { fill: var(--volt); }
 .cr__dur { right: 0.75rem; bottom: 0.75rem; background: rgba(34, 34, 34, .62); color: #FFF; font-variant-numeric: tabular-nums; }
 .cr__play {
   position: absolute;

@@ -4,8 +4,7 @@
 .blog__cat,
 .coll__chip,
 .coll__select,
-.pc__add,
-.faq__tab {
+.pc__add {
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -23,8 +22,7 @@
 .blog__cat::before,
 .coll__chip::before,
 .coll__select::before,
-.pc__add::before,
-.faq__tab::before {
+.pc__add::before {
   content: "";
   position: absolute;
   inset: -1px;
@@ -57,7 +55,6 @@
 .press__tab.is-on,
 .blog__cat.is-on,
 .coll__chip.is-on,
-.faq__tab.is-on,
 .arw.is-on {
   border-color: var(--volt);
   background: var(--volt);
@@ -65,13 +62,13 @@
 }
 
 @media (hover: hover) {
-  :is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add, .faq__tab):hover {
+  :is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add):hover {
     color: #FFF;
     border-color: var(--volt);
     translate: 0 -0.125rem;
     box-shadow: 0 0.5rem 1.25rem rgba(254, 84, 22, .28);
   }
-  :is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add, .faq__tab):hover::before {
+  :is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add):hover::before {
     transform: scaleX(1);
     transform-origin: left center;
   }
@@ -79,6 +76,6 @@
   .arw[data-dir="1"]:hover > *, .arw[aria-label^="Next"]:hover > * { translate: 0.1875rem 0; }
 }
 
-:is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add, .faq__tab):active { translate: 0 0; scale: .96; }
-:is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .pc__add, .faq__tab):focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
+:is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add):active { translate: 0 0; scale: .96; }
+:is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .pc__add):focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
 .coll__select:focus-within { outline: 2px solid var(--volt); outline-offset: 2px; }

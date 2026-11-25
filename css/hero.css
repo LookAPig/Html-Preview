@@ -98,7 +98,7 @@
   height: 1.5rem;
   padding: 0 0.625rem;
   border-radius: var(--r-pill);
-  background: var(--text);
+  background: var(--volt);
   color: #FFF;
   font-size: 0.6875rem;
   font-weight: 600;
@@ -131,6 +131,7 @@
   padding: 0 0.5rem;
   border-radius: var(--r-pill);
   background: var(--volt);
+  color: #FFF;
   font-size: 0.6875rem;
   font-style: normal;
   font-weight: 700;

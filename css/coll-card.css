@@ -55,7 +55,7 @@
   text-transform: uppercase;
   line-height: 1.2;
 }
-.pc__tag { left: 0.625rem; background: var(--text); color: #FFF; }
+.pc__tag { left: 0.625rem; background: var(--volt); color: #FFF; }
 .pc__save { left: 0.625rem; background: var(--volt); color: #FFF; }
 .pc__tag + .pc__save { top: 2.125rem; }
 

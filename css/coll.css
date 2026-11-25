@@ -112,7 +112,9 @@
   font-size: 0.8125rem;
   font-weight: 600;
 }
-.coll__chip i { font-style: normal; font-size: 0.6875rem; opacity: .6; font-variant-numeric: tabular-nums; }
+.coll__chip i { display: inline-grid; place-items: center; min-width: 1.125rem; height: 1.125rem; padding: 0 0.25rem; border-radius: var(--r-pill); background: var(--volt); color: #FFF; font-style: normal; font-size: 0.625rem; font-weight: 700; font-variant-numeric: tabular-nums; transition: background .3s, color .3s; }
+.coll__chip.is-on i { background: #FFF; color: var(--volt); }
+@media (hover: hover) { .coll__chip:hover i { background: #FFF; color: var(--volt); } }
 .coll__tools { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .coll__count { font-size: 0.8125rem; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
 .coll__sort { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--muted); }
