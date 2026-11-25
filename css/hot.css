@@ -152,7 +152,7 @@
   font-weight: 600;
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--volt);
 }
 .hot__tag { margin-top: 0.5rem; font-size: 1rem; font-weight: 700; letter-spacing: -.02em; text-wrap: balance; }
 .hot__meta {

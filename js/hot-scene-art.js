@@ -1,6 +1,7 @@
 (function () {
   var K = window.TESWAY_HOTKIT, PI = K.PI, ink = K.ink, volt = K.volt, ridge = K.ridge, pine = K.pine, tree = K.tree;
-  var cut = K.cut, blocks = K.blocks, groundLine = K.groundLine, sun = K.sun, pin = K.pin, box = K.box;
+  var cut = K.cut, blocks = K.blocks, groundLine = K.groundLine, sun = K.sun, slide = K.slide, pin = K.pin, box = K.box;
+  var DLV = { stacks: [[0.08, 0.046, 0.031], [0.86, 0.034]] };
 
   window.TESWAY_HOTART = {
     trail: [
@@ -75,11 +76,16 @@
       }],
       [0.5, 0.12, function (c, w, h, g, R) {
         c.fillStyle = ink(1);
+        var play = [[0.09, 0.22], [0.88, 0.18]];
+        function open(x) {
+          return play.every(function (p) { return x < w * p[0] - h * 0.1 || x > w * p[0] + h * p[1] * 0.95 + h * 0.06; });
+        }
         for (var x = 0; x < w;) {
           var s = h * (0.16 + R() * 0.12);
-          if (R() > 0.3) tree(c, x, g, s);
+          if (R() > 0.3 && open(x)) tree(c, x, g, s);
           x += s * (0.45 + R() * 0.6);
         }
+        play.forEach(function (p) { slide(c, w * p[0], g, h * p[1]); });
         [[0.3, 1], [0.78, 0.8]].forEach(function (p) {
           var x = w * p[0], s = h * p[1];
           c.fillRect(x, g - s * 0.11, s * 0.14, s * 0.11);
@@ -111,36 +117,44 @@
     ],
     delivery: [
       [0.25, 0.05, function (c, w, h, g, R) { c.fillStyle = ink(1); blocks(c, w, g, R, h * 0.15, h * 0.3, h * 0.06, h * 0.12, 0); }],
+      [0.25, 0.55, function (c, w, h, g) {
+        pin(c, w * 0.22, g - h * 0.32, h * 0.012, true);
+      }],
       [0.5, 0.11, function (c, w, h, g, R) {
         c.fillStyle = ink(1);
         for (var x = -h * 0.1 * R(); x < w;) {
-          var sw = h * (0.17 + R() * 0.09), sh = h * (0.15 + R() * 0.08);
+          var sw = h * (0.12 + R() * 0.14), sh = h * (0.11 + R() * 0.16), up = sh > h * 0.2;
           c.fillRect(x, g - sh, sw, sh);
+          if (R() > 0.55) c.fillRect(x + sw * (0.15 + R() * 0.5), g - sh - h * 0.03, sw * 0.18, h * 0.03);
           cut(c, function () {
             c.fillStyle = ink(0.7);
-            c.fillRect(x + sw * 0.1, g - sh * 0.48, sw * 0.5, sh * 0.34);
-            c.fillRect(x + sw * 0.68, g - sh * 0.48, sw * 0.2, sh * 0.48);
+            c.fillRect(x + sw * 0.1, g - h * 0.07, sw * 0.5, h * 0.05);
+            c.fillRect(x + sw * 0.68, g - h * 0.07, sw * 0.2, h * 0.07);
             c.fillStyle = ink(0.5);
-            c.fillRect(x + sw * 0.15, g - sh * 0.86, sw * 0.7, sh * 0.1);
-            for (var s = 0; s < 6; s++) if (s % 2) c.fillRect(x + sw * (0.04 + s * 0.153), g - sh * 0.6, sw * 0.153, sh * 0.08);
+            if (R() > 0.4) for (var s = 0; s < 6; s++) if (s % 2) c.fillRect(x + sw * (0.04 + s * 0.153), g - h * 0.095, sw * 0.153, h * 0.014);
+            if (up) for (var y = g - sh + h * 0.03; y < g - h * 0.12; y += h * 0.04) {
+              for (var k = 0; k < 3; k++) c.fillRect(x + sw * (0.12 + k * 0.28), y, sw * 0.16, h * 0.022);
+            }
           });
-          x += sw + h * 0.008;
+          x += sw + (R() > 0.6 ? h * (0.02 + R() * 0.05) : h * 0.006);
         }
+      }],
+      [0.5, 0.75, function (c, w, h, g) {
+        pin(c, w * 0.9, g - h * 0.24, h * 0.019, true);
       }],
       [0.85, 0.2, function (c, w, h, g) {
         groundLine(c, w, g, h, 0);
         c.fillStyle = ink(1);
-        var s = h * 0.04;
-        [0.1, 0.84].forEach(function (p) {
-          var x = w * p;
+        DLV.stacks.forEach(function (p) {
+          var x = w * p[0], s = h * p[1];
           box(c, x, g, s);
           box(c, x + s * 1.35, g, s * 0.8);
           box(c, x + s * 0.2, g - s, s * 0.85);
         });
       }],
       [0.85, 1, function (c, w, h, g) {
-        pin(c, w * 0.1 + h * 0.029, g - h * 0.166, h * 0.028);
-        pin(c, w * 0.84 + h * 0.029, g - h * 0.166, h * 0.028);
+        var p = DLV.stacks[0], s = h * p[1], r = h * p[2];
+        pin(c, w * p[0] + s * 0.73, g - s * 1.85 - r * 3.3, r);
       }]
     ]
   };

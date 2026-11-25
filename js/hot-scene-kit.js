@@ -81,12 +81,29 @@
     };
   }
 
-  function pin(c, cx, cy, r) {
+  function slide(c, x, g, s) {
+    var p = s * 0.025;
+    c.strokeStyle = c.fillStyle;
+    c.fillRect(x, g - s * 0.8, p, s * 0.8);
+    c.fillRect(x + s * 0.2, g - s * 0.8, p, s * 0.8);
+    c.fillRect(x - s * 0.02, g - s * 0.56, s * 0.265, s * 0.035);
+    for (var y = g - s * 0.1; y > g - s * 0.55; y -= s * 0.1) c.fillRect(x, y, s * 0.2, p * 0.8);
+    c.beginPath();
+    c.moveTo(x - s * 0.04, g - s * 0.8); c.lineTo(x + s * 0.11, g - s * 0.95); c.lineTo(x + s * 0.265, g - s * 0.8);
+    c.fill();
+    c.lineWidth = s * 0.05;
+    c.lineCap = 'round';
+    c.beginPath();
+    c.moveTo(x + s * 0.24, g - s * 0.53);
+    c.bezierCurveTo(x + s * 0.45, g - s * 0.5, x + s * 0.52, g - s * 0.07, x + s * 0.82, g - s * 0.06);
+    c.stroke();
+    c.fillRect(x + s * 0.5, g - s * 0.22, p, s * 0.22);
+    c.lineCap = 'butt';
+  }
+
+  function pin(c, cx, cy, r, bare) {
     var sy = cy + r * 3.3;
-    c.fillStyle = volt(0.1);
-    c.beginPath(); c.ellipse(cx, sy, r * 1.5, r * 0.42, 0, 0, PI * 2); c.fill();
-    c.fillStyle = volt(0.22);
-    c.beginPath(); c.ellipse(cx, sy, r * 0.7, r * 0.2, 0, 0, PI * 2); c.fill();
+    if (!bare) shadow(c, cx, sy, r);
     c.fillStyle = volt(0.12);
     c.beginPath(); c.arc(cx, cy, r * 1.85, 0, PI * 2); c.fill();
     c.fillStyle = volt(0.92);
@@ -102,10 +119,17 @@
     c.beginPath(); c.arc(cx, cy, r * 0.22, 0, PI * 2); c.fill();
   }
 
+  function shadow(c, cx, sy, r) {
+    c.fillStyle = volt(0.1);
+    c.beginPath(); c.ellipse(cx, sy, r * 1.5, r * 0.42, 0, 0, PI * 2); c.fill();
+    c.fillStyle = volt(0.22);
+    c.beginPath(); c.ellipse(cx, sy, r * 0.7, r * 0.2, 0, 0, PI * 2); c.fill();
+  }
+
   function box(c, x, y, s) {
     c.fillRect(x, y - s, s * 1.25, s);
     cut(c, function () { c.fillStyle = ink(0.6); c.fillRect(x + s * 0.55, y - s, s * 0.14, s); });
   }
 
-  window.TESWAY_HOTKIT = { PI: PI, ink: ink, volt: volt, ridge: ridge, pine: pine, tree: tree, cut: cut, blocks: blocks, groundLine: groundLine, sun: sun, pin: pin, box: box };
+  window.TESWAY_HOTKIT = { PI: PI, ink: ink, volt: volt, ridge: ridge, pine: pine, tree: tree, cut: cut, blocks: blocks, groundLine: groundLine, sun: sun, slide: slide, pin: pin, box: box };
 })();
