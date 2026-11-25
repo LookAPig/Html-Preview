@@ -22,9 +22,9 @@
       return '<button class="coll__chip" type="button" role="tab" data-cat="' + c.id + '">' + c.name + '<i>' + count(c.id) + '</i></button>';
     }).join('') + '</div>' +
     '<div class="coll__tools"><p class="coll__count" aria-live="polite"></p>' +
-      '<label class="coll__sort"><span>Sort</span><select>' + d.sorts.map(function (s) {
+      '<label class="coll__sort"><span>Sort</span><span class="coll__select"><select>' + d.sorts.map(function (s) {
         return '<option value="' + s.id + '">' + s.name + '</option>';
-      }).join('') + '</select></label></div>';
+      }).join('') + '</select></span></label></div>';
 
   var chips = bar.querySelectorAll('.coll__chip');
   var sel = bar.querySelector('select');
@@ -60,7 +60,7 @@
   function render() {
     var items = list();
     grid.innerHTML = items.length ? items.map(card).join('') :
-      '<p class="coll__empty">No bikes here yet. <button type="button" data-cat="all">See all bikes</button></p>';
+      '<p class="coll__empty">No bikes here yet.<button class="hbtn hbtn--line" type="button" data-cat="all">See all bikes</button></p>';
     countEl.textContent = items.length + (items.length === 1 ? ' bike' : ' bikes');
     chips.forEach(function (c) {
       var on = c.dataset.cat === state.cat;

@@ -1,61 +1,46 @@
-/* ==== faq ==== */
-.faq { display: flex; flex-direction: column; }
-.faq__side { display: contents; }
-.faq__box { order: 1; }
-.faq__help {
-  order: 2;
+/* ==== faq head + search ==== */
+.faq__search {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
-  margin-top: 2rem;
-  padding: 1.25rem;
-  border-radius: var(--r-lg);
-  background: var(--text);
-  color: #FFF;
+  align-items: center;
+  gap: 0.625rem;
+  height: 3rem;
+  margin-top: 1.5rem;
+  padding: 0 0.375rem 0 1.125rem;
+  border: 1px solid rgba(34, 34, 34, .12);
+  border-radius: var(--r-pill);
+  background: #FFF;
+  transition: border-color .3s var(--ease), box-shadow .3s var(--ease);
 }
-.faq__crew { display: flex; margin-bottom: 0.625rem; }
-.faq__crew i {
+.faq__search:focus-within { border-color: var(--volt); box-shadow: 0 0 0 0.25rem rgba(254, 84, 22, .14); }
+.faq__search > svg { flex: none; width: 1.125rem; height: 1.125rem; color: var(--muted); transition: color .3s; }
+.faq__search:focus-within > svg { color: var(--volt); }
+.faq__search input { flex: 1; min-width: 0; height: 100%; font-size: 0.875rem; outline: 0; }
+.faq__search input::placeholder { color: rgba(34, 34, 34, .4); }
+.faq__search input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+.faq__wipe {
   display: grid;
+  flex: none;
   place-items: center;
   width: 2.25rem;
   height: 2.25rem;
-  margin-right: -0.5rem;
-  border: 2px solid var(--text);
   border-radius: 50%;
-  background: #FFF;
-  color: var(--text);
-  font-size: 0.6875rem;
-  font-style: normal;
-  font-weight: 800;
+  background: var(--bg-2);
+  opacity: 0;
+  scale: .6;
+  pointer-events: none;
+  transition: opacity .25s, scale .3s var(--ease), background .25s, color .25s;
 }
-.faq__crew i:last-child { position: relative; background: var(--volt); color: #FFF; }
-.faq__crew i:last-child::after {
-  content: "";
-  position: absolute;
-  right: -0.125rem;
-  bottom: -0.125rem;
-  width: 0.625rem;
-  height: 0.625rem;
-  border: 2px solid var(--text);
-  border-radius: 50%;
-  background: #FFF;
-  animation: faq-pulse 2s infinite;
-}
-@keyframes faq-pulse { 50% { box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, .25); } }
-.faq__help b { font-size: 1rem; font-weight: 800; }
-.faq__help p { font-size: 0.8125rem; line-height: 1.5; color: rgba(255, 255, 255, .7); }
-.faq__help .hbtn { flex: none; gap: 0.5rem; margin-top: 1rem; padding: 0 1.375rem; background: #FFF; border-color: #FFF; color: var(--text); }
-.faq__help .hbtn svg { width: 1rem; height: 1rem; }
-.faq__mail { margin-top: 0.75rem; font-size: 0.75rem; color: rgba(255, 255, 255, .6); transition: color .25s; }
-.faq__mail:hover { color: #FFF; }
+.faq__wipe svg { width: 0.875rem; height: 0.875rem; }
+.has-val .faq__wipe { opacity: 1; scale: 1; pointer-events: auto; }
+.faq__wipe:active { scale: .9; }
 
+/* ==== faq tabs ==== */
 .faq__box { margin-top: 1.75rem; }
 .faq__tabs {
   display: flex;
   gap: 0.5rem;
-  margin: 0 calc(var(--pad) * -1);
-  padding: 0 var(--pad);
+  margin: -0.75rem calc(var(--pad) * -1) -1.25rem;
+  padding: 0.75rem var(--pad) 1.25rem;
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -67,108 +52,94 @@
   gap: 0.5rem;
   height: 2.75rem;
   padding: 0 1.125rem;
-  border: 1px solid rgba(34, 34, 34, .14);
+  border: 1px solid rgba(34, 34, 34, .12);
   border-radius: var(--r-pill);
-  background: var(--bg);
+  background: #FFF;
+  color: var(--muted);
   font-size: 0.8125rem;
   font-weight: 600;
-  transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
 }
-.faq__tab i { font-style: normal; font-size: 0.6875rem; color: var(--muted); transition: color .3s; }
-.faq__tab.is-on { background: var(--text); border-color: var(--text); color: #FFF; }
-.faq__tab.is-on i { color: var(--volt); }
-.faq__tab:focus-visible, .faq__q:focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
+.faq__tab i { font-style: normal; font-size: 0.6875rem; opacity: .6; font-variant-numeric: tabular-nums; }
 
-.faq__list { margin-top: 1rem; transition: opacity .26s, transform .26s var(--ease); }
-.faq__list.is-out { opacity: 0; transform: translateY(0.75rem); }
-.faq__item {
-  border-bottom: 1px solid var(--line);
-  border-radius: var(--r-md);
-  animation: faq-in .5s calc(var(--i) * .06s) var(--ease) both;
-  transition: background .4s var(--ease), box-shadow .4s var(--ease), border-color .4s;
+/* ==== faq list ==== */
+.faq__list {
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  list-style: none;
+  transition: opacity .24s, translate .24s var(--ease);
 }
+.faq__list.is-out { opacity: 0; translate: 0 0.75rem; }
+.faq__item {
+  position: relative;
+  border-bottom: 1px solid var(--line);
+  animation: faq-in .55s calc(var(--i) * .05s) var(--ease) both;
+}
+.faq__item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--volt);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .5s var(--ease);
+}
+.faq__item.is-on::after { transform: scaleX(1); }
 @keyframes faq-in { from { opacity: 0; transform: translateY(1rem); } }
-.faq__item.is-open { border-color: transparent; background: var(--bg); box-shadow: 0 0.75rem 2rem -0.75rem rgba(34, 34, 34, .18), 0 0 0 1px var(--line); }
-.faq__item h3 { font: inherit; }
 .faq__q {
   display: flex;
   align-items: center;
   gap: 0.875rem;
   width: 100%;
-  min-height: 3.75rem;
-  padding: 1rem 0.875rem;
+  min-height: 4.25rem;
+  padding: 0.875rem 0;
   text-align: left;
+  border-radius: var(--r-sm);
 }
-.faq__n { flex: none; font-size: 0.6875rem; font-weight: 700; color: rgba(34, 34, 34, .35); font-variant-numeric: tabular-nums; transition: color .3s; }
-.faq__t { flex: 1; font-size: 0.9375rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.35; transition: color .3s; }
-.faq__plus {
-  position: relative;
+.faq__q:focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
+.faq__n {
   flex: none;
-  width: 2rem;
-  height: 2rem;
-  border: 1px solid rgba(34, 34, 34, .14);
-  border-radius: 50%;
-  transition: background .35s var(--ease), border-color .35s var(--ease), transform .5s cubic-bezier(.65, 0, .15, 1);
+  width: 1.5rem;
+  font-family: var(--font-en);
+  font-size: 1rem;
+  color: rgba(34, 34, 34, .3);
+  font-variant-numeric: tabular-nums;
+  transition: color .35s;
 }
-.faq__plus::before, .faq__plus::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0.75rem;
-  height: 1.5px;
-  margin: -0.75px 0 0 -0.375rem;
-  border-radius: 1px;
-  background: var(--text);
-  transition: background .35s, transform .5s cubic-bezier(.65, 0, .15, 1);
-}
-.faq__plus::after { transform: rotate(90deg); }
-.is-open .faq__n { color: var(--volt); }
-.is-open .faq__plus { transform: rotate(180deg); background: var(--volt); border-color: var(--volt); }
-.is-open .faq__plus::before, .is-open .faq__plus::after { background: #FFF; }
-.is-open .faq__plus::after { transform: rotate(0deg); }
+.faq__t { flex: 1; font-size: 0.9375rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.35; transition: translate .35s var(--ease), color .35s; }
+.faq__go { width: 2.25rem; height: 2.25rem; }
+.faq__go svg { width: 0.875rem; height: 0.875rem; transition: rotate .45s cubic-bezier(.65, 0, .15, 1); }
+.faq__item.is-on .faq__n { color: var(--volt); }
+.faq__item.is-on .faq__go { border-color: var(--volt); background: var(--volt); color: #FFF; }
+.faq__q:active .faq__go { scale: .96; }
+mark { padding: 0 0.1em; border-radius: 2px; background: rgba(254, 84, 22, .18); color: inherit; }
 
-.faq__a {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows .5s cubic-bezier(.65, 0, .15, 1);
-}
+.faq__a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s cubic-bezier(.65, 0, .15, 1); }
 .faq__a > div { overflow: hidden; }
 .faq__a p {
-  padding: 0 1rem 1.25rem 2.5rem;
+  padding: 0 0.5rem 0.875rem 2.375rem;
   font-size: 0.875rem;
   line-height: 1.6;
   color: var(--muted);
   opacity: 0;
-  transform: translateY(-0.5rem);
-  transition: opacity .3s, transform .5s var(--ease);
+  translate: 0 -0.5rem;
+  transition: opacity .3s, translate .5s var(--ease);
 }
-.is-open .faq__a { grid-template-rows: 1fr; }
-.is-open .faq__a p { opacity: 1; transform: none; transition-delay: .12s; }
+.faq__a .faq__vote { padding: 0 0 1.25rem 2.375rem; }
+.faq__item.is-on .faq__a { grid-template-rows: 1fr; }
+.faq__item.is-on .faq__a p { opacity: 1; translate: 0 0; transition-delay: .12s; }
+.faq__item.is-on .faq__go svg { rotate: 90deg; }
+
+.faq__none { display: flex; flex-direction: column; align-items: center; gap: 0.375rem; padding: 3rem 1rem; text-align: center; }
+.faq__none b { font-size: 1rem; }
+.faq__none span { font-size: 0.8125rem; color: var(--muted); }
 
 @media (hover: hover) {
-  .faq__tab:not(.is-on):hover { border-color: var(--text); }
-  .faq__q:hover .faq__t { color: var(--volt); }
-  .faq__item:not(.is-open) .faq__q:hover .faq__plus { border-color: var(--text); transform: rotate(90deg); }
-}
-
-@media (min-aspect-ratio: 1/1) {
-  .faq {
-    display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
-    gap: 5rem;
-    align-items: start;
-  }
-  .faq__side { display: block; position: sticky; top: 7rem; }
-  .faq__help { margin-top: 2.5rem; padding: 1.75rem; max-width: 24rem; }
-  .faq__help .hbtn { height: 3rem; }
-  .faq__box { margin-top: 0; }
-  .faq__tabs { margin: 0; padding: 0; overflow: visible; }
-  .faq__tab { height: 2.5rem; }
-  .faq__list { margin-top: 1.5rem; }
-  .faq__q { min-height: 4.5rem; gap: 1.25rem; padding: 1.25rem 1.5rem; }
-  .faq__n { font-size: 0.75rem; }
-  .faq__t { font-size: 1.125rem; }
-  .faq__plus { width: 2.25rem; height: 2.25rem; }
-  .faq__a p { padding: 0 5rem 1.5rem 3.375rem; font-size: 0.9375rem; }
+  .faq__wipe:hover { background: var(--volt); color: #FFF; }
+  .faq__q:hover .faq__t { translate: 0.25rem 0; }
+  .faq__q:hover .faq__go { color: #FFF; border-color: var(--volt); translate: 0 -0.125rem; box-shadow: 0 0.5rem 1.25rem rgba(254, 84, 22, .28); }
+  .faq__q:hover .faq__go::before { transform: scaleX(1); transform-origin: left center; }
+  .faq__q:hover .faq__go > * { translate: 0.1875rem 0; }
 }

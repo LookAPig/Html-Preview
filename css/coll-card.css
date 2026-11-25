@@ -11,7 +11,8 @@
   text-align: center;
   color: var(--muted);
 }
-.coll__empty button { color: var(--volt); font-weight: 600; text-decoration: underline; }
+.coll__empty { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.coll__empty .hbtn { flex: none; padding: 0 1.5rem; }
 
 .pc {
   display: flex;
@@ -96,10 +97,10 @@
   place-items: center;
   width: 2.75rem;
   height: 2.75rem;
+  border: 1.5px solid var(--text);
   border-radius: 50%;
   background: var(--text);
   color: #FFF;
-  transition: background .3s var(--ease), scale .2s var(--ease);
 }
 .pc__add svg { grid-area: 1 / 1; width: 1.125rem; height: 1.125rem; transition: opacity .25s, transform .35s var(--ease); }
 .pc__add svg + svg { opacity: 0; transform: scale(.5); }
@@ -110,17 +111,15 @@
   overflow: hidden;
   clip-path: inset(50%);
 }
-.pc__add.is-done { background: var(--volt); }
+.pc__add.is-done { border-color: var(--volt); background: var(--volt); }
 .pc__add.is-done svg:first-child { opacity: 0; transform: rotate(90deg) scale(.5); }
 .pc__add.is-done svg + svg { opacity: 1; transform: none; }
-.pc__add:active { scale: .92; }
-.pc__add:focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
 
 @media (hover: hover) {
   .pc:hover { translate: 0 -0.25rem; box-shadow: 0 0.75rem 2rem -0.5rem rgba(34, 34, 34, .22), 0 0 0 1px var(--line); }
   .pc:hover .pc__img { opacity: 0; transform: scale(1.04); }
   .pc:hover .pc__frame { opacity: 1; transform: scale(1.04); }
-  .pc__add:not(.is-done):hover { background: var(--volt); }
+  .pc__add:hover svg:first-child { transform: rotate(90deg); }
 }
 
 @media (min-aspect-ratio: 1/1) {

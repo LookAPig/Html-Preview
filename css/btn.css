@@ -1,7 +1,11 @@
 .hbtn,
 .arw,
 .press__tab,
-.blog__cat {
+.blog__cat,
+.coll__chip,
+.coll__select,
+.pc__add,
+.faq__tab {
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -16,7 +20,11 @@
 .hbtn::before,
 .arw::before,
 .press__tab::before,
-.blog__cat::before {
+.blog__cat::before,
+.coll__chip::before,
+.coll__select::before,
+.pc__add::before,
+.faq__tab::before {
   content: "";
   position: absolute;
   inset: -1px;
@@ -47,20 +55,23 @@
 .arw svg { width: 1rem; height: 1rem; }
 
 .press__tab.is-on,
-.blog__cat.is-on {
+.blog__cat.is-on,
+.coll__chip.is-on,
+.faq__tab.is-on,
+.arw.is-on {
   border-color: var(--volt);
   background: var(--volt);
   color: #FFF;
 }
 
 @media (hover: hover) {
-  :is(.hbtn, .arw, .press__tab, .blog__cat):hover {
+  :is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add, .faq__tab):hover {
     color: #FFF;
     border-color: var(--volt);
     translate: 0 -0.125rem;
     box-shadow: 0 0.5rem 1.25rem rgba(254, 84, 22, .28);
   }
-  :is(.hbtn, .arw, .press__tab, .blog__cat):hover::before {
+  :is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add, .faq__tab):hover::before {
     transform: scaleX(1);
     transform-origin: left center;
   }
@@ -68,5 +79,6 @@
   .arw[data-dir="1"]:hover > *, .arw[aria-label^="Next"]:hover > * { translate: 0.1875rem 0; }
 }
 
-:is(.hbtn, .arw, .press__tab, .blog__cat):active { translate: 0 0; scale: .96; }
-:is(.hbtn, .arw, .press__tab, .blog__cat):focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
+:is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add, .faq__tab):active { translate: 0 0; scale: .96; }
+:is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .pc__add, .faq__tab):focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
+.coll__select:focus-within { outline: 2px solid var(--volt); outline-offset: 2px; }
