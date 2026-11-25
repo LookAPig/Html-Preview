@@ -8,6 +8,8 @@ window.TESWAY_CART = {
     { id: 'trail', name: 'X1 Trail Pro', variant: 'Sand · Size L', img: 'Images/bike-trail.jpg', price: 2399 },
     { id: 'family', name: 'X1 Family', variant: 'Ivory · One size', img: 'Images/bike-family.jpg', price: 1699 },
     { id: 'cargo', name: 'X1 Cargo', variant: 'Black · One size', img: 'Images/bike-cargo.jpg', price: 1999 },
+    { id: 'city', name: 'X1 City', variant: 'Graphite · Size M', img: 'Images/bike-city.jpg', price: 1499 },
+    { id: 'citystep', name: 'X1 City Step', variant: 'Ivory · Size S', img: 'Images/bike-city.jpg', price: 1399 },
     { id: 'helmet', name: 'Trail helmet', variant: 'MIPS · M/L', price: 89,
       icon: '<path d="M4 15a8 8 0 0 1 16 0v1H4z"/><path d="M9 8.2c1.2 1.4 1.8 3.6 1.8 6.8M15 8.2c-1.2 1.4-1.8 3.6-1.8 6.8"/><path d="M4 16h16l-1.2 2.4H5.2z"/>' },
     { id: 'lock', name: 'U-lock pro', variant: 'Sold Secure Gold', price: 59,

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Shop All Ebikes | TESWAY · Go Far Away</title>
+  <meta name="description" content="Shop every TESWAY ebike: dual-drive, family and cargo models with up to 160 km range, free shipping and a 2-year warranty.">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,wght@0,400;0,600;0,800;1,800&display=swap">
+  <link rel="stylesheet" href="css/base.css?v=20">
+  <link rel="stylesheet" href="css/notice.css?v=20">
+  <link rel="stylesheet" href="css/nav.css?v=20">
+  <link rel="stylesheet" href="css/mnav.css?v=20">
+  <link rel="stylesheet" href="css/mega.css?v=20">
+  <link rel="stylesheet" href="css/tmega.css?v=20">
+  <link rel="stylesheet" href="css/hero.css?v=20">
+  <link rel="stylesheet" href="css/foot.css?v=20">
+  <link rel="stylesheet" href="css/cart.css?v=20">
+  <link rel="stylesheet" href="css/search.css?v=20">
+  <link rel="stylesheet" href="css/dock.css?v=20">
+  <link rel="stylesheet" href="css/scrollbar.css?v=20">
+  <link rel="stylesheet" href="css/btn.css?v=20">
+  <link rel="stylesheet" href="css/coll.css?v=1">
+  <link rel="stylesheet" href="css/coll-card.css?v=1">
+  <link rel="stylesheet" href="css/coll-perk.css?v=1">
+</head>
+<body>
+  <div class="battery" aria-hidden="true"><i id="batteryFill"></i></div>
+  <aside class="notice" id="notice" aria-label="Announcements"></aside>
+
+  <header class="nav" id="nav">
+    <a class="nav__logo" href="index.html" aria-label="TESWAY home"><img src="Images/logo.png" alt="TESWAY · Go Far Away" width="2875" height="624" decoding="async"></a>
+    <nav class="nav__menu" id="navMenu">
+      <a href="#hot" data-mega aria-haspopup="true" aria-expanded="false" aria-current="page">Bikes</a>
+      <a href="#hot" data-tmega="performance">Performance</a>
+      <a href="collection.html?c=dual">Dual Drive</a>
+      <a href="#uses" data-tmega="scenes">Scenes</a>
+      <a href="#uses">Range</a>
+      <a href="#brand" data-tmega="brand">Brand</a>
+    </nav>
+    <div class="nav__tools" aria-label="Account tools">
+      <button class="nav__icon" id="navSearch" type="button" aria-label="Search" title="Search (/)" aria-controls="search" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <g class="ico-base"><circle cx="11" cy="11" r="5"/><path d="M15.2 15.2 19.2 19.2"/></g>
+          <g class="ico-draw"><circle cx="11" cy="11" r="5" pathLength="1"/><path d="M15.2 15.2 19.2 19.2" pathLength="1"/></g>
+        </svg>
+      </button>
+      <a class="nav__icon" href="#foot" aria-label="Sign in" title="Sign in">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <g class="ico-base"><circle cx="12" cy="8.5" r="3.2"/><path d="M6.2 18.6c1.2-2.6 3.3-3.9 5.8-3.9s4.6 1.3 5.8 3.9"/></g>
+          <g class="ico-draw"><circle cx="12" cy="8.5" r="3.2" pathLength="1"/><path d="M6.2 18.6c1.2-2.6 3.3-3.9 5.8-3.9s4.6 1.3 5.8 3.9" pathLength="1"/></g>
+        </svg>
+      </a>
+      <button class="nav__icon" id="navCart" type="button" aria-label="Cart" title="Cart" aria-controls="cart" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <g class="ico-base"><path d="M3.8 5.2h2l2 9.4h10l1.7-6.6H8.4"/><circle cx="10" cy="17.6" r="1.2"/><circle cx="16.4" cy="17.6" r="1.2"/></g>
+          <g class="ico-draw"><path d="M3.8 5.2h2l2 9.4h10l1.7-6.6H8.4" pathLength="1"/><circle cx="10" cy="17.6" r="1.2" pathLength="1"/><circle cx="16.4" cy="17.6" r="1.2" pathLength="1"/></g>
+        </svg>
+        <i class="nav__badge" data-count="0">0</i>
+      </button>
+    </div>
+    <button class="nav__toggle" id="navToggle" aria-label="Open menu"><span></span><span></span></button>
+  </header>
+
+  <main>
+    <section class="ch" id="top" aria-label="Collection intro">
+      <nav class="ch__crumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><b aria-current="page">Bikes</b></nav>
+      <div class="ch__banner">
+        <picture>
+          <source media="(min-aspect-ratio: 1/1)" srcset="Images/hero-trail.jpg">
+          <img src="Images/hero-trail-m.jpg" alt="Rider on a TESWAY X1 Trail Pro" decoding="async">
+        </picture>
+        <div class="ch__copy sec-head">
+          <p class="eyebrow eyebrow--dot">The collection</p>
+          <h1 class="ch__title">Every TESWAY, <em>One Place</em></h1>
+          <p class="ch__sub">Dual motors, family haulers and cargo workhorses. Pick the one that goes where you go.</p>
+          <ul class="ch__stats">
+            <li><b>6</b>models</li>
+            <li><b>160 km</b>max range</li>
+            <li><b>$1,399</b>starting at</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="coll" id="coll" aria-label="All bikes">
+      <div class="coll__bar" id="collBar"></div>
+      <div class="coll__grid" id="collGrid"></div>
+    </section>
+
+    <section class="cperk" id="perks" aria-label="Why buy from TESWAY">
+      <ul class="cperk__list reveal" id="collPerks"></ul>
+      <a class="cfind reveal" data-delay="1" href="index.html#quiz">
+        <img src="Images/quiz-banner.jpg" alt="" loading="lazy" decoding="async">
+        <span class="cfind__copy">
+          <span class="eyebrow">Ride finder</span>
+          <b class="cfind__title">Not sure <em>which one?</em></b>
+          <span class="cfind__sub">Answer a few quick questions and we will match you with the right TESWAY.</span>
+          <span class="hbtn cfind__btn">Find my ebike</span>
+        </span>
+      </a>
+    </section>
+  </main>
+
+  <footer class="foot" id="foot"></footer>
+
+  <script src="js/notice.js?v=20" defer></script>
+  <script src="js/main.js?v=20" defer></script>
+  <script src="js/mega.js?v=21" defer></script>
+  <script src="js/tmega.js?v=20" defer></script>
+  <script src="js/mnav.js?v=20" defer></script>
+  <script src="js/foot.js?v=20" defer></script>
+  <script src="js/cart.js?v=21" defer></script>
+  <script src="js/search.js?v=20" defer></script>
+  <script src="js/dock.js?v=20" defer></script>
+  <script src="js/scrollbar.js?v=20" defer></script>
+  <script src="js/coll-data.js?v=1" defer></script>
+  <script src="js/coll.js?v=1" defer></script>
+  <script src="js/reveal.js?v=20" defer></script>
+  <script src="js/xlink.js?v=1" defer></script>
+</body>
+</html>

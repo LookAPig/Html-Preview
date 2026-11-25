@@ -12,7 +12,7 @@ window.TESWAY_HERO = {
       title: 'Every TESWAY.',
       accent: 'Up to $400 off.',
       text: 'X1 Dual-Drive pairs two motors with a 160 km battery, from city streets to mountain trails. Now under $2,000.',
-      cta: [{ href: '#hot', text: 'Shop X1 Dual-Drive' }, { href: '#hot', text: 'See every deal' }],
+      cta: [{ href: '#hot', text: 'Shop X1 Dual-Drive' }, { href: 'collection.html', text: 'See every deal' }],
       countdown: 'Ends 11:59pm Mon 30 Nov'
     },
     {
