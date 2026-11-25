@@ -1,34 +1,34 @@
 (function () {
   var d = window.TESWAY_COLL;
+  var F = window.TeswayFilter;
   var bar = document.getElementById('collBar');
   var grid = document.getElementById('collGrid');
-  if (!d || !bar || !grid) return;
+  if (!d || !F || !bar || !grid) return;
 
   var svg = function (p) {
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + p + '"/></svg>';
   };
-  var ico = { plus: svg('M12 6v12M6 12h12'), done: svg('M6 12.5l4 4 8-9') };
+  var ico = {
+    plus: svg('M12 6v12M6 12h12'),
+    done: svg('M6 12.5l4 4 8-9'),
+    x: svg('M7 7l10 10M17 7 7 17'),
+    filter: svg('M4 7h10M18 7h2M4 17h4M12 17h8M14 4.5v5M8 14.5v5')
+  };
   var money = function (n) { return '$' + n.toLocaleString('en-US'); };
-  var ids = d.cats.map(function (c) { return c.id; });
-  var q = new URLSearchParams(location.search).get('c');
-  var state = { cat: ids.indexOf(q) > -1 ? q : 'all', sort: 'featured' };
-
-  function count(id) {
-    return id === 'all' ? d.items.length : d.items.filter(function (p) { return p.cat === id; }).length;
-  }
+  var sort = 'featured';
 
   bar.innerHTML =
-    '<div class="coll__chips" role="tablist" aria-label="Filter bikes">' + d.cats.map(function (c) {
-      return '<button class="coll__chip" type="button" role="tab" data-cat="' + c.id + '">' + c.name + '<i>' + count(c.id) + '</i></button>';
-    }).join('') + '</div>' +
-    '<div class="coll__tools"><p class="coll__count" aria-live="polite"></p>' +
-      '<label class="coll__sort"><span>Sort</span><span class="coll__select"><select>' + d.sorts.map(function (s) {
-        return '<option value="' + s.id + '">' + s.name + '</option>';
-      }).join('') + '</select></span></label></div>';
+    '<button class="coll__fbtn" type="button" aria-controls="collFilter" aria-expanded="false">' + ico.filter + 'Filter<i></i></button>' +
+    '<p class="coll__count" aria-live="polite"></p>' +
+    '<label class="coll__sort"><span>Sort</span><span class="coll__select"><select>' + d.sorts.map(function (s) {
+      return '<option value="' + s.id + '">' + s.name + '</option>';
+    }).join('') + '</select></span></label>' +
+    '<ul class="coll__active" aria-label="Active filters"></ul>';
 
-  var chips = bar.querySelectorAll('.coll__chip');
+  var fbtn = bar.querySelector('.coll__fbtn');
   var sel = bar.querySelector('select');
   var countEl = bar.querySelector('.coll__count');
+  var act = bar.querySelector('.coll__active');
 
   function card(p, i) {
     var tag = p.tag ? '<i class="pc__tag">' + p.tag + '</i>' : '';
@@ -48,47 +48,56 @@
   }
 
   function list() {
-    var out = d.items.filter(function (p) { return state.cat === 'all' || p.cat === state.cat; });
+    var out = d.items.filter(F.pass);
     var by = {
       low: function (a, b) { return a.price - b.price; },
       high: function (a, b) { return b.price - a.price; },
       range: function (a, b) { return b.range - a.range; }
-    }[state.sort];
+    }[sort];
     return by ? out.slice().sort(by) : out;
   }
 
   function render() {
     var items = list();
+    var on = F.active();
     grid.innerHTML = items.length ? items.map(card).join('') :
-      '<p class="coll__empty">No bikes here yet.<button class="hbtn hbtn--line" type="button" data-cat="all">See all bikes</button></p>';
+      '<p class="coll__empty">No bikes match these filters.<button class="hbtn hbtn--line" type="button" data-clear>Clear filters</button></p>';
     countEl.textContent = items.length + (items.length === 1 ? ' bike' : ' bikes');
-    chips.forEach(function (c) {
-      var on = c.dataset.cat === state.cat;
-      c.classList.toggle('is-on', on);
-      c.setAttribute('aria-selected', String(on));
-    });
+    fbtn.querySelector('i').textContent = on.length || '';
+    act.innerHTML = on.map(function (a) {
+      return '<li><button class="coll__pill" type="button" data-g="' + a.g + '" data-v="' + a.v + '" aria-label="Remove ' + a.name + '">' + a.name + ico.x + '</button></li>';
+    }).join('') + (on.length > 1 ? '<li><button class="coll__wipe" type="button" data-clear>Clear all</button></li>' : '');
+    bar.classList.toggle('has-on', on.length > 0);
   }
 
-  function setCat(id) {
-    if (id === state.cat) return;
-    state.cat = id;
-    var url = id === 'all' ? location.pathname : '?c=' + id;
-    history.replaceState(null, '', url + location.hash);
+  function jump() {
+    var top = grid.getBoundingClientRect().top;
+    if (top < 0 || top > innerHeight) document.getElementById('coll').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  F.onChange(function (open) {
+    if (typeof open === 'boolean') {
+      fbtn.setAttribute('aria-expanded', String(open));
+      if (!open) jump();
+      return;
+    }
     render();
-  }
-
-  bar.addEventListener('click', function (e) {
-    var c = e.target.closest('[data-cat]');
-    if (!c) return;
-    setCat(c.dataset.cat);
-    c.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    if (!document.getElementById('collFilter').classList.contains('is-on')) jump();
   });
-  sel.addEventListener('change', function () { state.sort = sel.value; render(); });
+
+  fbtn.addEventListener('click', F.open);
+  sel.addEventListener('change', function () { sort = sel.value; render(); });
+  act.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-g], [data-clear]');
+    if (!b) return;
+    if (b.dataset.g) F.toggle(b.dataset.g, b.dataset.v);
+    else F.clear();
+  });
 
   grid.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-add], [data-cat]');
+    var b = e.target.closest('[data-add], [data-clear]');
     if (!b) return;
-    if (b.dataset.cat) return setCat(b.dataset.cat);
+    if (!b.dataset.add) return F.clear();
     if (window.TeswayCart) window.TeswayCart.add(b.dataset.add);
     b.classList.add('is-done');
     b.querySelector('span').textContent = 'Added';

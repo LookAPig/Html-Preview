@@ -21,11 +21,14 @@
   <link rel="stylesheet" href="css/search.css?v=20">
   <link rel="stylesheet" href="css/dock.css?v=20">
   <link rel="stylesheet" href="css/scrollbar.css?v=20">
-  <link rel="stylesheet" href="css/coll.css?v=3">
+  <link rel="stylesheet" href="css/coll.css?v=4">
+  <link rel="stylesheet" href="css/coll-bar.css?v=1">
+  <link rel="stylesheet" href="css/coll-filter.css?v=1">
+  <link rel="stylesheet" href="css/coll-drawer.css?v=1">
   <link rel="stylesheet" href="css/coll-card.css?v=3">
   <link rel="stylesheet" href="css/csvc.css?v=2">
-  <link rel="stylesheet" href="css/faq.css?v=4">
-  <link rel="stylesheet" href="css/btn.css?v=22">
+  <link rel="stylesheet" href="css/faq.css?v=5">
+  <link rel="stylesheet" href="css/btn.css?v=23">
 </head>
 <body>
   <div class="battery" aria-hidden="true"><i id="batteryFill"></i></div>
@@ -88,8 +91,11 @@
     </section>
 
     <section class="coll" id="coll" aria-label="All bikes">
-      <div class="coll__bar" id="collBar"></div>
-      <div class="coll__grid" id="collGrid"></div>
+      <aside class="cf" id="collFilter" aria-label="Filter bikes"></aside>
+      <div class="coll__main">
+        <div class="coll__bar" id="collBar"></div>
+        <div class="coll__grid" id="collGrid"></div>
+      </div>
     </section>
 
     <section class="faq" id="faq" aria-label="Frequently asked questions">
@@ -118,8 +124,9 @@
   <script src="js/search.js?v=20" defer></script>
   <script src="js/dock.js?v=20" defer></script>
   <script src="js/scrollbar.js?v=20" defer></script>
-  <script src="js/coll-data.js?v=1" defer></script>
-  <script src="js/coll.js?v=3" defer></script>
+  <script src="js/coll-data.js?v=2" defer></script>
+  <script src="js/coll-filter.js?v=1" defer></script>
+  <script src="js/coll.js?v=4" defer></script>
   <script src="js/faq-data.js?v=2" defer></script>
   <script src="js/faq.js?v=3" defer></script>
   <script src="js/reveal.js?v=20" defer></script>

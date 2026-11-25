@@ -1,29 +1,57 @@
 window.TESWAY_COLL = {
-  cats: [
-    { id: 'all', name: 'All bikes' },
-    { id: 'dual', name: 'Dual-Drive' },
-    { id: 'family', name: 'Family' },
-    { id: 'cargo', name: 'Cargo' }
-  ],
   sorts: [
     { id: 'featured', name: 'Featured' },
     { id: 'low', name: 'Price: low to high' },
     { id: 'high', name: 'Price: high to low' },
     { id: 'range', name: 'Longest range' }
   ],
+  filters: [
+    { id: 'col', name: 'Collections', type: 'chip', all: 'All ebikes', opts: [
+      { id: 'sale', name: 'Ebikes on sale' }, { id: 'dual', name: 'Dual-Drive' }, { id: 'fat', name: 'Fat tire' },
+      { id: 'commuter', name: 'Commuter' }, { id: 'family', name: 'Family' }, { id: 'cargo', name: 'Cargo' },
+      { id: 'step', name: 'Step-through' }
+    ] },
+    { id: 'use', name: 'Purpose', type: 'radio', opts: [
+      { id: 'commute', name: 'Daily commute' }, { id: 'cruise', name: 'Leisure / Cruise' },
+      { id: 'fitness', name: 'Fitness / Active' }, { id: 'offroad', name: 'Adventure / Off-road' },
+      { id: 'family', name: 'Family / Kids' }, { id: 'cargo', name: 'Cargo / Delivery' }
+    ] },
+    { id: 'pri', name: 'Top priority', type: 'radio', opts: [
+      { id: 'comfort', name: 'Comfort' }, { id: 'range', name: 'Long range' }, { id: 'power', name: 'Power' },
+      { id: 'light', name: 'Lightweight' }, { id: 'value', name: 'Budget / Value' }
+    ] },
+    { id: 'price', name: 'Price', type: 'check', opts: [
+      { id: 'p1', name: 'Under $1,500', min: 0, max: 1500 },
+      { id: 'p2', name: '$1,500 – $2,000', min: 1500, max: 2000 },
+      { id: 'p3', name: 'Over $2,000', min: 2000, max: 1e9 }
+    ] },
+    { id: 'range', name: 'Range', type: 'check', opts: [
+      { id: 'r1', name: 'Up to 130 km', min: 0, max: 130 },
+      { id: 'r2', name: '130 – 150 km', min: 130, max: 150 },
+      { id: 'r3', name: '150 km +', min: 150, max: 1e9 }
+    ] },
+    { id: 'motor', name: 'Motor', type: 'check', opts: [{ id: 'single', name: 'Single motor' }, { id: 'dual', name: 'Dual motor' }] },
+    { id: 'frame', name: 'Frame', type: 'check', opts: [{ id: 'over', name: 'Step-over' }, { id: 'step', name: 'Step-through' }] }
+  ],
   items: [
-    { id: 'dual', cat: 'dual', name: 'X1 Dual-Drive', img: 'Images/hot/bike-dual', price: 1899, was: 2299, tag: 'Best seller',
-      line: 'Two motors. Every road, every weather.', range: 160, specs: ['160 km', '120 N·m', 'Dual motor'] },
-    { id: 'trail', cat: 'dual', name: 'X1 Trail Pro', img: 'Images/hot/bike-trail', price: 2399, tag: 'New',
-      line: 'Full suspension built for the long way round.', range: 140, specs: ['140 km', '30° climb', 'Full sus'] },
-    { id: 'city', cat: 'dual', name: 'X1 City', img: 'Images/hot/bike-city', price: 1499,
-      line: 'Light, quick and made for the daily commute.', range: 120, specs: ['120 km', '22 kg', 'Belt drive'] },
-    { id: 'family', cat: 'family', name: 'X1 Family', img: 'Images/hot/bike-family', price: 1699, tag: 'New',
-      line: 'A child seat, a low frame and calm power.', range: 130, specs: ['130 km', '150 kg load', 'Child seat'] },
-    { id: 'citystep', cat: 'family', name: 'X1 City Step', img: 'Images/hot/bike-city', price: 1399,
-      line: 'Step-through frame, easy for every rider.', range: 110, specs: ['110 km', 'Low step', '3 sizes'] },
-    { id: 'cargo', cat: 'cargo', name: 'X1 Cargo', img: 'Images/hot/bike-cargo', price: 1999, tag: 'Pro',
-      line: 'More orders per charge, all day long.', range: 160, specs: ['160 km', '50 kg rack', 'Dual battery'] }
+    { id: 'dual', name: 'X1 Dual-Drive', img: 'Images/hot/bike-dual', price: 1899, was: 2299, tag: 'Best seller',
+      line: 'Two motors. Every road, every weather.', range: 160, specs: ['160 km', '120 N·m', 'Dual motor'],
+      col: ['sale', 'dual', 'fat'], use: ['commute', 'cruise', 'offroad'], pri: ['power', 'range'], motor: 'dual', frame: 'over' },
+    { id: 'trail', name: 'X1 Trail Pro', img: 'Images/hot/bike-trail', price: 2399, tag: 'New',
+      line: 'Full suspension built for the long way round.', range: 140, specs: ['140 km', '30° climb', 'Full sus'],
+      col: ['dual', 'fat'], use: ['fitness', 'offroad'], pri: ['power', 'comfort'], motor: 'dual', frame: 'over' },
+    { id: 'city', name: 'X1 City', img: 'Images/hot/bike-city', price: 1499,
+      line: 'Light, quick and made for the daily commute.', range: 120, specs: ['120 km', '22 kg', 'Belt drive'],
+      col: ['commuter'], use: ['commute', 'fitness'], pri: ['light', 'value'], motor: 'single', frame: 'over' },
+    { id: 'family', name: 'X1 Family', img: 'Images/hot/bike-family', price: 1699, tag: 'New',
+      line: 'A child seat, a low frame and calm power.', range: 130, specs: ['130 km', '150 kg load', 'Child seat'],
+      col: ['family', 'step'], use: ['family', 'cruise', 'commute'], pri: ['comfort'], motor: 'single', frame: 'step' },
+    { id: 'citystep', name: 'X1 City Step', img: 'Images/hot/bike-city', price: 1399,
+      line: 'Step-through frame, easy for every rider.', range: 110, specs: ['110 km', 'Low step', '3 sizes'],
+      col: ['commuter', 'step'], use: ['commute', 'cruise'], pri: ['comfort', 'light', 'value'], motor: 'single', frame: 'step' },
+    { id: 'cargo', name: 'X1 Cargo', img: 'Images/hot/bike-cargo', price: 1999, tag: 'Pro',
+      line: 'More orders per charge, all day long.', range: 160, specs: ['160 km', '50 kg rack', 'Dual battery'],
+      col: ['cargo', 'fat'], use: ['cargo', 'family'], pri: ['range', 'power'], motor: 'dual', frame: 'over' }
   ],
   perks: [
     { title: 'Free shipping', text: 'On every bike, ready to ride', icon: 'M3.5 7.5h10v8h-10zM13.5 10.5h4l3 3v2h-7zM7 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM17 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z' },

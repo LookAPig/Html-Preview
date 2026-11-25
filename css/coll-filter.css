@@ -1,0 +1,120 @@
+/* ==== collection filter: content ==== */
+.cf__head { position: relative; display: flex; align-items: center; gap: 0.75rem; }
+.cf__head h2 {
+  font-family: var(--font-en);
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.cf__clear {
+  margin-left: auto;
+  height: 2rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s, visibility 0s .3s, color .25s;
+}
+.cf.has-on .cf__clear { opacity: 1; visibility: visible; transition: opacity .3s, color .25s; }
+.cf__x { width: 2.5rem; height: 2.5rem; }
+
+.cf__grp { border-top: 1px solid rgba(34, 34, 34, .1); animation: cf-in .6s calc(var(--i, 0) * .05s + .1s) var(--ease) both; }
+.cf__grp h3 { font: inherit; }
+.cf__ghead {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 3.5rem;
+  text-align: left;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  transition: color .25s;
+}
+.cf__ghead svg { width: 1.125rem; height: 1.125rem; margin-left: auto; rotate: 180deg; transition: rotate .45s var(--ease); }
+.cf__grp:not(.is-open) .cf__ghead svg { rotate: 0deg; }
+.cf__gbody { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s var(--ease); }
+.cf__gbody > div { min-height: 0; overflow: hidden; }
+.cf__grp.is-open .cf__gbody { grid-template-rows: 1fr; }
+.cf__opts { padding-bottom: 1.25rem; transition: opacity .35s, translate .45s var(--ease); }
+.cf__grp:not(.is-open) .cf__opts { opacity: 0; translate: 0 -0.5rem; }
+
+.cf__opts--chip { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-top: 0.125rem; }
+.coll__chip {
+  display: inline-flex;
+  align-items: center;
+  height: 2.375rem;
+  padding: 0 0.9375rem;
+  border: 1px solid rgba(34, 34, 34, .12);
+  border-radius: var(--r-pill);
+  background: #FFF;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.coll__chip:disabled { opacity: .4; pointer-events: none; }
+
+.cf__opts--radio, .cf__opts--check { display: grid; gap: 0.125rem; margin: 0 -0.5rem; }
+.cf__opt {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--r-sm);
+  text-align: left;
+  font-size: 0.875rem;
+  transition: background .25s, opacity .25s;
+}
+.cf__opt span { transition: font-weight .2s; }
+.cf__opt em { font-style: normal; font-size: 0.8125rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.cf__opt:disabled { opacity: .38; cursor: not-allowed; }
+.cf__opt:focus-visible, .cf__ghead:focus-visible, .cf__clear:focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; border-radius: var(--r-sm); }
+.cf__box {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1.5px solid rgba(34, 34, 34, .3);
+  border-radius: 0.3125rem;
+  color: #FFF;
+  transition: border-color .25s, background .25s, scale .2s var(--ease);
+}
+.cf__opt--radio .cf__box { border-radius: 50%; }
+.cf__opt--radio .cf__box::after {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--volt);
+  scale: 0;
+  transition: scale .35s cubic-bezier(.34, 1.56, .64, 1);
+}
+.cf__box svg { width: 0.75rem; height: 0.75rem; }
+.cf__box path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .35s var(--ease); }
+.cf__opt:active .cf__box { scale: .85; }
+
+.cf__opt.is-on span { font-weight: 600; }
+.cf__opt.is-on .cf__box { border-color: var(--volt); }
+.cf__opt--radio.is-on .cf__box::after { scale: 1; }
+.cf__opt--check.is-on .cf__box { background: var(--volt); }
+.cf__opt--check.is-on .cf__box path { stroke-dashoffset: 0; transition-delay: .05s; }
+
+@media (hover: hover) {
+  .cf__ghead:hover { color: var(--volt); }
+  .cf__opt:not(:disabled):hover { background: rgba(34, 34, 34, .04); }
+  .cf__opt:not(:disabled):hover .cf__box { border-color: var(--volt); }
+  .cf__clear:hover { color: var(--volt); }
+}
+@keyframes cf-in { from { opacity: 0; transform: translateY(1rem); } }
+@keyframes cf-up { from { opacity: 0; transform: translateY(1.5rem); } }
+@media (prefers-reduced-motion: reduce) {
+  .cf__grp, .coll__active li { animation: none; }
+}

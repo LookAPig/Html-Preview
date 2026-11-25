@@ -1,0 +1,102 @@
+/* ==== collection filter: mobile drawer / desktop sidebar ==== */
+.cf {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  visibility: hidden;
+  transition: visibility 0s .55s;
+}
+.cf.is-on { visibility: visible; transition: none; }
+.cf__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(34, 34, 34, .42);
+  backdrop-filter: blur(0.25rem);
+  -webkit-backdrop-filter: blur(0.25rem);
+  opacity: 0;
+  transition: opacity .45s var(--ease);
+}
+.cf.is-on .cf__scrim { opacity: 1; }
+.cf__panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 88dvh;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  background: var(--bg);
+  box-shadow: 0 -1.5rem 4rem rgba(34, 34, 34, .18);
+  translate: 0 100%;
+  transition: translate .55s var(--ease);
+}
+.cf.is-on .cf__panel { translate: 0 0; }
+.cf__head { flex: none; padding: 1.5rem var(--pad) 0.875rem; }
+.cf__grab {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  width: 2.5rem;
+  height: 0.25rem;
+  border-radius: var(--r-pill);
+  background: rgba(34, 34, 34, .16);
+  translate: -50% 0;
+}
+.cf__body {
+  flex: 1;
+  min-height: 0;
+  padding: 0 var(--pad);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.cf__grp { animation: none; }
+.cf.is-on .cf__grp { animation: cf-up .55s calc(var(--i, 0) * .045s + .12s) var(--ease) both; }
+.cf__foot {
+  display: flex;
+  flex: none;
+  gap: 0.625rem;
+  padding: 0.875rem var(--pad) calc(0.875rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+}
+.cf__show { flex: 1.5; }
+
+@media (min-aspect-ratio: 1/1) {
+  .cf {
+    position: sticky;
+    inset: auto;
+    top: calc(var(--nav-top, var(--bar-h)) + 5rem);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - var(--nav-top, var(--bar-h)) - 6.5rem);
+    padding-top: 0.875rem;
+    visibility: visible;
+    transition: none;
+  }
+  .cf__scrim, .cf__grab, .cf .cf__x, .cf__foot { display: none; }
+  .cf__panel {
+    position: static;
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    translate: none;
+    transition: none;
+  }
+  .cf__head { padding: 0 0 1rem; }
+  .cf__head h2 { font-size: 1.5rem; }
+  .cf__body {
+    padding: 0 0.75rem 1.5rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(34, 34, 34, .18) transparent;
+  }
+  .cf__grp { animation: cf-in .6s calc(var(--i, 0) * .05s + .1s) var(--ease) both; }
+  .cf__opt { min-height: 2.375rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cf__panel, .cf__scrim { transition: none; }
+  .cf.is-on .cf__grp { animation: none; }
+}

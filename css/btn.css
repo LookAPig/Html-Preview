@@ -4,7 +4,8 @@
 .blog__cat,
 .coll__chip,
 .coll__select,
-.pc__add {
+.pc__add,
+.coll__fbtn {
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -22,7 +23,8 @@
 .blog__cat::before,
 .coll__chip::before,
 .coll__select::before,
-.pc__add::before {
+.pc__add::before,
+.coll__fbtn::before {
   content: "";
   position: absolute;
   inset: -1px;
@@ -62,13 +64,13 @@
 }
 
 @media (hover: hover) {
-  :is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add):hover {
+  :is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add, .coll__fbtn):hover {
     color: #FFF;
     border-color: var(--volt);
     translate: 0 -0.125rem;
     box-shadow: 0 0.5rem 1.25rem rgba(254, 84, 22, .28);
   }
-  :is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add):hover::before {
+  :is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add, .coll__fbtn):hover::before {
     transform: scaleX(1);
     transform-origin: left center;
   }
@@ -76,6 +78,6 @@
   .arw[data-dir="1"]:hover > *, .arw[aria-label^="Next"]:hover > * { translate: 0.1875rem 0; }
 }
 
-:is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add):active { translate: 0 0; scale: .96; }
-:is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .pc__add):focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
+:is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .coll__select, .pc__add, .coll__fbtn):active { translate: 0 0; scale: .96; }
+:is(.hbtn, .arw, .press__tab, .blog__cat, .coll__chip, .pc__add, .coll__fbtn):focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
 .coll__select:focus-within { outline: 2px solid var(--volt); outline-offset: 2px; }
