@@ -86,14 +86,57 @@
 .pc__pic.is-peek .pc__pvid { scale: 1; }
 
 .pc__pcap { position: absolute; inset: 0 0 auto; z-index: 1; padding: 0.875rem 1rem; text-shadow: 0 1px 0.5rem rgba(0, 0, 0, .45); }
-.pc__pbar { display: flex; gap: 0.25rem; margin-bottom: 0.875rem; }
-.pc__pbar i { position: relative; flex: 1; height: 0.125rem; overflow: hidden; border-radius: 1px; background: rgba(255, 255, 255, .3); }
+.pc__pbar { display: flex; gap: 0.25rem; margin: -0.375rem 0 0.5rem; }
+.pc__pbar i {
+  position: relative;
+  flex: 1;
+  height: 0.875rem;
+  overflow: hidden;
+  border-block: 0.375rem solid transparent;
+  background: rgba(255, 255, 255, .3) padding-box;
+  cursor: pointer;
+  transition: background-color .25s, border-width .25s var(--ease);
+}
+.pc__pbar i:hover { border-block-width: 0.3125rem; background-color: rgba(255, 255, 255, .55); }
 .pc__pbar i::after { content: ""; position: absolute; inset: 0; background: #FFF; transform: scaleX(0); transform-origin: left; }
 .pc__pbar i.is-done::after { transform: none; }
 .pc__pbar i.is-on::after { animation: reel-seg 3.2s linear forwards; }
 @keyframes reel-seg { to { transform: none; } }
 
-.pc__pwho { display: flex; align-items: center; gap: 0.625rem; line-height: 1.2; animation: reel-txt .5s var(--ease) both; }
+.pc__pwho { display: flex; align-items: center; gap: 0.625rem; padding-right: 4.25rem; line-height: 1.2; animation: reel-txt .5s var(--ease) both; }
+
+.pc__pnav {
+  position: absolute;
+  top: 2rem;
+  right: 0.875rem;
+  z-index: 2;
+  display: flex;
+  gap: 0.375rem;
+  opacity: 0;
+  translate: 0.5rem 0;
+  transition: opacity .3s, translate .45s var(--ease);
+}
+.pc__pic.is-peek .pc__pnav { opacity: 1; translate: 0 0; transition-delay: .25s; }
+.pc__pnav i {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .14);
+  backdrop-filter: blur(0.5rem);
+  -webkit-backdrop-filter: blur(0.5rem);
+  color: #FFF;
+  cursor: pointer;
+  transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+}
+.pc__pnav i:first-child svg { rotate: 180deg; }
+.pc__pnav svg { width: 0.75rem; height: 0.75rem; transition: translate .3s var(--ease); }
+.pc__pnav i:hover { border-color: #FFF; background: #FFF; color: var(--text); }
+.pc__pnav i:first-child:hover svg { translate: -0.125rem 0; }
+.pc__pnav i:last-child:hover svg { translate: 0.125rem 0; }
+.pc__pnav i:active { scale: .92; }
 .pc__pwho b { display: block; font-size: 0.8125rem; font-weight: 700; }
 .pc__pwho small { display: block; margin-top: 0.125rem; font-size: 0.6875rem; opacity: .72; }
 .pc__pava {
@@ -134,6 +177,7 @@
 
 @media (hover: hover) {
   .pc__reel:hover .pc__rplay { scale: 1.1; }
+  .pc__pic.is-peek .pc__ppl i:not(.is-on):hover { translate: 0 -0.125rem; }
 }
 
 @media (min-aspect-ratio: 1/1) {
