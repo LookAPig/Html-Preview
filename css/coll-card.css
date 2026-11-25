@@ -42,12 +42,15 @@
   transition: opacity .5s var(--ease), transform .8s var(--ease);
 }
 .pc__frame { opacity: 0; }
-.pc__tag, .pc__save {
+.pc__tag {
   position: absolute;
   top: 0.625rem;
+  left: 0.625rem;
   z-index: 1;
   padding: 0.25rem 0.5rem;
   border-radius: var(--r-pill);
+  background: var(--volt);
+  color: #FFF;
   font-size: 0.625rem;
   font-style: normal;
   font-weight: 700;
@@ -55,9 +58,28 @@
   text-transform: uppercase;
   line-height: 1.2;
 }
-.pc__tag { left: 0.625rem; background: var(--volt); color: #FFF; }
-.pc__save { left: 0.625rem; background: var(--volt); color: #FFF; }
-.pc__tag + .pc__save { top: 2.125rem; }
+.pc__save {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.75rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.125rem;
+  font-style: normal;
+  line-height: 1;
+}
+.pc__save small { font-size: 0.5rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); }
+.pc__save b {
+  font-family: var(--font-en);
+  font-size: 1.125rem;
+  font-weight: 400;
+  letter-spacing: .01em;
+  color: var(--volt);
+  transform: skewX(-8deg);
+  transition: transform .45s var(--ease);
+}
 
 .pc__body { display: flex; flex: 1; flex-direction: column; padding: 0.75rem 0.75rem 0.875rem; }
 .pc__name { font-size: 0.9375rem; font-weight: 800; letter-spacing: -.01em; line-height: 1.25; }
@@ -119,6 +141,7 @@
   .pc:hover { translate: 0 -0.25rem; box-shadow: 0 0.75rem 2rem -0.5rem rgba(34, 34, 34, .22), 0 0 0 1px var(--line); }
   .pc:hover .pc__img { opacity: 0; transform: scale(1.04); }
   .pc:hover .pc__frame { opacity: 1; transform: scale(1.04); }
+  .pc:hover .pc__save b { transform: skewX(-14deg) translateX(-0.125rem); }
   .pc__add:hover svg:first-child { transform: rotate(90deg); }
 }
 
@@ -126,9 +149,10 @@
   .coll__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; margin-top: 1rem; }
   .pc__pic { aspect-ratio: 4 / 3; }
   .pc__pic img { padding: 1rem 1.5rem; }
-  .pc__tag, .pc__save { top: 1rem; font-size: 0.6875rem; padding: 0.3125rem 0.625rem; }
-  .pc__tag { left: 1rem; }
-  .pc__save, .pc__tag + .pc__save { top: 1rem; left: auto; right: 1rem; }
+  .pc__tag { top: 1rem; left: 1rem; font-size: 0.6875rem; padding: 0.3125rem 0.625rem; }
+  .pc__save { top: 1rem; right: 1.25rem; gap: 0.1875rem; }
+  .pc__save small { font-size: 0.5625rem; }
+  .pc__save b { font-size: 1.625rem; }
   .pc__body { padding: 1.25rem 1.5rem 1.5rem; }
   .pc__name { font-size: 1.375rem; }
   .pc__line { display: block; margin-top: 0.25rem; font-size: 0.875rem; color: var(--muted); }

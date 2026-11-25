@@ -45,7 +45,7 @@
 
   function card(p, i) {
     var tag = p.tag ? '<i class="pc__tag">' + p.tag + '</i>' : '';
-    var save = p.was ? '<i class="pc__save">Save ' + money(p.was - p.price) + '</i>' : '';
+    var save = p.was ? '<i class="pc__save"><small>Save</small><b>' + money(p.was - p.price) + '</b></i>' : '';
     var tone = p.colors ? sw(p.colors[0]).hex : '#F5F5F5';
     return '<article class="pc" style="--i:' + i + ';--tone:' + tone + '">' +
       '<div class="pc__pic">' + tag + save +
