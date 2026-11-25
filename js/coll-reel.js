@@ -99,8 +99,11 @@
     var hit = e.target.closest('.pc__reel, .pc__peek');
     if (!hit || !window.TeswayPlayer) return;
     var btn = hit.classList.contains('pc__reel') ? hit : hit.previousElementSibling;
-    var x = reviews(btn.dataset.reel)[cur === btn ? idx : 0];
+    var at = cur === btn ? idx : 0;
     leave();
-    window.TeswayPlayer.open({ name: x.name, title: x.title, poster: x.poster, src: cr.src });
+    window.TeswayPlayer.open({
+      list: reviews(btn.dataset.reel).map(function (x) { return { name: x.name, title: x.title, poster: x.poster, src: cr.src }; }),
+      at: at
+    });
   });
 })();
