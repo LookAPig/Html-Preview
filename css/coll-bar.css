@@ -1,5 +1,5 @@
 /* ==== collection layout + toolbar ==== */
-.coll { padding-top: 1.5rem; }
+.coll { padding-top: 2.75rem; }
 .coll__bar {
   position: sticky;
   top: calc(var(--nav-top, var(--bar-h)) + 4rem);
@@ -140,7 +140,7 @@
     grid-template-columns: 16.5rem minmax(0, 1fr);
     gap: 0 3rem;
     align-items: start;
-    padding-top: 2.5rem;
+    padding-top: 5rem;
   }
   .coll__bar {
     grid-template-columns: auto minmax(0, 1fr) auto;
