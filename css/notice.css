@@ -1,3 +1,4 @@
+/* ==== notice.css ==== */
 .notice {
   position: relative;
   top: 0;
@@ -61,3 +62,71 @@
 @media (min-aspect-ratio: 1/1) {
   .notice__arrow.arw { display: grid; }
 }
+
+/* ==== flip.css ==== */
+.flip-group { display: inline-flex; gap: var(--fgap, 2px); }
+.flip-sep { color: rgba(255, 255, 255, .5); font-weight: 800; }
+.flip-unit { display: inline-flex; flex-direction: column; align-items: center; gap: 0.375rem; }
+.flip-unit small {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.flip {
+  position: relative;
+  display: inline-block;
+  width: var(--fw, 1rem);
+  height: var(--fh, 1.5rem);
+  perspective: calc(var(--fh, 1.5rem) * 5);
+  font-size: var(--fs, 0.875rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #FFF;
+}
+.flip::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  z-index: 3;
+  height: 1px;
+  background: rgba(0, 0, 0, .7);
+}
+.flip__half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  overflow: hidden;
+  background: #2E2E2E;
+  backface-visibility: hidden;
+}
+.flip__half i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--fh, 1.5rem);
+  line-height: var(--fh, 1.5rem);
+  font-style: normal;
+  text-align: center;
+}
+.flip__top { top: 0; border-radius: var(--fr, 0.25rem) var(--fr, 0.25rem) 0 0; transform-origin: 50% 100%; }
+.flip__top i { top: 0; }
+.flip__bottom {
+  bottom: 0;
+  border-radius: 0 0 var(--fr, 0.25rem) var(--fr, 0.25rem);
+  background: #282828;
+  transform-origin: 50% 0;
+}
+.flip__bottom i { bottom: 0; }
+.flip__leaf { z-index: 2; }
+.flip__bottom.flip__leaf { transform: rotateX(90deg); }
+.flip.go .flip__top.flip__leaf { animation: leafTop .26s ease-in forwards; }
+.flip.go .flip__bottom.flip__leaf { animation: leafBottom .26s .26s ease-out forwards; }
+
+@keyframes leafTop { to { transform: rotateX(-90deg); background: #1C1C1C; } }
+@keyframes leafBottom { from { transform: rotateX(90deg); background: #3A3A3A; } to { transform: rotateX(0); } }

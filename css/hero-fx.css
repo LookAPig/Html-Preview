@@ -1,7 +1,0 @@
-.hero__dots button:not(.is-on) { transition: width .5s var(--ease), background .35s var(--ease), scale .35s var(--ease); }
-
-@media (hover: hover) {
-  .hero__dots button:not(.is-on):hover { background: var(--volt); scale: 1.25; }
-}
-
-.hero__dots button:focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }

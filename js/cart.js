@@ -1,3 +1,114 @@
+/* ==== cart-data.js ==== */
+window.TESWAY_CART = {
+  cur: '$',
+  freeShip: 2000,
+  shipFee: 79,
+  products: [
+    { id: 'dual', name: 'X1 Dual-Drive', variant: 'Graphite · Size M', img: 'Images/bike-dual.jpg', price: 1899, was: 2299 },
+    { id: 'trail', name: 'X1 Trail Pro', variant: 'Sand · Size L', img: 'Images/bike-trail.jpg', price: 2399 },
+    { id: 'family', name: 'X1 Family', variant: 'Ivory · One size', img: 'Images/bike-family.jpg', price: 1699 },
+    { id: 'cargo', name: 'X1 Cargo', variant: 'Black · One size', img: 'Images/bike-cargo.jpg', price: 1999 },
+    { id: 'helmet', name: 'Trail helmet', variant: 'MIPS · M/L', price: 89,
+      icon: '<path d="M4 15a8 8 0 0 1 16 0v1H4z"/><path d="M9 8.2c1.2 1.4 1.8 3.6 1.8 6.8M15 8.2c-1.2 1.4-1.8 3.6-1.8 6.8"/><path d="M4 16h16l-1.2 2.4H5.2z"/>' },
+    { id: 'lock', name: 'U-lock pro', variant: 'Sold Secure Gold', price: 59,
+      icon: '<path d="M7.5 11V8.5a4.5 4.5 0 0 1 9 0V11"/><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M12 14.5v2"/>' },
+    { id: 'bag', name: 'Pannier bag', variant: '24 L · Waterproof', price: 79,
+      icon: '<path d="M6 8h12l-1 12H7z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/><path d="M9.5 12h5"/>' },
+    { id: 'battery', name: 'Spare battery', variant: '48V · 20Ah', price: 349,
+      icon: '<rect x="7" y="4.5" width="10" height="16" rx="2"/><path d="M10 3h4"/><path d="m12.8 8.5-2.3 4h3l-2.3 4"/>' }
+  ],
+  start: [['dual', 1], ['helmet', 1]],
+  addons: ['helmet', 'lock', 'bag', 'battery'],
+  text: {
+    title: 'Your cart',
+    shipLeft: 'Add <b>{x}</b> more for <b>free shipping</b>',
+    shipDone: 'You have unlocked <b>free shipping</b>',
+    empty: 'Your cart is empty',
+    emptySub: 'Find the TESWAY that fits your ride.',
+    emptyCta: 'Shop best sellers',
+    addons: 'Ride-ready add-ons',
+    note: 'Taxes calculated at checkout · 30-day returns · 2-year warranty',
+    checkout: 'Checkout',
+    going: 'Securing checkout…'
+  }
+};
+
+/* ==== cart-view.js ==== */
+(function () {
+  var d = window.TESWAY_CART;
+  if (!d) return;
+
+  var svg = function (body, cls) {
+    return '<svg' + (cls ? ' class="' + cls + '"' : '') + ' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + body + '</svg>';
+  };
+  var ico = {
+    x: svg('<path d="M6 6l12 12M18 6 6 18"/>'),
+    minus: svg('<path d="M6 12h12"/>'),
+    plus: svg('<path d="M12 6v12M6 12h12"/>'),
+    trash: svg('<path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12"/>'),
+    arrow: svg('<path d="M5 12h14M13 6l6 6-6 6"/>'),
+    cart: svg('<path d="M3.8 5.2h2l2 9.4h10l1.7-6.6H8.4"/><circle cx="10" cy="17.6" r="1.2"/><circle cx="16.4" cy="17.6" r="1.2"/>')
+  };
+
+  function money(n) { return d.cur + n.toLocaleString('en-US'); }
+
+  function pic(p) {
+    return p.img
+      ? '<span class="ci__pic"><img src="' + p.img + '" alt="" loading="lazy" decoding="async"></span>'
+      : '<span class="ci__pic is-ico">' + svg(p.icon) + '</span>';
+  }
+
+  function price(p, qty) {
+    return (p.was ? '<s>' + money(p.was * qty) + '</s>' : '') + '<em>' + money(p.price * qty) + '</em>';
+  }
+
+  function line(p, qty) {
+    return '<li class="ci" data-id="' + p.id + '">' + pic(p) +
+      '<div class="ci__info">' +
+        '<div class="ci__top"><div><b>' + p.name + '</b><small>' + p.variant + '</small></div>' +
+          '<button class="ci__rm" type="button" data-rm aria-label="Remove ' + p.name + '">' + ico.trash + '</button></div>' +
+        '<div class="ci__row">' +
+          '<div class="qty" role="group" aria-label="Quantity">' +
+            '<button type="button" data-q="-1" aria-label="Decrease">' + ico.minus + '</button>' +
+            '<output aria-live="polite">' + qty + '</output>' +
+            '<button type="button" data-q="1" aria-label="Increase">' + ico.plus + '</button></div>' +
+          '<span class="ci__price">' + price(p, qty) + '</span>' +
+        '</div></div></li>';
+  }
+
+  function addon(p) {
+    return '<button class="add" type="button" data-add="' + p.id + '">' +
+      '<span class="add__pic">' + svg(p.icon) + '</span>' +
+      '<span class="add__txt"><b>' + p.name + '</b><small>' + money(p.price) + '</small></span>' +
+      '<i class="add__plus">' + ico.plus + '</i></button>';
+  }
+
+  function shell() {
+    var t = d.text;
+    return '<div class="cart__scrim" data-close></div>' +
+      '<div class="cart__panel">' +
+        '<header class="cart__head"><h2 id="cartTitle">' + t.title + '<sup class="cart__count">0</sup></h2>' +
+          '<button class="cart__x" type="button" data-close aria-label="Close cart">' + ico.x + '</button></header>' +
+        '<div class="cart__ship"><p class="cart__ship-txt"></p><span class="cart__bar"><i></i></span></div>' +
+        '<div class="cart__body">' +
+          '<ul class="cart__list"></ul>' +
+          '<div class="cart__empty"><span class="cart__empty-ico">' + ico.cart + '</span><b>' + t.empty + '</b><p>' + t.emptySub + '</p>' +
+            '<a class="hbtn cart__shop" href="#hot" data-close>' + t.emptyCta + ico.arrow + '</a></div>' +
+          '<div class="cart__more"><p class="eyebrow">' + t.addons + '</p><div class="cart__adds"></div></div>' +
+        '</div>' +
+        '<footer class="cart__foot">' +
+          '<dl class="cart__sum"><div><dt>Subtotal</dt><dd class="cart__sub"></dd></div>' +
+            '<div><dt>Shipping</dt><dd class="cart__fee"></dd></div></dl>' +
+          '<button class="hbtn cart__go" type="button"><span class="cart__go-txt">' + t.checkout + '</span><b class="cart__total"></b>' + ico.arrow + '</button>' +
+          '<p class="cart__note">' + t.note + '</p>' +
+        '</footer>' +
+      '</div>';
+  }
+
+  window.TeswayCartView = { money: money, price: price, line: line, addon: addon, shell: shell };
+})();
+
+/* ==== cart.js ==== */
 (function () {
   var d = window.TESWAY_CART;
   var v = window.TeswayCartView;

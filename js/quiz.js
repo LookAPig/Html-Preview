@@ -1,165 +1,259 @@
+/* ==== quiz-data.js ==== */
+window.TESWAY_QUIZ = {
+  banner: {
+    label: 'Question',
+    scenes: ['Images/hero-desktop.jpg', 'Images/brand-beyond.jpg', 'Images/hero-trail.jpg', 'Images/story-delivery.jpg'],
+    back: 'Back'
+  },
+  questions: [
+    {
+      q: 'What will you mainly use it for?',
+      options: [
+        { label: 'City commute', hint: 'Quiet daily rides' },
+        { label: 'Trail & off-road', hint: 'Climb and gravel' },
+        { label: 'Family & kids', hint: 'Weekend runs' },
+        { label: 'Cargo & delivery', hint: 'Haul more per charge' }
+      ]
+    },
+    {
+      q: 'How far do you ride most days?',
+      options: [
+        { label: 'Under 20 km', hint: 'Short hops' },
+        { label: '20–60 km', hint: 'Daily range' },
+        { label: '60–120 km', hint: 'Longer loops' },
+        { label: '120 km+', hint: 'Touring days' }
+      ]
+    },
+    {
+      q: 'What terrain do you hit most?',
+      options: [
+        { label: 'Paved city roads', hint: 'Smooth & quick' },
+        { label: 'Mixed gravel', hint: 'Path to trail' },
+        { label: 'Steep dirt trails', hint: 'Serious climb' },
+        { label: 'Farm & ranch roads', hint: 'Dirt all day' }
+      ]
+    },
+    {
+      q: 'Do you need extra capacity?',
+      options: [
+        { label: 'Just me', hint: 'Light & nimble' },
+        { label: 'A child seat', hint: 'Family ready' },
+        { label: 'A cargo rack', hint: 'Gear & groceries' },
+        { label: 'Heavy payload', hint: '50 kg+ loads' }
+      ]
+    }
+  ],
+  email: {
+    label: 'Almost there',
+    title: 'Your match is ready',
+    sub: 'Leave your email and we will send a shortlist with the right TESWAY for your ride.',
+    placeholder: 'Your email',
+    submit: 'Get my match',
+    err: 'Please enter a valid email.'
+  },
+  done: {
+    label: 'Subscribed',
+    title: 'You are on the list',
+    sub: 'Your personal TESWAY match is on its way. Check your inbox in a few minutes.',
+    btn: 'Back to bikes',
+    href: '#hot',
+    again: 'Retake the quiz'
+  }
+};
+
+/* ==== quiz-stage.js ==== */
 (function () {
   var data = window.TESWAY_QUIZ;
   var mount = document.getElementById('quizMount');
-  if (!data || !mount) return;
+  if (!data || !mount || !data.questions.length) return;
 
-  var qs = data.questions;
-  var total = qs.length;
-  var steps = total + 1;
-  var step = 0;
-  var busy = false;
-  var lastFocus = null;
-  var xico = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+  var b = data.banner, qs = data.questions, n = qs.length, E = data.email, D = data.done;
+  var arrow = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
   var tick = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg>';
+  var left = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4"/></svg>';
+  var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  var modal = document.createElement('div');
-  modal.className = 'qmodal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-modal', 'true');
-  modal.setAttribute('aria-labelledby', 'qmodalTitle');
-  modal.innerHTML =
-    '<div class="qmodal__panel">' +
-    '<div class="qmodal__top"><p class="qmodal__step"><b id="qStep">01</b> / ' + pad(steps) + '</p>' +
-    '<span class="qmodal__bar" aria-hidden="true"><i id="qBar"></i></span>' +
-    '<button class="qmodal__close" type="button" aria-label="Close">' + xico + '</button></div>' +
-    '<div class="qmodal__body" id="qBody"></div></div>';
-  document.body.appendChild(modal);
+  var pics = [];
+  qs.forEach(function (q, i) {
+    var src = q.img || b.scenes[i % b.scenes.length];
+    if (pics.indexOf(src) < 0) pics.push(src);
+  });
+  function picOf(i) { return pics.indexOf(qs[i].img || b.scenes[i % b.scenes.length]); }
+  function pad(v) { return String(v).padStart(2, '0'); }
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, calm.matches ? 0 : ms); }); }
 
-  var body = document.getElementById('qBody');
-  var stepEl = document.getElementById('qStep');
-  var bar = document.getElementById('qBar');
-  var closeBtn = modal.querySelector('.qmodal__close');
+  var scene = document.createElement('div');
+  scene.className = 'quiz__scene';
+  scene.setAttribute('aria-hidden', 'true');
+  scene.innerHTML = pics.map(function (src, i) {
+    return '<img class="quiz__img' + (i === picOf(0) ? ' is-on' : '') + '" src="' + src + '" alt="" loading="lazy" decoding="async">';
+  }).join('');
 
-  function pad(n) { return String(n).padStart(2, '0'); }
-  function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+  var copy = document.createElement('div');
+  copy.className = 'quiz__copy reveal';
+  copy.setAttribute('data-delay', '1');
+  copy.innerHTML =
+    '<div class="quiz__card">' +
+      '<div class="quiz__top">' +
+        '<p class="quiz__count"><span class="quiz__roll"><span class="quiz__lab"></span></span></p>' +
+      '</div>' +
+      '<div class="quiz__body" aria-live="polite"></div>' +
+    '</div>';
 
-  function play() {
-    body.classList.remove('is-in', 'is-out');
-    void body.offsetWidth;
-    body.classList.add('is-in');
+  mount.insertBefore(scene, mount.firstChild);
+  mount.appendChild(copy);
+
+  var imgs = scene.querySelectorAll('.quiz__img');
+  var lab = copy.querySelector('.quiz__lab');
+  var body = copy.querySelector('.quiz__body');
+  var step = 0, picks = [], busy = false, pic = picOf(0);
+
+  function labHtml(s) {
+    if (s === 'done') return D.label;
+    if (s >= n) return E.label;
+    return b.label + ' <b class="quiz__num">' + pad(s + 1) + '</b> / ' + pad(n);
   }
 
-  function progress() {
-    var n = Math.min(step + 1, steps);
-    stepEl.textContent = pad(n);
-    bar.style.transform = 'scaleX(' + (n / steps).toFixed(4) + ')';
-  }
+  function backBtn() { return '<button class="quiz__back" type="button">' + left + '<span>' + b.back + '</span></button>'; }
 
-  function build() {
-    if (step === 'done') return doneView();
-    progress();
-    if (step >= total) return emailView();
-    var item = qs[step];
-    body.innerHTML =
-      '<h2 class="qmodal__q" id="qmodalTitle">' + item.q + '</h2>' +
-      '<div class="qmodal__opts" role="radiogroup" aria-labelledby="qmodalTitle">' +
-      item.options.map(function (o, i) {
-        return '<button class="qmodal__opt" type="button" role="radio" aria-checked="false" style="--i:' + i + '">' +
-          '<b>' + o.label + '</b><small>' + o.hint + '</small><i class="qmodal__tick">' + tick + '</i></button>';
-      }).join('') + '</div>';
-    body.querySelectorAll('.qmodal__opt').forEach(function (btn) {
-      btn.addEventListener('click', function () { pick(btn); });
-    });
+  function qView(i) {
+    var q = qs[i];
+    return '<p class="quiz__line" id="quizQ">' + q.q + '</p>' +
+      '<div class="quiz__opts" role="radiogroup" aria-labelledby="quizQ">' +
+      q.options.map(function (o, j) {
+        return '<button class="quiz__opt" type="button" role="radio" aria-checked="false" title="' + o.hint + '" style="--i:' + j + '">' +
+          '<i class="quiz__key" aria-hidden="true">' + String.fromCharCode(65 + j) + '</i><span>' + o.label + '</span>' +
+          '<i class="quiz__go" aria-hidden="true">' + arrow + tick + '</i></button>';
+      }).join('') + '</div>' + (i > 0 ? backBtn() : '');
   }
 
   function emailView() {
-    var e = data.email;
-    body.innerHTML =
-      '<h2 class="qmodal__q" id="qmodalTitle">' + e.title + '</h2>' +
-      '<p class="qmodal__sub">' + e.sub + '</p>' +
-      '<form class="qmodal__form" id="qForm" novalidate>' +
-      '<input type="email" id="qEmail" placeholder="' + e.placeholder + '" autocomplete="email" aria-label="Email" required>' +
-      '<button class="hbtn" type="submit">' + e.submit + '</button>' +
-      '<p class="qmodal__msg" id="qMsg" aria-live="polite"></p></form>';
-    document.getElementById('qForm').addEventListener('submit', onSubmit);
+    return '<p class="quiz__line">' + E.title + '</p>' +
+      '<p class="quiz__sub">' + E.sub + '</p>' +
+      '<p class="quiz__tags">' + picks.map(function (t) { return '<span>' + t + '</span>'; }).join('') + '</p>' +
+      '<form class="quiz__form" novalidate>' +
+        '<span class="quiz__field">' +
+          '<input type="email" name="email" placeholder="' + E.placeholder + '" autocomplete="email" aria-label="Email" required>' +
+          '<button class="hbtn quiz__send" type="submit">' + E.submit + arrow + '</button>' +
+        '</span>' +
+        '<small class="quiz__msg" aria-live="assertive"></small>' +
+      '</form>' + backBtn();
   }
 
   function doneView() {
-    var d = data.done;
-    stepEl.textContent = pad(steps);
-    bar.style.transform = 'scaleX(1)';
-    body.innerHTML =
-      '<div class="qmodal__done"><i class="qmodal__badge">' + tick + '</i>' +
-      '<h2 class="qmodal__q" id="qmodalTitle">' + d.title + '</h2>' +
-      '<p class="qmodal__sub">' + d.sub + '</p>' +
-      '<button class="hbtn" type="button" id="qDone">' + d.btn + '</button></div>';
-    document.getElementById('qDone').addEventListener('click', close);
+    return '<div class="quiz__done"><i class="quiz__badge">' + tick + '</i>' +
+      '<div><p class="quiz__line">' + D.title + '</p><p class="quiz__sub">' + D.sub + '</p></div></div>' +
+      '<div class="quiz__act">' +
+        '<a class="hbtn quiz__cta" href="' + D.href + '">' + D.btn + arrow + '</a>' +
+        '<button class="quiz__again" type="button">' + D.again + '</button>' +
+      '</div>';
+  }
+
+  function render() {
+    body.innerHTML = step === 'done' ? doneView() : step >= n ? emailView() : qView(step);
+  }
+
+  function paint() {
+    copy.classList.toggle('is-done', step === 'done');
+  }
+
+  function showPic(i) {
+    if (i === pic || !imgs[i]) return;
+    imgs[pic].classList.remove('is-on');
+    imgs[pic = i].classList.add('is-on');
+  }
+
+  function roll(el, html) {
+    el.classList.add('is-out');
+    setTimeout(function () {
+      el.innerHTML = html;
+      el.classList.remove('is-out');
+      el.classList.add('is-pre');
+      void el.offsetWidth;
+      el.classList.remove('is-pre');
+    }, calm.matches ? 0 : 260);
   }
 
   function swap(next) {
-    if (busy) return Promise.resolve();
+    var prev = step;
     busy = true;
     body.classList.remove('is-in');
     body.classList.add('is-out');
-    return wait(220).then(function () {
+    var same = typeof prev === 'number' && typeof next === 'number' && prev < n && next < n;
+    var num = lab.querySelector('.quiz__num');
+    if (same && num) roll(num, pad(next + 1)); else roll(lab, labHtml(next));
+    step = next;
+    paint();
+    if (typeof next === 'number' && next < n) showPic(picOf(next));
+    else if (next === 'done') showPic(0);
+    return wait(260).then(function () {
       var h0 = body.offsetHeight;
-      step = next;
-      build();
+      render();
       body.style.height = h0 + 'px';
+      body.classList.remove('is-out');
       void body.offsetWidth;
       body.style.height = body.scrollHeight + 'px';
-      play();
-      return wait(380);
+      body.classList.add('is-in');
+      return wait(460);
     }).then(function () {
       body.style.height = '';
       busy = false;
-      var input = document.getElementById('qEmail');
-      if (input) input.focus();
+      var input = body.querySelector('input');
+      if (input && window.matchMedia('(hover: hover)').matches) input.focus({ preventScroll: true });
     });
   }
 
   function pick(btn) {
     if (busy) return;
-    body.querySelectorAll('.qmodal__opt').forEach(function (b) {
-      b.classList.toggle('is-on', b === btn);
-      b.setAttribute('aria-checked', b === btn);
+    busy = true;
+    body.querySelectorAll('.quiz__opt').forEach(function (o) {
+      o.classList.toggle('is-on', o === btn);
+      o.setAttribute('aria-checked', o === btn);
     });
     body.classList.add('is-picked');
-    wait(360).then(function () {
+    picks[step] = btn.querySelector('span').textContent;
+    wait(420).then(function () {
       body.classList.remove('is-picked');
       swap(step + 1);
     });
   }
 
-  function onSubmit(ev) {
-    ev.preventDefault();
-    var input = document.getElementById('qEmail');
-    var msg = document.getElementById('qMsg');
-    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
-    if (ok) return swap('done');
-    msg.classList.add('err');
-    msg.textContent = data.email.err;
-    ev.target.classList.remove('is-shake');
-    void ev.target.offsetWidth;
-    ev.target.classList.add('is-shake');
+  function submit(form) {
+    var input = form.querySelector('input');
+    var msg = form.querySelector('.quiz__msg');
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) {
+      form.classList.add('is-sending');
+      return wait(380).then(function () { swap('done'); });
+    }
+    msg.textContent = E.err;
+    form.classList.remove('is-shake');
+    void form.offsetWidth;
+    form.classList.add('is-shake', 'is-err');
     input.focus();
   }
 
-  function open(start) {
-    lastFocus = document.activeElement;
-    step = typeof start === 'number' ? start : 0;
-    busy = false;
-    body.style.height = '';
-    build();
-    body.classList.remove('is-in', 'is-out');
-    modal.classList.add('is-on');
-    document.body.style.overflow = 'hidden';
-    requestAnimationFrame(play);
-    closeBtn.focus({ preventScroll: true });
-  }
+  body.addEventListener('click', function (e) {
+    var opt = e.target.closest('.quiz__opt');
+    if (opt) return pick(opt);
+    if (e.target.closest('.quiz__back') && !busy && step > 0) return swap(step - 1);
+    if (e.target.closest('.quiz__again') && !busy) { picks = []; swap(0); }
+  });
+  body.addEventListener('submit', function (e) { e.preventDefault(); if (!busy) submit(e.target); });
+  body.addEventListener('input', function (e) {
+    var form = e.target.closest('.quiz__form');
+    if (form && form.classList.contains('is-err')) {
+      form.classList.remove('is-err');
+      form.querySelector('.quiz__msg').textContent = '';
+    }
+  });
 
-  function close() {
-    if (!modal.classList.contains('is-on')) return;
-    body.classList.remove('is-in');
-    body.classList.add('is-out');
-    modal.classList.remove('is-on');
-    document.body.style.overflow = '';
-    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  lab.innerHTML = labHtml(0);
+  render();
+  paint();
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (en) {
+      if (en[0].isIntersecting) { body.classList.add('is-in'); io.disconnect(); }
+    }, { threshold: 0.6 });
+    io.observe(body);
   }
-
-  mount.querySelectorAll('[data-quiz-open]').forEach(function (el) { el.addEventListener('click', function () { open(0); }); });
-  window.TeswayQuizOpen = open;
-  closeBtn.addEventListener('click', close);
-  modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
-  window.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
