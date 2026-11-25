@@ -24,7 +24,11 @@
   <link rel="stylesheet" href="css/btn.css?v=20">
   <link rel="stylesheet" href="css/coll.css?v=1">
   <link rel="stylesheet" href="css/coll-card.css?v=1">
-  <link rel="stylesheet" href="css/coll-perk.css?v=1">
+  <link rel="stylesheet" href="css/csvc.css?v=1">
+  <link rel="stylesheet" href="css/uses.css?v=20">
+  <link rel="stylesheet" href="css/creators.css?v=20">
+  <link rel="stylesheet" href="css/blog.css?v=20">
+  <link rel="stylesheet" href="css/faq.css?v=2">
 </head>
 <body>
   <div class="battery" aria-hidden="true"><i id="batteryFill"></i></div>
@@ -83,6 +87,7 @@
           </ul>
         </div>
       </div>
+      <ul class="csvc" id="collSvc" aria-label="TESWAY services"></ul>
     </section>
 
     <section class="coll" id="coll" aria-label="All bikes">
@@ -90,17 +95,49 @@
       <div class="coll__grid" id="collGrid"></div>
     </section>
 
-    <section class="cperk" id="perks" aria-label="Why buy from TESWAY">
-      <ul class="cperk__list reveal" id="collPerks"></ul>
-      <a class="cfind reveal" data-delay="1" href="index.html#quiz">
-        <img src="Images/quiz-banner.jpg" alt="" loading="lazy" decoding="async">
-        <span class="cfind__copy">
-          <span class="eyebrow">Ride finder</span>
-          <b class="cfind__title">Not sure <em>which one?</em></b>
-          <span class="cfind__sub">Answer a few quick questions and we will match you with the right TESWAY.</span>
-          <span class="hbtn cfind__btn">Find my ebike</span>
-        </span>
-      </a>
+    <section class="uses" id="uses" aria-label="Ride scenes">
+      <header class="sec-head reveal">
+        <p class="eyebrow eyebrow--dot">Ride scenes</p>
+        <h2>Eight Ways <em>To Ride</em></h2>
+        <p class="sec-sub">One TESWAY, tuned for wherever you are headed.</p>
+      </header>
+      <div class="uses__list reveal" id="usesList"></div>
+    </section>
+
+    <section class="creators" id="creators" aria-label="Creator reviews">
+      <header class="sec-head reveal">
+        <p class="eyebrow eyebrow--dot">Creator reviews</p>
+        <h2>Ridden By <em>Real Creators</em></h2>
+        <p class="sec-sub">First rides and long-term tests from the channels riders follow.</p>
+      </header>
+      <div class="cr reveal" id="creatorsBox"></div>
+    </section>
+
+    <section class="blog" id="blog" aria-label="Journal">
+      <header class="sec-head reveal">
+        <p class="eyebrow eyebrow--dot">The journal</p>
+        <h2>Stories From <em>The Road</em></h2>
+        <p class="sec-sub">Ride reports, how-to guides and news from the TESWAY crew.</p>
+      </header>
+      <div class="blog__box reveal" data-delay="1" id="blogBox"></div>
+    </section>
+
+    <section class="faq" id="faq" aria-label="Frequently asked questions">
+      <div class="faq__side">
+        <header class="sec-head reveal">
+          <p class="eyebrow eyebrow--dot">FAQ</p>
+          <h2>Questions? <em>Answered.</em></h2>
+          <p class="sec-sub">Everything you need to know before your first ride.</p>
+        </header>
+        <div class="faq__help reveal" data-delay="1">
+          <span class="faq__crew" aria-hidden="true"><i>AL</i><i>MK</i><i>JS</i></span>
+          <b>Still have questions?</b>
+          <p>Real riders on our support team. Typical reply in 2 minutes.</p>
+          <a class="hbtn" href="#foot" data-chat><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M5 6.5h14v9H10l-4 3.2V15.5H5z"/></svg>Chat with us</a>
+          <a class="faq__mail" href="mailto:support@tesway.com">or email support@tesway.com</a>
+        </div>
+      </div>
+      <div class="faq__box reveal" data-delay="2" id="faqBox"></div>
     </section>
   </main>
 
@@ -117,7 +154,11 @@
   <script src="js/dock.js?v=20" defer></script>
   <script src="js/scrollbar.js?v=20" defer></script>
   <script src="js/coll-data.js?v=1" defer></script>
-  <script src="js/coll.js?v=1" defer></script>
+  <script src="js/coll.js?v=2" defer></script>
+  <script src="js/uses.js?v=20" defer></script>
+  <script src="js/creators.js?v=20" defer></script>
+  <script src="js/blog.js?v=20" defer></script>
+  <script src="js/faq.js?v=1" defer></script>
   <script src="js/reveal.js?v=20" defer></script>
   <script src="js/xlink.js?v=1" defer></script>
 </body>

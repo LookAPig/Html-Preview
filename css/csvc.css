@@ -1,0 +1,78 @@
+/* ==== collection brand services ==== */
+.csvc {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 0.75rem;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--bg);
+  box-shadow: 0 0 0 1px var(--line);
+  list-style: none;
+}
+.csvc__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 1.125rem 1rem;
+  animation: csvc-in .7s calc(.35s + var(--i, 0) * .08s) var(--ease) both;
+}
+.csvc__item:nth-child(odd)::after,
+.csvc__item:nth-child(-n + 2)::before {
+  content: "";
+  position: absolute;
+  background: var(--line);
+}
+.csvc__item:nth-child(odd)::after { top: 1rem; bottom: 1rem; right: 0; width: 1px; }
+.csvc__item:nth-child(-n + 2)::before { left: 1rem; right: 1rem; bottom: 0; height: 1px; }
+@keyframes csvc-in { from { opacity: 0; transform: translateY(1.25rem); } }
+
+.csvc__ico {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--bg-2);
+  color: var(--text);
+  transition: background .35s var(--ease), color .35s var(--ease), transform .45s cubic-bezier(.34, 1.4, .64, 1);
+}
+.csvc__ico svg { width: 1.25rem; height: 1.25rem; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.csvc__ico .ico-base { stroke: currentColor; stroke-width: 1.7; }
+.csvc__ico .ico-draw {
+  stroke: var(--volt);
+  stroke-width: 1.9;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset .7s cubic-bezier(.22, 1, .36, 1);
+}
+.csvc__txt { display: flex; flex-direction: column; gap: 0.125rem; min-width: 0; }
+.csvc__txt b { font-size: 0.875rem; font-weight: 800; letter-spacing: -.01em; line-height: 1.3; }
+.csvc__txt small { font-size: 0.75rem; line-height: 1.45; color: var(--muted); }
+
+.csvc__item:active .csvc__ico { transform: scale(.92); }
+@media (hover: hover) {
+  .csvc__item:hover .csvc__ico { background: var(--text); color: #FFF; transform: translateY(-0.1875rem); }
+  .csvc__item:hover .ico-draw { stroke-dashoffset: 0; }
+}
+
+@media (min-aspect-ratio: 1/1) {
+  .csvc { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 1rem; }
+  .csvc__item { flex-direction: row; align-items: center; gap: 1rem; padding: 1.5rem 1.75rem; }
+  .csvc__item:nth-child(-n + 2)::before { display: none; }
+  .csvc__item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    display: block;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    right: 0;
+    width: 1px;
+    background: var(--line);
+  }
+  .csvc__ico { width: 3rem; height: 3rem; }
+  .csvc__ico svg { width: 1.5rem; height: 1.5rem; }
+  .csvc__txt b { font-size: 1rem; }
+  .csvc__txt small { font-size: 0.8125rem; }
+}

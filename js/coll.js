@@ -99,9 +99,11 @@
     }, 1600);
   });
 
-  var perks = document.getElementById('collPerks');
-  if (perks) perks.innerHTML = d.perks.map(function (p) {
-    return '<li class="cperk__item"><span class="cperk__ico">' + svg(p.icon) + '</span><b>' + p.title + '</b><small>' + p.text + '</small></li>';
+  var svc = document.getElementById('collSvc');
+  if (svc) svc.innerHTML = d.perks.map(function (p, i) {
+    return '<li class="csvc__item" style="--i:' + i + '"><span class="csvc__ico"><svg viewBox="0 0 24 24" aria-hidden="true">' +
+      '<path class="ico-base" d="' + p.icon + '"/><path class="ico-draw" d="' + p.icon + '" pathLength="1"/></svg></span>' +
+      '<span class="csvc__txt"><b>' + p.title + '</b><small>' + p.text + '</small></span></li>';
   }).join('');
 
   render();
