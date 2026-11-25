@@ -21,7 +21,7 @@ window.TESWAY_BRAND = {
       icon: '<circle cx="6" cy="16" r="3.5"/><circle cx="18" cy="16" r="3.5"/><path d="M6 16 9.5 9h5l3.5 7M9.5 9 12 16h-6M13 6h2.5l-1 3"/>'
     },
     {
-      fx: 'pulse', big: '2 yr', sub: 'Warranty on frame, motors & battery', img: 'Images/scenes/scene-hunting.jpg',
+      fx: 'pulse', title: '2-year warranty', sub: 'Frame, motors & battery covered', img: 'Images/scenes/scene-hunting.jpg',
       icon: '<path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>'
     },
     {
@@ -140,7 +140,7 @@ window.TESWAY_BRAND = {
 
   function tile(t, i) {
     var ico = '<i class="btile__ico btile__ico--' + t.fx + '">' + svg(t.icon) + '</i>';
-    var head = t.big ? ico + '<strong class="btile__big">' + t.big + '</strong>' : ico + '<h3 class="btile__title">' + t.title + '</h3>';
+    var head = ico + '<h3 class="btile__title">' + t.title + '</h3>';
     return '<article class="btile reveal" data-delay="' + (i + 1) + '">' +
       '<img class="btile__img" src="' + t.img + '" alt="" loading="lazy" decoding="async">' +
       '<div class="btile__body">' + head + '<p class="btile__sub">' + t.sub + '</p></div></article>';

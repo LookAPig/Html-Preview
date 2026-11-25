@@ -35,7 +35,6 @@
 .reveal[data-delay="4"] { transition-delay: .4s; }
 .btile__body { position: relative; z-index: 2; display: grid; justify-items: start; padding: 1rem; }
 .btile__title { font-size: 1rem; font-weight: 700; line-height: 1.25; }
-.btile__big { font-size: 1.75rem; font-weight: 800; line-height: 1.1; letter-spacing: -.01em; }
 .btile__sub { margin-top: 0.25rem; font-size: 0.75rem; line-height: 1.4; color: rgba(255, 255, 255, .78); }
 
 .btile__ico { display: block; margin-bottom: 0.625rem; }
@@ -93,7 +92,6 @@
   .btile__ico { margin-bottom: 0.875rem; }
   .btile__ico svg { width: 1.875rem; height: 1.875rem; }
   .btile__title { font-size: 1.375rem; }
-  .btile__big { font-size: 2.5rem; }
   .btile__sub { font-size: 0.875rem; }
 }
 
