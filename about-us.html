@@ -22,10 +22,10 @@
   <link rel="stylesheet" href="css/search.css?v=20">
   <link rel="stylesheet" href="css/dock.css?v=20">
   <link rel="stylesheet" href="css/scrollbar.css?v=20">
-  <link rel="stylesheet" href="css/about-stage.css?v=4">
+  <link rel="stylesheet" href="css/about-stage.css?v=5">
   <link rel="stylesheet" href="css/about-hero.css?v=4">
-  <link rel="stylesheet" href="css/about-map.css?v=4">
-  <link rel="stylesheet" href="css/about-time.css?v=4">
+  <link rel="stylesheet" href="css/about-map.css?v=5">
+  <link rel="stylesheet" href="css/about-time.css?v=5">
   <link rel="stylesheet" href="css/about-craft.css?v=4">
   <link rel="stylesheet" href="css/about-voice.css?v=4">
   <link rel="stylesheet" href="css/btn.css?v=23">
@@ -71,6 +71,8 @@
   <main>
     <section class="astage" id="about" aria-label="About TESWAY">
       <div class="astage__pin">
+        <canvas class="aworld" id="aboutWorld" aria-hidden="true"></canvas>
+        <div class="aworld__tags" id="worldTags" aria-hidden="true"></div>
         <div class="asc asc--hero" id="top" aria-label="Introduction">
           <div class="hero ahero">
             <div class="hs is-on">
@@ -104,8 +106,7 @@
         </div>
 
         <div class="asc asc--map" id="reach" aria-label="Global presence">
-          <div class="amap__panel">
-            <div class="amap__copy">
+          <div class="amap__copy">
               <header class="sec-head">
                 <p class="eyebrow eyebrow--dot">Global presence</p>
                 <h2>Wherever <em>The Road Goes</em></h2>
@@ -118,8 +119,6 @@
                 <li><b data-count="6">0</b>Warehouses</li>
               </ul>
               <div class="amap__regions" id="mapRegions" role="tablist" aria-label="Regions"></div>
-            </div>
-            <div class="amap__map"><canvas id="mapCanvas" aria-label="Map of TESWAY warehouses and service hubs" role="img"></canvas></div>
           </div>
         </div>
 
@@ -127,8 +126,8 @@
           <header class="sec-head atime__head">
             <p class="eyebrow eyebrow--dot">Our story</p>
             <h2>Ten Years <em>On The Road</em></h2>
+            <p class="sec-sub">Scroll to ride from our Shenzhen garage to 40+ countries, one milestone at a time.</p>
           </header>
-          <div class="tw" id="timeWorld" aria-hidden="true"></div>
           <ol class="atime__rail" id="timeRail"></ol>
           <ol class="sr-only" id="timeList"></ol>
         </div>
@@ -179,12 +178,12 @@
   <script src="js/about-data.js?v=3" defer></script>
   <script src="js/about-world.js?v=1" defer></script>
   <script src="js/about-hero.js?v=4" defer></script>
-  <script src="js/about-map-draw.js?v=4" defer></script>
-  <script src="js/about-map.js?v=4" defer></script>
-  <script src="js/about-time.js?v=4" defer></script>
+  <script src="js/about-map.js?v=5" defer></script>
+  <script src="js/about-time.js?v=5" defer></script>
   <script src="js/about-craft.js?v=4" defer></script>
   <script src="js/about-voice.js?v=4" defer></script>
-  <script src="js/about-stage.js?v=4" defer></script>
+  <script src="js/about-stage.js?v=5" defer></script>
+  <script type="module" src="js/a3d/main.js?v=1"></script>
   <script src="js/xlink.js?v=1" defer></script>
 </body>
 </html>

@@ -1,13 +1,11 @@
 /* ==== about-map.js · global presence: region list + canvas map ==== */
 (function () {
-  var cv = document.getElementById('mapCanvas');
   var list = document.getElementById('mapRegions');
   var data = window.TESWAY_ABOUT && window.TESWAY_ABOUT.map;
-  if (!cv || !list || !data || !window.TESWAY_WORLD || !window.TeswayMapDraw) return;
+  if (!list || !data) return;
 
   var STEP = 4500;
   var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var map = window.TeswayMapDraw(cv, data, window.TESWAY_WORLD);
   var now = -1, timer = 0, auto = !calm, seen = false;
 
   list.innerHTML = data.regions.map(function (rg, i) {
@@ -34,7 +32,7 @@
         b.classList.toggle('is-on', k === i);
         b.setAttribute('aria-selected', String(k === i));
       });
-      map.set(i);
+      document.dispatchEvent(new CustomEvent('aregion', { detail: i }));
     }
     run();
   }
@@ -46,7 +44,6 @@
 
   window.TeswayOnScene('map', function (v) {
     seen = v;
-    map.play(v);
     run();
     if (v) window.TeswayCount(document.getElementById('mapStats'), 200);
   });
