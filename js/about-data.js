@@ -4,7 +4,7 @@ window.TESWAY_ABOUT = {
     hq: { name: 'Shenzhen HQ', tag: 'R&D · Factory', lon: 114.1, lat: 22.5 },
     regions: [
       {
-        name: 'North America', short: 'NA', lon: -95, lat: 40,
+        name: 'North America', short: 'NA', lon: -92, lat: 40, zoom: 1.7,
         text: 'Warehouses on both coasts, so most orders reach your door in under a week.',
         stats: [['2', 'Warehouses'], ['320+', 'Dealers'], ['3–5 d', 'Delivery']],
         pins: [
@@ -14,7 +14,7 @@ window.TESWAY_ABOUT = {
         ]
       },
       {
-        name: 'Europe', short: 'EU', lon: 6, lat: 50,
+        name: 'Europe', short: 'EU', lon: 4, lat: 50, zoom: 2.6,
         text: 'EU-certified bikes shipped from Rotterdam, serviced by a growing dealer network.',
         stats: [['1', 'Warehouse'], ['180+', 'Dealers'], ['4–7 d', 'Delivery']],
         pins: [
@@ -25,7 +25,7 @@ window.TESWAY_ABOUT = {
         ]
       },
       {
-        name: 'Oceania', short: 'OC', lon: 145, lat: -32,
+        name: 'Oceania', short: 'OC', lon: 158, lat: -32, zoom: 2,
         text: 'Built for long Aussie roads, with local stock and support on the east coast.',
         stats: [['1', 'Warehouse'], ['60+', 'Dealers'], ['3–6 d', 'Delivery']],
         pins: [
@@ -35,7 +35,7 @@ window.TESWAY_ABOUT = {
         ]
       },
       {
-        name: 'Asia', short: 'AS', lon: 118, lat: 28,
+        name: 'Asia', short: 'AS', lon: 118, lat: 20, zoom: 1.7,
         text: 'Where every TESWAY is designed, tested and built before it heads out.',
         stats: [['1', 'Factory'], ['90+', 'Dealers'], ['2–5 d', 'Delivery']],
         pins: [
