@@ -89,9 +89,5 @@
   measure();
   addEventListener('resize', measure);
   addEventListener('load', measure);
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (es) {
-      if (es[0].isIntersecting) start(); else running = false;
-    }).observe(rowsBox);
-  } else start();
+  window.TeswayOnScene('voice', function (on) { if (on) { measure(); start(); } else running = false; });
 })();

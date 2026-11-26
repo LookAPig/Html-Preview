@@ -14,7 +14,7 @@
   }).join('');
 
   listEl.innerHTML = data.points.map(function (p, i) {
-    return '<article class="acard reveal" data-delay="' + Math.min(i, 3) + '">' +
+    return '<article class="acard">' +
       '<div class="acard__pic" style="--x:' + p.x + '%;--y:' + p.y + '%;--z:' + p.z + '">' +
         '<img src="' + data.img + '" alt="" loading="lazy" decoding="async">' +
         (p.z > 1 ? '<i class="acard__ring" aria-hidden="true"></i>' : '') +
@@ -24,5 +24,9 @@
     '</article>';
   }).join('');
 
-  if (window.TeswayCount) window.TeswayCount(statsEl, 100);
+  window.TeswayOnScene('craft', function (on) {
+    if (!on) return;
+    window.TeswayCount(statsEl, 100);
+    listEl.querySelectorAll('.acard').forEach(function (c, i) { setTimeout(function () { c.classList.add('is-in'); }, 250 + i * 140); });
+  });
 })();

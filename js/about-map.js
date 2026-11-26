@@ -44,14 +44,12 @@
     b.addEventListener('mouseenter', function (e) { if (e.pointerType !== 'touch' && matchMedia('(hover: hover)').matches) set(i, true); });
   });
 
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (es) {
-      seen = es[0].isIntersecting;
-      map.play(seen);
-      run();
-    }, { threshold: 0.25 }).observe(cv);
-  } else map.play(true);
+  window.TeswayOnScene('map', function (v) {
+    seen = v;
+    map.play(v);
+    run();
+    if (v) window.TeswayCount(document.getElementById('mapStats'), 200);
+  });
 
   set(0);
-  if (window.TeswayCount) window.TeswayCount(document.getElementById('mapStats'), 200);
 })();

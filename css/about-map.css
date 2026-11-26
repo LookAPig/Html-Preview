@@ -1,9 +1,12 @@
 /* ==== about-map.css · dark global presence panel ==== */
 .amap__panel {
   position: relative;
+  flex: 1;
+  min-height: 0;
   display: grid;
-  gap: 1.75rem;
-  padding: 2rem 1.25rem 1.25rem;
+  align-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem 1.25rem;
   overflow: hidden;
   isolation: isolate;
   border-radius: var(--r-lg);
@@ -21,9 +24,9 @@
 .amap__copy { display: contents; }
 .amap__map { order: 3; }
 .amap__regions { order: 4; }
-.amap .eyebrow { color: rgba(255, 255, 255, .55); }
-.amap .sec-head h2 { color: #FFF; }
-.amap .sec-sub { color: rgba(255, 255, 255, .6); }
+.asc--map .eyebrow { color: rgba(255, 255, 255, .55); }
+.asc--map .sec-head h2 { color: #FFF; }
+.asc--map .sec-sub { display: none; color: rgba(255, 255, 255, .6); }
 
 .amap__stats {
   display: grid;
@@ -89,6 +92,7 @@
     border-radius: var(--r-md);
   }
   .amap__copy { display: block; }
+  .asc--map .sec-sub { display: block; }
   .amap__stats { grid-template-columns: repeat(4, auto); justify-content: start; margin-top: 2.5rem; font-size: 0.75rem; }
   .amap__stats li, .amap__stats li + li { padding: 0 1.75rem; }
   .amap__stats li:first-child { padding-left: 0; }

@@ -1,4 +1,4 @@
-/* ==== about-hero.js · count-up helper + hero video / parallax ==== */
+/* ==== about-hero.js · count-up helper + hero video ==== */
 (function () {
   var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -17,14 +17,13 @@
   }
 
   window.TeswayCount = function (root, delay) {
-    var els = Array.prototype.slice.call(root.querySelectorAll('[data-count]'));
-    if (!('IntersectionObserver' in window)) return els.forEach(function (el) { run(el); });
-    var io = new IntersectionObserver(function (es) {
-      if (!es[0].isIntersecting) return;
-      io.disconnect();
-      els.forEach(function (el, i) { run(el, (delay || 0) + i * 120); });
-    }, { threshold: 0.4 });
-    io.observe(root);
+    if (!root || root.dataset.counted) return;
+    root.dataset.counted = '1';
+    root.querySelectorAll('[data-count]').forEach(function (el, i) { run(el, (delay || 0) + i * 120); });
+  };
+
+  window.TeswayOnScene = function (id, fn) {
+    document.addEventListener('ascene', function (e) { if (e.detail.id === id) fn(e.detail.on); });
   };
 
   var hero = document.getElementById('top');
@@ -33,30 +32,17 @@
 
   var video = hero.querySelector('video');
   var desktop = matchMedia('(min-aspect-ratio: 1/1)');
-  var off = false;
+  var on = true;
   function sync() {
     if (!video || calm || !desktop.matches) return;
     if (!video.src) {
+      if (!on) return;
       video.src = video.dataset.src;
       video.addEventListener('playing', function () { video.classList.add('is-playing'); });
     }
-    if (off) video.pause(); else video.play().catch(function () {});
+    if (on) video.play().catch(function () {}); else video.pause();
   }
   setTimeout(sync, 1200);
   desktop.addEventListener('change', sync);
-
-  var ticking = false;
-  function render() {
-    ticking = false;
-    var h = hero.offsetHeight, y = Math.min(scrollY, h);
-    if (!calm) {
-      hero.style.setProperty('--py', (y * 0.35).toFixed(1) + 'px');
-      hero.style.setProperty('--fade', (1 - y / (h * 0.8)).toFixed(3));
-    }
-    var o = y > h * 0.6;
-    if (o !== off) { off = o; if (video && video.src) sync(); }
-  }
-  addEventListener('scroll', function () {
-    if (!ticking) { ticking = true; requestAnimationFrame(render); }
-  }, { passive: true });
+  window.TeswayOnScene('hero', function (v) { on = v; sync(); });
 })();
