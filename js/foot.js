@@ -12,7 +12,7 @@ window.TESWAY_FOOT = {
   cols: [
     { title: 'Bikes', links: [['X1 Dual-Drive', '#hot'], ['X1 Trail Pro', '#hot'], ['X1 Family', '#hot'], ['X1 Cargo', '#hot']] },
     { title: 'Support', links: [['Help center', '#foot'], ['Warranty', '#foot'], ['Shipping & returns', '#foot'], ['Find a dealer', '#foot']] },
-    { title: 'Company', links: [['About us', '#brand'], ['Ride scenes', '#uses'], ['Journal', '#blog'], ['Press', '#press']] },
+    { title: 'Company', links: [['About us', 'about-us.html'], ['Ride scenes', '#uses'], ['Journal', '#blog'], ['Press', '#press']] },
     { title: 'Follow us', links: [['Instagram', '#join'], ['YouTube', '#join'], ['TikTok', '#join'], ['Strava club', '#join']] }
   ],
   locales: [

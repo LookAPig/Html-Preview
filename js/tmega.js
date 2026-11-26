@@ -42,10 +42,10 @@ window.TESWAY_TMEGA = {
     eyebrow: 'Brand',
     title: 'Ride with TESWAY',
     text: 'We build electric bikes that make every trip cleaner, easier and a lot more fun.',
-    link: { label: 'Read our mission', href: '#foot' },
+    link: { label: 'Read our mission', href: 'about-us.html' },
     cols: [
       { title: 'Company', links: [
-        { name: 'About us', href: '#foot' },
+        { name: 'About us', href: 'about-us.html' },
         { name: 'Sustainability', href: '#foot' },
         { name: 'Careers', href: '#foot' },
         { name: 'Press', href: '#foot' }
