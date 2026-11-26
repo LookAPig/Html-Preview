@@ -22,13 +22,11 @@
   <link rel="stylesheet" href="css/search.css?v=20">
   <link rel="stylesheet" href="css/dock.css?v=20">
   <link rel="stylesheet" href="css/scrollbar.css?v=20">
-  <link rel="stylesheet" href="css/coll.css?v=4">
-  <link rel="stylesheet" href="css/ctrl.css?v=1">
-  <link rel="stylesheet" href="css/about.css?v=1">
-  <link rel="stylesheet" href="css/about-map.css?v=2">
-  <link rel="stylesheet" href="css/about-time.css?v=2">
-  <link rel="stylesheet" href="css/about-craft.css?v=2">
-  <link rel="stylesheet" href="css/about-voice.css?v=2">
+  <link rel="stylesheet" href="css/about-hero.css?v=3">
+  <link rel="stylesheet" href="css/about-map.css?v=3">
+  <link rel="stylesheet" href="css/about-time.css?v=3">
+  <link rel="stylesheet" href="css/about-craft.css?v=3">
+  <link rel="stylesheet" href="css/about-voice.css?v=3">
   <link rel="stylesheet" href="css/btn.css?v=23">
 </head>
 <body>
@@ -70,64 +68,93 @@
   </header>
 
   <main>
-    <section class="ch" id="top" aria-label="About TESWAY">
-      <nav class="ch__crumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><b aria-current="page">About us</b></nav>
-      <div class="ch__banner">
-        <picture>
-          <source media="(min-aspect-ratio: 1/1)" srcset="Images/hero-desktop.jpg">
-          <img src="Images/story-camp.jpg" alt="Rider on a TESWAY ebike by the coast" decoding="async">
-        </picture>
-        <div class="ch__copy sec-head">
-          <p class="eyebrow eyebrow--dot">About TESWAY</p>
-          <h1 class="ch__title">Ten Years Of <em>Going Far</em></h1>
-          <p class="ch__sub">Since 2016 we have built ebikes for the roads that keep going, and the people who ride them.</p>
-          <ul class="ch__stats">
-            <li><b>2016</b>founded</li>
-            <li><b>40+</b>countries</li>
-            <li><b>200K+</b>riders</li>
-          </ul>
+    <section class="hero ahero" id="top" aria-label="About TESWAY">
+      <div class="hs is-on">
+        <div class="hs__media ahero__media" style="--pos:68% 50%;--posM:50% 100%">
+          <picture>
+            <source media="(max-aspect-ratio: 999/1000)" srcset="Images/hero-mobile.jpg">
+            <img src="Images/hero-desktop.jpg" alt="" fetchpriority="high">
+          </picture>
+          <video data-src="Images/hero.mp4" muted loop playsinline preload="none"></video>
         </div>
+        <div class="hs__copy ahero__copy">
+          <p class="hs__badge">About TESWAY · Since 2016</p>
+          <h1 class="hs__title ahero__title"><span><i>Built to go far.</i></span><em><i>Ridden worldwide.</i></em></h1>
+          <p class="hs__desc">Ten years ago three engineers built a fat-tire prototype in a Shenzhen garage. Today 200,000 riders in 40+ countries take it further every day.</p>
+          <div class="hs__cta">
+            <a class="hbtn" href="#story">Our story</a>
+            <a class="hbtn hbtn--line" href="collection.html">Shop bikes</a>
+          </div>
+        </div>
+      </div>
+      <div class="hero__ctrl ahero__bar">
+        <ul class="ahero__stats" id="heroStats">
+          <li><b data-count="200" data-suffix="K+">0</b>Riders</li>
+          <li><b data-count="40" data-suffix="+">0</b>Countries</li>
+          <li><b data-count="160" data-suffix=" km">0</b>Max range</li>
+          <li><b data-count="10" data-suffix=" yrs">0</b>On the road</li>
+        </ul>
+        <a class="ahero__cue" href="#reach" aria-label="Scroll to next section"><i></i>Scroll</a>
       </div>
     </section>
 
-    <section class="abm" id="reach" aria-label="Service regions">
-      <header class="sec-head reveal">
-        <p class="eyebrow eyebrow--dot">Where we ride</p>
-        <h2>One Brand, <em>40+ Countries</em></h2>
-        <p class="sec-sub">Local warehouses, showrooms and service hubs, so help is never far from your ride.</p>
-      </header>
-      <div class="abs reveal" data-delay="1" id="mapBox"></div>
+    <section class="amap" id="reach" aria-label="Global presence">
+      <div class="amap__panel">
+        <div class="amap__copy">
+          <header class="sec-head reveal">
+            <p class="eyebrow eyebrow--dot">Global presence</p>
+            <h2>Wherever <em>The Road Goes</em></h2>
+            <p class="sec-sub">Designed in Shenzhen and shipped from local warehouses, with dealers and service hubs close to every ride.</p>
+          </header>
+          <ul class="amap__stats reveal" data-delay="1" id="mapStats">
+            <li><b data-count="200" data-suffix="K+">0</b>Global riders</li>
+            <li><b data-count="40" data-suffix="+">0</b>Countries</li>
+            <li><b data-count="650" data-suffix="+">0</b>Dealers</li>
+            <li><b data-count="6">0</b>Warehouses</li>
+          </ul>
+          <div class="amap__regions reveal" data-delay="2" id="mapRegions" role="tablist" aria-label="Regions"></div>
+        </div>
+        <div class="amap__map reveal" data-delay="1"><canvas id="mapCanvas" aria-label="Map of TESWAY warehouses and service hubs" role="img"></canvas></div>
+      </div>
     </section>
 
-    <section class="abt" id="story" aria-label="Our story">
-      <header class="sec-head reveal">
-        <p class="eyebrow eyebrow--dot">Our story</p>
-        <h2>From A Garage <em>To The World</em></h2>
-        <p class="sec-sub">Ten years, six milestones and one promise: go further than yesterday.</p>
-      </header>
-      <div class="abs abs--road reveal" data-delay="1" id="timeBox"></div>
+    <section class="atime" id="story" aria-label="Our story">
+      <div class="atime__pin">
+        <canvas class="atime__cv" id="timeCanvas" aria-hidden="true"></canvas>
+        <div class="atime__top">
+          <header class="sec-head atime__head">
+            <p class="eyebrow eyebrow--dot">Our story</p>
+            <h2>Ten Years <em>On The Road</em></h2>
+          </header>
+          <div class="atime__copy" id="timeCopy" aria-live="polite"></div>
+          <figure class="atime__pic" id="timePic"></figure>
+        </div>
+        <ol class="atime__rail" id="timeRail"></ol>
+      </div>
     </section>
 
-    <section class="abc" id="craft" aria-label="Craftsmanship">
-      <header class="sec-head reveal">
-        <p class="eyebrow eyebrow--dot">Craftsmanship</p>
-        <h2>Engineered <em>To Last</em></h2>
-        <p class="sec-sub">Every frame is designed, formed and welded in-house.</p>
-      </header>
-      <div class="abs reveal" data-delay="1" id="craftBox"></div>
+    <section class="acraft" id="craft" aria-label="Craftsmanship">
+      <div class="acraft__top">
+        <header class="sec-head reveal">
+          <p class="eyebrow eyebrow--dot">Craftsmanship</p>
+          <h2>Engineered <em>To Last</em></h2>
+          <p class="sec-sub">Every frame is designed, formed and welded in-house, then tested far beyond the road.</p>
+        </header>
+        <ul class="acraft__stats reveal" data-delay="1" id="craftStats"></ul>
+      </div>
+      <div class="acraft__list" id="craftList"></div>
     </section>
 
-    <section class="abv" id="reviews" aria-label="Rider reviews">
-      <div class="abv__top">
+    <section class="avoice" id="reviews" aria-label="Rider reviews">
+      <div class="avoice__top">
         <header class="sec-head reveal">
           <p class="eyebrow eyebrow--dot">Rider voices</p>
           <h2>Loved By <em>Real Riders</em></h2>
-          <p class="sec-sub">Unfiltered words from people who ride a TESWAY every day.</p>
+          <p class="sec-sub">Real roads, real photos, real words from people who ride a TESWAY every day.</p>
         </header>
-        <p class="abv__score reveal" data-delay="1" id="voiceScore"></p>
+        <div class="avoice__score reveal" data-delay="1" id="voiceScore"></div>
       </div>
-      <div class="abv__list reveal" data-delay="1" id="voiceList"></div>
-      <div class="cr__ctrl abv__ctrl" id="voiceCtrl"></div>
+      <div class="avoice__rows reveal" data-delay="1" id="voiceRows"></div>
     </section>
   </main>
 
@@ -144,13 +171,15 @@
   <script src="js/search.js?v=20" defer></script>
   <script src="js/dock.js?v=20" defer></script>
   <script src="js/scrollbar.js?v=20" defer></script>
-  <script src="js/about-data.js?v=1" defer></script>
+  <script src="js/about-data.js?v=3" defer></script>
   <script src="js/about-world.js?v=1" defer></script>
-  <script src="js/about-show.js?v=1" defer></script>
-  <script src="js/about-map.js?v=2" defer></script>
-  <script src="js/about-time.js?v=2" defer></script>
-  <script src="js/about-craft.js?v=2" defer></script>
-  <script src="js/about-voice.js?v=2" defer></script>
+  <script src="js/about-hero.js?v=3" defer></script>
+  <script src="js/about-map-draw.js?v=3" defer></script>
+  <script src="js/about-map.js?v=3" defer></script>
+  <script src="js/about-scene.js?v=3" defer></script>
+  <script src="js/about-time.js?v=3" defer></script>
+  <script src="js/about-craft.js?v=3" defer></script>
+  <script src="js/about-voice.js?v=3" defer></script>
   <script src="js/reveal.js?v=20" defer></script>
   <script src="js/xlink.js?v=1" defer></script>
 </body>

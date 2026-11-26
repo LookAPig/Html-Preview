@@ -1,47 +1,136 @@
-/* ==== about-craft.css ==== */
-.abc { --tw: 12rem; }
-.abc__view { aspect-ratio: 4 / 3; margin: -6% 0 -10%; }
-.abc__view img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+/* ==== about-craft.css · craftsmanship stats + cards ==== */
+.acraft__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 1.75rem;
+  list-style: none;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.acraft__stats li + li { padding-left: 1rem; border-left: 1px solid var(--line); }
+.acraft__stats b {
+  display: flex;
+  align-items: baseline;
+  gap: 0.125rem;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-en);
+  font-size: 2.25rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .01em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.acraft__stats small { font-family: inherit; font-size: 0.875rem; color: var(--volt); }
 
-.abc__spot {
+.acraft__list {
+  display: flex;
+  gap: 0.875rem;
+  margin: 1.75rem calc(var(--pad) * -1) 0;
+  padding: 0.5rem var(--pad) 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 var(--pad);
+  scrollbar-width: none;
+}
+.acraft__list::-webkit-scrollbar { display: none; }
+.acard {
+  flex: 0 0 78%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--bg);
+  box-shadow: 0 0 0 1px var(--line);
+  scroll-snap-align: start;
+  transition-property: opacity, transform, box-shadow;
+}
+.acard__pic {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background:
+    radial-gradient(circle, rgba(34, 34, 34, .12) 0 1px, transparent 1.5px) 0 0 / 0.875rem 0.875rem,
+    var(--bg-2);
+}
+.acard__pic img {
   position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  transform: scale(var(--z)) translate(calc(50% - var(--x)), calc(50% - var(--y)));
+  transition: transform 1.2s var(--ease);
+}
+.acard__ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4.5rem;
+  height: 4.5rem;
+  translate: -50% -50%;
+  border: 1.5px solid var(--volt);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.5rem rgba(254, 84, 22, .1);
+  scale: .4;
+  opacity: 0;
+  transition: scale .8s var(--ease) .3s, opacity .5s .3s;
+}
+.acard.is-in .acard__ring { scale: 1; opacity: 1; }
+.acard__chip {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  padding: 0.3125rem 0.625rem;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, .9);
+  box-shadow: 0 0 0 1px var(--line);
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+.acard__no {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
   display: grid;
   place-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  translate: -50% -50%;
-  border: 1.5px solid var(--text);
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
-  background: rgba(255, 255, 255, .92);
-  font-size: 0.5625rem;
+  background: var(--text);
+  color: #FFF;
+  font-size: 0.6875rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  transition: background-color .35s, border-color .35s, color .35s, scale .4s var(--ease);
 }
-.abc__spot.is-on { z-index: 2; border-color: var(--volt); background: var(--volt); color: #FFF; scale: 1.15; animation: abcPing 1.8s ease-out infinite; }
-.abc__spot:focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
 
-.abs__stats b small { margin-left: 0.125rem; font-size: 0.6875rem; font-weight: 800; color: var(--volt); }
-
-.abs__tab .abc__no { margin: 0 0 0.25rem; font-weight: 800; letter-spacing: .12em; }
-.abs__tab.is-on .abc__no { color: var(--volt); }
-.abc__wave { display: block; width: 7.5rem; height: 0.75rem; margin-top: 0.375rem; overflow: visible; }
-.abc__wave path { stroke: var(--volt); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; }
-.abs__tab.is-on .abc__wave path { stroke-dashoffset: 0; opacity: 1; transition: stroke-dashoffset 1s cubic-bezier(.65, 0, .15, 1) .15s; }
-
-@keyframes abcPing { 0% { box-shadow: 0 0 0 0 rgba(254, 84, 22, .5); } 70%, 100% { box-shadow: 0 0 0 0.625rem rgba(254, 84, 22, 0); } }
+.acard__body { flex: 1; padding: 1.25rem 1.25rem 1.5rem; }
+.acard h3 { font-size: 1.125rem; font-weight: 800; line-height: 1.3; letter-spacing: -.01em; }
+.acard__wave { display: block; width: 8rem; height: 0.75rem; margin-top: 0.375rem; overflow: visible; }
+.acard__wave path { stroke: var(--volt); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; }
+.acard.is-in .acard__wave path { stroke-dashoffset: 0; opacity: 1; transition: stroke-dashoffset 1.1s cubic-bezier(.65, 0, .15, 1) .5s, opacity 0s .5s; }
+.acard p { margin-top: 0.75rem; font-size: 0.875rem; line-height: 1.6; color: var(--muted); }
 
 @media (hover: hover) {
-  .abc__spot:not(.is-on):hover { border-color: var(--volt); color: var(--volt); scale: 1.1; }
+  .acard.is-in:hover { transform: translateY(-0.375rem); box-shadow: 0 1.25rem 2.5rem -1.25rem rgba(34, 34, 34, .28), 0 0 0 1px var(--line); }
+  .acard:hover .acard__pic img { transform: scale(calc(var(--z) * 1.08)) translate(calc(50% - var(--x)), calc(50% - var(--y))); }
+  .acard:hover .acard__wave path { animation: acardDraw .9s cubic-bezier(.65, 0, .15, 1); }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .abc__spot.is-on { animation: none; }
-}
+@keyframes acardDraw { from { stroke-dashoffset: 1; } }
 
 @media (min-aspect-ratio: 1/1) {
-  .abc__view { width: 88%; margin: -4rem auto -5rem; }
-  .abc__spot { width: 2rem; height: 2rem; font-size: 0.625rem; }
-  .abs__stats b small { font-size: 0.875rem; }
-  .abc__wave { width: 9rem; }
+  .acraft__top { display: flex; align-items: flex-end; justify-content: space-between; gap: 4rem; }
+  .acraft__stats { flex: none; grid-template-columns: repeat(3, auto); margin: 0; font-size: 0.6875rem; }
+  .acraft__stats li { padding: 0 2rem; }
+  .acraft__stats li:first-child { padding-left: 0; }
+  .acraft__stats b { font-size: 3.5rem; }
+  .acraft__stats small { font-size: 1.125rem; }
+  .acraft__list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; margin: 3rem 0 0; padding: 0; overflow: visible; }
+  .acard { border-radius: var(--r-md); }
+  .acard__body { padding: 1.5rem 1.5rem 1.75rem; }
+  .acard h3 { font-size: 1.25rem; }
 }
