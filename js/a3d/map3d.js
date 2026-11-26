@@ -19,7 +19,7 @@ export function buildMap(scene, data, world) {
   world.rows.forEach(function (row, j) {
     for (let i = 0; i < row.length; i++) if (row[i] === 'x') land.push(new THREE.Vector3(i + 0.5 - OX, 0, j + 0.5 - OZ));
   });
-  const geo = new THREE.CylinderGeometry(0.36, 0.36, 1, 10);
+  const geo = new THREE.CylinderGeometry(0.32, 0.32, 1, 16);
   geo.translate(0, 0.5, 0);
   const dots = new THREE.InstancedMesh(geo, new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: 0.85 }), land.length);
   dots.castShadow = dots.receiveShadow = true;
@@ -80,20 +80,38 @@ export function buildMap(scene, data, world) {
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), col = new THREE.Color();
   const white = new THREE.Color(0xFFFFFF), warm = new THREE.Color(0xFFC2AA);
   const hot = hubs.filter(function (h) { return h.big && !h.hq; });
+  const B = data.regions.map(function (_, r) {
+    return land.map(function (v) {
+      let b = 0;
+      hot.forEach(function (h) {
+        if (h.r !== r) return;
+        const dx = v.x - h.g.position.x, dz = v.z - h.g.position.z;
+        b += Math.exp(-(dx * dx + dz * dz) / 14);
+      });
+      return b;
+    });
+  });
+  let sig = -1;
 
   /* rise: map builds up from HQ · sink: map melts into the ground before the ride · draw: arcs grow */
   function update(t, s) {
     group.visible = s.rise > 0 && s.sink < 1;
-    if (!group.visible) return;
-    aw.forEach(function (v, r) { aw[r] = lerp(v, r === s.region ? 1 : 0, s.snap ? 1 : 0.07); });
+    if (!group.visible) { tags.forEach(function (tg) { tg.w = 0; }); return; }
+    aw.forEach(function (v, r) {
+      const goal = r === s.region ? 1 : 0;
+      aw[r] = s.snap || Math.abs(goal - v) < 0.002 ? goal : lerp(v, goal, 0.07);
+    });
+    const now = s.rise * 7 + s.sink * 131 + aw[0] + aw[1] * 3 + aw[2] * 5 + aw[3] * 9;
+    if (now !== sig) { sig = now; dotsAt(s); }
+    hubsAt(t, s);
+  }
 
+  function dotsAt(s) {
+    const R = aw.length;
     for (let n = 0; n < land.length; n++) {
       const v = land[n], d = dist[n];
       let boost = 0;
-      for (let m = 0; m < hot.length; m++) {
-        const h = hot[m], dx = v.x - h.g.position.x, dz = v.z - h.g.position.z, d2 = dx * dx + dz * dz;
-        if (d2 < 60) boost += aw[h.r] * Math.exp(-d2 / 14);
-      }
+      for (let r = 0; r < R; r++) if (aw[r] > 0) boost += aw[r] * B[r][n];
       boost = Math.min(1, boost);
       const k = wave(d, s.rise, maxD, 14) * (1 - wave(d, s.sink, maxD, 12));
       sc.set(1, Math.max(0.001, (0.22 + boost * 1.5) * k), 1);
@@ -103,7 +121,9 @@ export function buildMap(scene, data, world) {
     }
     dots.instanceMatrix.needsUpdate = true;
     dots.instanceColor.needsUpdate = true;
+  }
 
+  function hubsAt(t, s) {
     hubs.forEach(function (h) {
       const d = h.g.position.distanceTo(hq);
       const k = wave(d, s.rise, maxD, 14) * (1 - wave(d, s.sink, maxD, 12));

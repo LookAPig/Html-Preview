@@ -27,6 +27,7 @@
 
   rail.addEventListener('click', function (e) {
     var b = e.target.closest('button');
-    if (b && window.TeswayStage) window.TeswayStage.story((Number(b.dataset.i) + 1.17) / (n + 1));
+    var stops = window.TeswayRideStops;
+    if (b && window.TeswayStage && stops) window.TeswayStage.story(stops[Number(b.dataset.i)]);
   });
 })();

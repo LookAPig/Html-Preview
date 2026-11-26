@@ -27,6 +27,29 @@ export function canvasTex(w, h, draw) {
   return tex;
 }
 
+/* rounded plate (extruded), centred on x/y, back face at z=0 */
+export function plateGeo(w, h, d, r) {
+  const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y);
+  s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r);
+  s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r);
+  s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y);
+  return new THREE.ExtrudeGeometry(s, { depth: d, bevelEnabled: true, bevelThickness: d * 0.3, bevelSize: Math.min(r * 0.3, d * 0.5), bevelSegments: 3, curveSegments: 8 });
+}
+
+/* floor: one soft dot per world unit, on the same x.5 grid as the map dots */
+export function dotFloorTex() {
+  const tex = canvasTex(64, 64, function (g, w, h) {
+    g.fillStyle = '#F6F6F6'; g.fillRect(0, 0, w, h);
+    g.fillStyle = '#DEDEDE';
+    g.beginPath(); g.arc(w / 2, h / 2, 5.5, 0, 7); g.fill();
+  });
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.anisotropy = 16;
+  return tex;
+}
+
 function rrect(g, x, y, w, h, r) {
   g.beginPath();
   g.moveTo(x + r, y);
@@ -94,9 +117,10 @@ export function cardTex(item, idx, total) {
     g.fillStyle = '#FE5416';
     g.fillRect(P + 16, H - P - 10, 64, 6);
   });
-  Promise.all([loadImg(item.img), document.fonts ? document.fonts.load('400 120px Anton') : null]).then(function (r) {
+  tex.ready = Promise.all([loadImg(item.img), document.fonts ? document.fonts.load('400 120px Anton') : null]).then(function (r) {
     img = r[0];
     tex.redraw();
+    return tex;
   });
   return tex;
 }
@@ -111,6 +135,6 @@ export function yearTex(year) {
     g.textBaseline = 'middle';
     g.fillText(year, w / 2, h / 2 + 8);
   });
-  if (document.fonts) document.fonts.load('400 210px Anton').then(tex.redraw);
+  tex.ready = document.fonts ? document.fonts.load('400 210px Anton').then(function () { tex.redraw(); return tex; }) : Promise.resolve(tex);
   return tex;
 }

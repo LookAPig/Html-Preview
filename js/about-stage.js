@@ -5,6 +5,7 @@
   var pin = sec.querySelector('.astage__pin');
   var bar = document.getElementById('aboutBar');
   var chap = document.getElementById('aboutChap');
+  var dots = document.getElementById('aboutDots');
   var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function (id) { return document.getElementById(id); };
   var S = { hero: $('top'), map: $('reach'), time: $('story'), craft: $('craft'), voice: $('reviews') };
@@ -18,12 +19,12 @@
   var CH = [
     { id: 'top', label: 'Intro', p: 0, from: 0 },
     { id: 'reach', label: 'Global', p: 1.6, from: 0.9 },
-    { id: 'story', label: 'Story', p: 4.33, from: 2.5 },
+    { id: 'story', label: 'Story', p: 3.9, from: 2.5 },
     { id: 'craft', label: 'Craft', p: 9.5, from: 8.6 },
     { id: 'reviews', label: 'Voices', p: TOTAL, from: 10.3 }
   ];
   var stage = { p: 0 };
-  var U = 1, cur = 0, goal = 0, raf = 0, live = {}, chapOn = -1;
+  var rem = 16, U = 1, cur = 0, goal = 0, raf = 0, live = {}, chapOn = -1;
 
   chap.innerHTML = CH.map(function (c, i) { return '<button type="button" data-i="' + i + '"><span>' + c.label + '</span><i></i></button>'; }).join('');
   var chapBtns = Array.prototype.slice.call(chap.children);
@@ -43,7 +44,7 @@
   }
 
   function apply(p) {
-    var H = U, rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    var H = U;
 
     var ho = io(seg(p, 0.12, 1));
     heroBox.style.transform = 'translate3d(0,' + px(-ho * H * 0.06) + ',0) scale(' + (1 - ho * 0.14).toFixed(4) + ')';
@@ -67,10 +68,11 @@
     crTop.style.opacity = ci.toFixed(3);
     crTop.style.transform = 'translate3d(0,' + px((1 - ci) * rem * 2.5) + ',0)';
     crCards.forEach(function (c, k) {
-      var e = eo(seg(p, 8.8 + k * 0.13, 9.4 + k * 0.13));
-      c.style.opacity = e.toFixed(3);
-      c.style.transform = 'translate3d(0,' + px((1 - e) * rem * 5) + ',0) rotate(' + ((1 - e) * (k % 2 ? -3 : 3)).toFixed(2) + 'deg)';
+      var e = eo(seg(p, 8.75 + k * 0.12, 9.45 + k * 0.12));
+      c.style.opacity = Math.min(1, e * 2).toFixed(3);
+      c.style.transform = 'translate3d(0,' + px((1 - e) * rem * 2) + ',0) rotateX(' + ((1 - e) * 72).toFixed(2) + 'deg)';
     });
+    dots.style.opacity = (seg(p, 8.45, 8.85) * (1 - seg(p, 10, 10.4))).toFixed(3);
     S.craft.style.opacity = (1 - co).toFixed(3);
     S.craft.style.transform = 'translate3d(0,' + px(-co * H * 0.08) + ',0) scale(' + (1 - co * 0.04).toFixed(4) + ')';
     scene(S.craft, 'craft', p > 8.7 && p < 10.45, p > 8.75 && p < 10.2);
@@ -98,15 +100,23 @@
 
   function read() { return Math.max(0, Math.min(TOTAL, -sec.getBoundingClientRect().top / U)); }
 
-  function tick() {
-    cur += (goal - cur) * (calm ? 1 : 0.11);
-    if (Math.abs(goal - cur) < 0.0004) cur = goal;
-    apply(cur);
-    raf = cur === goal ? 0 : requestAnimationFrame(tick);
+  /* frame-rate independent damping; the 3D loop calls step() so DOM and WebGL share one frame */
+  var lastNow = 0, shownP = -1;
+  stage.step = function (now) {
+    var dt = lastNow ? Math.min(0.05, (now - lastNow) / 1000) : 0.016;
+    lastNow = now;
+    cur += (goal - cur) * (calm ? 1 : 1 - Math.exp(-dt * 7.5));
+    if (Math.abs(goal - cur) < 0.0003) cur = goal;
+    if (cur !== shownP) { shownP = cur; apply(cur); }
+    return cur !== goal;
+  };
+  function tick(now) {
+    raf = stage.step(now) && !stage.ext ? requestAnimationFrame(tick) : 0;
   }
-  function kick() { goal = read(); if (!raf) raf = requestAnimationFrame(tick); }
+  function kick() { goal = read(); if (!raf && !stage.ext) raf = requestAnimationFrame(tick); }
 
   function size() {
+    rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
     U = pin.clientHeight || innerHeight;
     sec.style.height = Math.round((TOTAL + 1) * U) + 'px';
     goal = cur = read();

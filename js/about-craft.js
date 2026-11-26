@@ -13,14 +13,18 @@
     return '<li><b><span data-count="' + s.value + '">0</span><small>' + s.unit + '</small></b>' + s.label + '</li>';
   }).join('');
 
+  var total = pad(data.points.length);
   listEl.innerHTML = data.points.map(function (p, i) {
     return '<article class="acard">' +
       '<div class="acard__pic" style="--x:' + p.x + '%;--y:' + p.y + '%;--z:' + p.z + '">' +
         '<img src="' + data.img + '" alt="" loading="lazy" decoding="async">' +
         (p.z > 1 ? '<i class="acard__ring" aria-hidden="true"></i>' : '') +
-        '<span class="acard__chip">' + p.chip + '</span><b class="acard__no">' + pad(i + 1) + '</b>' +
+        '<span class="acard__chip">' + p.chip + '</span>' +
       '</div>' +
-      '<div class="acard__body"><h3>' + p.title + '</h3>' + WAVE + '<p>' + p.text + '</p></div>' +
+      '<div class="acard__body">' +
+        '<p class="acard__meta"><b class="acard__no">' + pad(i + 1) + '</b><span>' + pad(i + 1) + ' / ' + total + '</span></p>' +
+        '<h3>' + p.title + '</h3>' + WAVE + '<p class="acard__text">' + p.text + '</p><i class="acard__bar" aria-hidden="true"></i>' +
+      '</div>' +
     '</article>';
   }).join('');
 

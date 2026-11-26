@@ -11,10 +11,14 @@ export function makeRig(map, road, marks) {
   const focus = new THREE.Vector3(2, 0, 4);
   const out = { pos: new THREE.Vector3(), target: new THREE.Vector3(), fov: 30, roll: 0, offX: 0, offY: 0, dist: 0, bob: 0, cockpit: 0, near: 300, far: 600, spread: 80 };
 
+  /* constant flow with a gentle slow-down at each board: speed never drops below ~40% */
+  const END = K[K.length - 1], A = 0.6;
   function distAt(u) {
-    const n = K.length - 1, r = cl(u) * n, i = Math.min(n - 1, Math.floor(r)), f = r - i;
-    const g = i >= 1 ? seg(f, 0.34, 1) : f;
-    return lerp(K[i], K[i + 1], io(g));
+    const lin = cl(u) * END;
+    let i = 0;
+    while (i < K.length - 2 && lin > K[i + 1]) i++;
+    const len = K[i + 1] - K[i], f = (lin - K[i]) / len;
+    return K[i] + (f - A * Math.sin(2 * Math.PI * f) / (2 * Math.PI)) * len;
   }
 
   function mapPose(region, aspect) {

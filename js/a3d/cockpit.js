@@ -1,6 +1,6 @@
 /* ==== a3d/cockpit.js · first-person handlebar with a live display (year + speed) ==== */
 import * as THREE from '../vendor/three.module.min.js';
-import { C, canvasTex } from './kit.js';
+import { C, canvasTex, plateGeo } from './kit.js';
 
 export function buildCockpit(camera) {
   const rig = new THREE.Group();
@@ -53,9 +53,10 @@ export function buildCockpit(camera) {
     g.fillStyle = '#FE5416';
     g.fillRect(w - 64, 120, 44, 10);
   });
-  const shell = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.08, 0.016), metal);
+  const shell = new THREE.Mesh(plateGeo(0.15, 0.08, 0.01, 0.014), metal);
+  shell.position.z = -0.012;
   const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.136, 0.068), new THREE.MeshBasicMaterial({ map: tex, toneMapped: false }));
-  screen.position.z = 0.0085;
+  screen.position.z = 0.0015;
   const disp = new THREE.Group();
   disp.add(shell, screen);
   disp.position.set(0, 0.05, -0.02);

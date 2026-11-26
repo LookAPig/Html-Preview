@@ -1,9 +1,10 @@
 /* ==== a3d/main.js · one three.js world behind the whole about stage ==== */
 import * as THREE from '../vendor/three.module.min.js';
-import { C, seg, mobile } from './kit.js';
+import { C, seg, mobile, dotFloorTex } from './kit.js';
 import { buildMap } from './map3d.js';
 import { buildRoad } from './road.js';
 import { buildMarks } from './marks.js';
+import { buildField } from './field.js';
 import { buildCockpit } from './cockpit.js';
 import { makeRig, T } from './rig.js';
 
@@ -13,7 +14,7 @@ const data = window.TESWAY_ABOUT, world = window.TESWAY_WORLD;
 
 if (cv && data && world) {
   const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, mobile.matches ? 1.75 : 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, mobile.matches ? 1.75 : 1.5));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -29,13 +30,14 @@ if (cv && data && world) {
   sun.shadow.mapSize.set(mobile.matches ? 1024 : 2048, mobile.matches ? 1024 : 2048);
   sun.shadow.bias = -0.0006;
   sun.shadow.normalBias = 0.02;
-  sun.shadow.radius = 4;
   scene.add(sun, sun.target);
 
   const floorGeo = new THREE.PlaneGeometry(4000, 4000);
   floorGeo.rotateX(-Math.PI / 2);
-  const floor = new THREE.Mesh(floorGeo, new THREE.MeshBasicMaterial({ color: C.page }));
-  const shade = new THREE.Mesh(floorGeo, new THREE.ShadowMaterial({ color: 0x222222, opacity: 0.14 }));
+  const ftex = dotFloorTex();
+  ftex.repeat.set(4000, 4000);
+  const floor = new THREE.Mesh(floorGeo, new THREE.MeshBasicMaterial({ map: ftex }));
+  const shade = new THREE.Mesh(floorGeo, new THREE.ShadowMaterial({ color: 0x222222, opacity: 0.12 }));
   shade.position.y = 0.005;
   shade.receiveShadow = true;
   scene.add(floor, shade);
@@ -43,8 +45,11 @@ if (cv && data && world) {
   const map = buildMap(scene, data.map, world);
   const road = buildRoad(scene, map.hq);
   const marks = buildMarks(scene, road, data.time);
+  const field = buildField(scene, road, marks.marks.map(function (m) { return m.hub; }));
   const cockpit = buildCockpit(camera);
   const rig = makeRig(map, road, marks);
+  const END = rig.K[rig.K.length - 1];
+  window.TeswayRideStops = marks.stops.map(function (s) { return s / END; });
 
   const tags = map.tags.map(function (tg) {
     const el = document.createElement('span');
@@ -54,7 +59,9 @@ if (cv && data && world) {
     return el;
   });
 
-  let p = (window.TeswayStage && window.TeswayStage.p) || 0, region = 0, snap = true, W = 1, H = 1, active = -1;
+  const stage = window.TeswayStage;
+  if (stage) stage.ext = true;
+  let p = stage ? stage.p : 0, region = 0, snap = true, W = 1, H = 1, active = -1;
   const proj = new THREE.Vector3();
 
   function size() {
@@ -85,7 +92,7 @@ if (cv && data && world) {
   function tagsAt() {
     map.tags.forEach(function (tg, i) {
       const el = tags[i];
-      if (tg.w < 0.02) { el.style.opacity = 0; return; }
+      if (tg.w < 0.02) { if (el.style.opacity !== '0') el.style.opacity = 0; return; }
       proj.copy(tg.pos).project(camera);
       el.style.opacity = tg.w.toFixed(3);
       el.style.transform = 'translate3d(' + ((proj.x + 1) / 2 * W).toFixed(1) + 'px,' + ((1 - proj.y) / 2 * H).toFixed(1) + 'px,0)';
@@ -99,18 +106,24 @@ if (cv && data && world) {
     return on;
   }
 
+  let shown = null;
   function frame(now) {
     requestAnimationFrame(frame);
+    if (stage && stage.step) { stage.step(now); p = stage.p; }
     const show = p > 0.15 && p < T.rise[1] + 0.05;
-    cv.style.opacity = (1 - seg(p, T.rise[0] + 0.2, T.rise[1] - 0.1)).toFixed(3);
-    cv.style.visibility = tagBox.style.visibility = show ? 'visible' : 'hidden';
+    if (show !== shown) {
+      shown = show;
+      cv.style.visibility = tagBox.style.visibility = show ? 'visible' : 'hidden';
+    }
     if (!show || document.hidden) return;
+    cv.style.opacity = (1 - seg(p, T.rise[0] + 0.2, T.rise[1] - 0.1)).toFixed(3);
     const t = now / 1000;
     const r = rig.update(p, t, region, W / H);
     map.update(t, { rise: seg(p, 0.3, 1.25), draw: seg(p, 0.95, 1.8), sink: seg(p, 2.62, 3.35), region: region, snap: snap });
     snap = false;
-    const grow = seg(p, 2.75, 3.6);
+    const grow = seg(p, 3.0, 3.6);
     road.update(grow);
+    field.update(grow);
     marks.update(r.dist, grow);
     active = storyUi(r);
     cockpit.update(r.cockpit, active < 0 ? data.time[0].year : data.time[active].year, r.kmh, r.roll, r.bob);
@@ -120,8 +133,17 @@ if (cv && data && world) {
   }
 
   document.addEventListener('aregion', function (e) { region = e.detail; });
-  window.Tesway3D = { set: function (v) { p = v; } };
+  window.Tesway3D = { set: function (v) { if (!stage) p = v; } };
   addEventListener('resize', size);
   size();
+
+  /* compile every program and upload every texture up front so nothing hitches mid-ride */
+  camera.position.set(0, 120, 120);
+  camera.lookAt(0, 0, 0);
+  renderer.compile(scene, camera);
+  [ftex].concat(marks.textures).forEach(function (tx) {
+    renderer.initTexture(tx);
+    if (tx.ready) tx.ready.then(function () { renderer.initTexture(tx); });
+  });
   requestAnimationFrame(frame);
 }
