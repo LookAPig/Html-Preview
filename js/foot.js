@@ -76,7 +76,7 @@ window.TESWAY_FOOT = {
         }).join('') + '</nav>' +
       '</div>' +
       '<div class="foot__mid">' +
-        '<div class="foot__brand"><a class="nav__logo" href="#top" aria-label="TESWAY home"><img src="Images/logo.png" alt="TESWAY · Go Far Away" width="2875" height="624" loading="lazy" decoding="async"></a><p>' + d.brand + '</p></div>' +
+        '<div class="foot__brand"><a class="nav__logo" href="#top" aria-label="TESWAY home"><img src="Images/logo2.png" alt="TESWAY · Go Far Away" width="2875" height="624" loading="lazy" decoding="async"></a><p>' + d.brand + '</p></div>' +
         '<ul class="foot__pays" aria-label="Accepted payment methods">' + d.pays.map(function (p) {
           return '<li title="' + p.name + '" aria-label="' + p.name + '">' + p.html + '</li>';
         }).join('') + '</ul>' +
