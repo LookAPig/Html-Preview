@@ -58,6 +58,40 @@
 }
 .vmodal__count b { color: var(--text); font-weight: 700; }
 
+.vmodal__tags {
+  display: none;
+  gap: 0.375rem;
+  padding: 0 1.25rem 0.875rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 1.25rem, #000 calc(100% - 1.25rem), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 1.25rem, #000 calc(100% - 1.25rem), transparent);
+}
+.vmodal__tags::-webkit-scrollbar { display: none; }
+.vmodal.has-tags .vmodal__tags { display: flex; }
+.vmodal__tag {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.375rem;
+  height: 2rem;
+  padding: 0 0.75rem 0 0.5rem;
+  border: 1px solid rgba(34, 34, 34, .14);
+  border-radius: var(--r-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--muted);
+  transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+}
+.vmodal__tag i { display: grid; width: 1rem; height: 1rem; transition: color .3s var(--ease); }
+.vmodal__tag i svg { width: 100%; height: 100%; }
+.vmodal__tag.is-on { border-color: var(--text); background: var(--text); color: #FFF; }
+.vmodal__tag.is-on i { color: var(--volt); }
+.vmodal__tag:active { scale: .96; }
+.vmodal__tag:focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
+
 .vmodal__close {
   flex: none;
   display: grid;
@@ -76,6 +110,7 @@
 
 @media (hover: hover) {
   .vmodal__close:hover { background: var(--volt); color: #FFF; }
+  .vmodal__tag:not(.is-on):hover { border-color: var(--text); color: var(--text); }
 }
 @media (max-aspect-ratio: 999/1000) {
   .vmodal__top { flex-wrap: wrap; row-gap: 0.5rem; padding-right: 0.5rem; }
@@ -87,6 +122,8 @@
 @media (min-aspect-ratio: 1/1) {
   .vmodal__top { padding: 1.125rem 1rem 1.125rem 1.5rem; }
   .vmodal__txt strong { font-size: 1.125rem; }
+  .vmodal__tags { gap: 0.5rem; padding: 0 1.5rem 1.125rem; }
+  .vmodal__tag { height: 2.25rem; padding: 0 0.875rem 0 0.625rem; font-size: 0.8125rem; }
   .vmodal__nav { gap: 0.5rem; margin-left: 0.5rem; }
   .vmodal__nav .arw { width: 2.5rem; height: 2.5rem; }
 }

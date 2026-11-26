@@ -184,11 +184,12 @@ window.TESWAY_PF = {
   track.addEventListener('click', function (e) {
     var card = e.target.closest('.cr__card');
     if (!card || !window.TeswayPlayer) return;
-    var c = people[who];
-    window.TeswayPlayer.open({
-      list: c.videos.map(function (v) { return { name: c.name, title: v[0], poster: v[1], src: data.src }; }),
-      at: Array.prototype.indexOf.call(cards(), card)
+    var all = [], start = 0;
+    people.forEach(function (c, i) {
+      if (i === who) start = all.length + Array.prototype.indexOf.call(cards(), card);
+      c.videos.forEach(function (v) { all.push({ name: c.name, pf: c.platform, title: v[0], poster: v[1], src: data.src }); });
     });
+    window.TeswayPlayer.open({ list: all, at: start });
   });
 
   pick(0);

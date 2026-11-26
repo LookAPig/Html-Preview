@@ -18,6 +18,7 @@
         '</div>' +
         '<button class="vmodal__close" type="button" aria-label="Close video">' + icons.close + '</button>' +
       '</div>' +
+      '<div class="vmodal__tags" role="tablist" aria-label="Creators"></div>' +
       '<div class="vmodal__media"><video controls playsinline preload="none"></video></div>' +
     '</div>';
   document.body.appendChild(root);
@@ -30,9 +31,21 @@
   var count = root.querySelector('.vmodal__count');
   var arrows = root.querySelectorAll('.vmodal__nav .arw');
   var closeBtn = root.querySelector('.vmodal__close');
-  var list = [], at = 0, back = null, swapT = 0;
+  var tagBox = root.querySelector('.vmodal__tags');
+  var list = [], names = [], at = 0, back = null, swapT = 0;
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  function buildTags() {
+    names = [];
+    list.forEach(function (o) { if (names.indexOf(o.name) < 0) names.push(o.name); });
+    root.classList.toggle('has-tags', names.length > 1);
+    tagBox.innerHTML = names.map(function (n) {
+      var o = list.filter(function (x) { return x.name === n; })[0];
+      var pf = o.pf && icons[o.pf] ? '<i class="is-' + o.pf + '">' + icons[o.pf].svg + '</i>' : '';
+      return '<button class="vmodal__tag" type="button" role="tab" data-name="' + n + '">' + pf + n + '</button>';
+    }).join('');
+  }
 
   function load(o) {
     who.textContent = o.name;
@@ -45,14 +58,25 @@
   }
 
   function sync() {
-    count.innerHTML = '<b>' + pad(at + 1) + '</b> / ' + pad(list.length);
+    var name = list[at].name;
+    var group = list.filter(function (o) { return o.name === name; });
+    count.innerHTML = '<b>' + pad(group.indexOf(list[at]) + 1) + '</b> / ' + pad(group.length);
     arrows[0].disabled = at === 0;
     arrows[1].disabled = at === list.length - 1;
+    Array.prototype.forEach.call(tagBox.children, function (t) {
+      var on = t.dataset.name === name;
+      t.classList.toggle('is-on', on);
+      t.setAttribute('aria-selected', on);
+      if (on && tagBox.scrollWidth > tagBox.clientWidth) {
+        tagBox.scrollTo({ left: t.offsetLeft - (tagBox.clientWidth - t.offsetWidth) / 2, behavior: 'smooth' });
+      }
+    });
   }
 
-  function go(dir) {
-    var k = at + dir;
-    if (k < 0 || k >= list.length) return;
+  function go(dir) { jump(at + dir, dir); }
+
+  function jump(k, dir) {
+    if (k < 0 || k >= list.length || k === at) return;
     at = k;
     sync();
     txt.style.setProperty('--dir', dir);
@@ -83,6 +107,7 @@
       list = o.list && o.list.length ? o.list : [o];
       at = Math.max(0, Math.min(list.length - 1, o.at || 0));
       root.classList.toggle('has-list', list.length > 1);
+      buildTags();
       txt.classList.remove('is-swap');
       media.classList.remove('is-out');
       sync();
@@ -95,6 +120,12 @@
   };
 
   arrows.forEach(function (b) { b.addEventListener('click', function () { go(Number(b.dataset.dir)); }); });
+  tagBox.addEventListener('click', function (e) {
+    var t = e.target.closest('.vmodal__tag');
+    if (!t || t.dataset.name === list[at].name) return;
+    var k = list.map(function (o) { return o.name; }).indexOf(t.dataset.name);
+    jump(k, k > at ? 1 : -1);
+  });
   closeBtn.addEventListener('click', close);
   root.addEventListener('click', function (e) { if (e.target === root) close(); });
   document.addEventListener('keydown', function (e) {

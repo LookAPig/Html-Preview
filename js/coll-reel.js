@@ -102,7 +102,7 @@
     var at = cur === btn ? idx : 0;
     leave();
     window.TeswayPlayer.open({
-      list: reviews(btn.dataset.reel).map(function (x) { return { name: x.name, title: x.title, poster: x.poster, src: cr.src }; }),
+      list: reviews(btn.dataset.reel).map(function (x) { return { name: x.name, pf: x.pf, title: x.title, poster: x.poster, src: cr.src }; }),
       at: at
     });
   });
