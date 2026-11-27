@@ -10,6 +10,11 @@ export function seg(p, a, b) { return cl((p - a) / (b - a)); }
 export function io(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
 export function eo(t) { return 1 - Math.pow(1 - t, 3); }
 export function lerp(a, b, t) { return a + (b - a) * t; }
+export function ss(t) { return t * t * (3 - 2 * t); }
+export const T = window.TESWAY_T || { hero: [0, 1.6], map: [1.6, 4.6], regions: [1.9, 0.6], dive: [4.6, 6], ride: [6, 11], third: [11, 11.8], tech: [11.8, 0.6], out: [14.2, 14.7], total: 15.4 };
+
+/* map grid: one cell per world unit before the dive, x/z centred on the 120 × 45 world */
+export const OX = 60, OZ = 22, CITY = 12;
 
 export function rand(seed) {
   let s = seed;
@@ -38,19 +43,7 @@ export function plateGeo(w, h, d, r) {
   return new THREE.ExtrudeGeometry(s, { depth: d, bevelEnabled: true, bevelThickness: d * 0.3, bevelSize: Math.min(r * 0.3, d * 0.5), bevelSegments: 3, curveSegments: 8 });
 }
 
-/* floor: one soft dot per world unit, on the same x.5 grid as the map dots */
-export function dotFloorTex() {
-  const tex = canvasTex(64, 64, function (g, w, h) {
-    g.fillStyle = '#F6F6F6'; g.fillRect(0, 0, w, h);
-    g.fillStyle = '#DEDEDE';
-    g.beginPath(); g.arc(w / 2, h / 2, 5.5, 0, 7); g.fill();
-  });
-  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-  tex.anisotropy = 16;
-  return tex;
-}
-
-function rrect(g, x, y, w, h, r) {
+export function rrect(g, x, y, w, h, r) {
   g.beginPath();
   g.moveTo(x + r, y);
   g.arcTo(x + w, y, x + w, y + h, r);
@@ -74,7 +67,7 @@ function wrap(g, text, x, y, maxW, lh, maxLines) {
   g.fillText(line, x, y + n * lh);
 }
 
-function loadImg(src) {
+export function loadImg(src) {
   return new Promise(function (res) {
     const img = new Image();
     img.onload = function () { res(img); };

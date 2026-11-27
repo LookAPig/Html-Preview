@@ -1,0 +1,141 @@
+/* ==== about-hud.css · map title + cards and labels pinned to the 3D world ==== */
+.amap__head { align-items: center; margin: 0 auto; text-align: center; }
+.amap__head .sec-sub { display: none; }
+.amap__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  list-style: none;
+  text-align: center;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.amap__stats b {
+  display: block;
+  margin-bottom: 0.125rem;
+  font-family: var(--font-en);
+  font-size: 1.375rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.ahud { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; visibility: hidden; }
+.ahud__tag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin: -2.25rem 0 0 -0.75rem;
+  padding: 0.3125rem 0.625rem 0.3125rem 0.5rem;
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  box-shadow: 0 0 0 1px var(--line), 0 0.5rem 1rem -0.5rem rgba(34, 34, 34, .35);
+  font-size: 0.625rem;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.ahud__tag::before { content: ""; width: 0.375rem; height: 0.375rem; border-radius: 50%; background: var(--volt); }
+.ahud__tag.is-hq { background: var(--text); color: #FFF; }
+.ahud__tag:not(.is-big):not(.is-hq) { display: none; }
+
+.ahud__pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin: -0.4375rem 0 0 -0.4375rem;
+  border-radius: 50%;
+  background: var(--volt);
+  box-shadow: 0 0 0 3px #FFF, 0 0.25rem 0.75rem rgba(34, 34, 34, .3);
+  opacity: 0;
+}
+.ahud__pin::after {
+  content: "";
+  position: absolute;
+  inset: -0.5rem;
+  border: 1.5px solid var(--volt);
+  border-radius: 50%;
+  animation: ahudPing 1.8s var(--ease) infinite;
+}
+@keyframes ahudPing { from { scale: .5; opacity: 1; } to { scale: 1.6; opacity: 0; } }
+.ahud__line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 0;
+  border-top: 1.5px dashed var(--volt);
+  transform-origin: 0 0;
+  opacity: 0;
+}
+
+.ahud__card {
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: 1.5rem;
+  padding: 1.125rem 1.25rem 1.25rem;
+  border-radius: var(--r-lg);
+  background: var(--bg);
+  box-shadow: 0 0 0 1px var(--line), 0 1.5rem 3rem -1.5rem rgba(34, 34, 34, .45);
+  opacity: 0;
+  visibility: hidden;
+}
+.ahud__no { display: flex; align-items: baseline; gap: 0.375rem; font-size: 0.6875rem; font-weight: 700; color: rgba(34, 34, 34, .35); font-variant-numeric: tabular-nums; }
+.ahud__no b { font-family: var(--font-en); font-size: 2rem; font-weight: 400; line-height: 1; color: var(--volt); }
+.ahud__chip {
+  margin-left: auto;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--r-pill);
+  background: var(--bg-2);
+  font-size: 0.6875rem;
+  color: var(--text);
+}
+.ahud__card h3 { margin-top: 0.5rem; font-size: 1.125rem; font-weight: 800; line-height: 1.25; letter-spacing: -.01em; }
+.ahud__sub { margin-top: 0.125rem; font-size: 0.75rem; color: var(--muted); }
+.ahud__text { margin-top: 0.5rem; font-size: 0.8125rem; line-height: 1.6; color: var(--muted); }
+.ahud__meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 0.875rem;
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--line);
+  list-style: none;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.ahud__meta li + li { padding-left: 0.75rem; border-left: 1px solid var(--line); }
+.ahud__meta b { display: block; font-family: var(--font-en); font-size: 1.375rem; font-weight: 400; line-height: 1.1; color: var(--text); }
+.ahud__pins { display: none; }
+
+@media (min-aspect-ratio: 1/1) {
+  .amap__head .sec-sub { display: block; max-width: 34rem; }
+  .amap__stats {
+    position: absolute;
+    left: 50%;
+    bottom: 2.5rem;
+    grid-template-columns: repeat(4, auto);
+    gap: 3.5rem;
+    margin: 0;
+    translate: -50% 0;
+    font-size: 0.6875rem;
+  }
+  .amap__stats b { font-size: 2.25rem; }
+  .ahud__tag { font-size: 0.6875rem; }
+  .ahud__card { left: 0; right: auto; bottom: auto; top: 0; width: 21rem; padding: 1.375rem 1.5rem 1.5rem; }
+  .ahud__card h3 { font-size: 1.375rem; }
+  .ahud__text { font-size: 0.875rem; }
+  .ahud__pins { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 0.875rem; }
+  .ahud__pins span { padding: 0.25rem 0.625rem; border-radius: var(--r-pill); background: var(--bg-2); font-size: 0.6875rem; font-weight: 600; }
+}

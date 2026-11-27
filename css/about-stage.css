@@ -16,31 +16,11 @@ main > section.astage:last-child::after { content: none; }
 .asc.is-show { visibility: visible; }
 .asc--hero { z-index: 3; }
 
+.astage__pin { background: var(--page); }
 .aworld { position: absolute; inset: 0; display: block; width: 100%; height: 100%; visibility: hidden; }
-.aworld__tags { position: absolute; inset: 0; overflow: hidden; pointer-events: none; visibility: hidden; }
-.aworld__tag {
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  margin: -2.25rem 0 0 -0.75rem;
-  padding: 0.3125rem 0.625rem 0.3125rem 0.5rem;
-  border-radius: var(--r-pill);
-  background: var(--bg);
-  box-shadow: 0 0 0 1px var(--line), 0 0.5rem 1rem -0.5rem rgba(34, 34, 34, .35);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  white-space: nowrap;
-  opacity: 0;
-  will-change: transform, opacity;
-}
-.aworld__tag::before { content: ""; width: 0.375rem; height: 0.375rem; border-radius: 50%; background: var(--volt); }
-.aworld__tag.is-hq { background: var(--text); color: #FFF; }
 .asc.is-live { pointer-events: auto; }
 .asc--hero { padding: 0; }
-.asc--hero .hero { height: calc(100svh - var(--bar-h)); transform-origin: 50% 0; }
+.asc--hero .hero { height: 100svh; }
 .asc .sec-head h2 { margin-top: 0.625rem; }
 
 .sr-only {

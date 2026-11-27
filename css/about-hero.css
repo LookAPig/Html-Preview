@@ -1,9 +1,14 @@
-/* ==== about-hero.css · full-screen banner, built on the homepage hero ==== */
-.ahero .hs__media img {
-  scale: 1.14;
-  transition: scale 2.8s cubic-bezier(.16, .84, .24, 1);
+/* ==== about-hero.css · banner copy over the 3D billboard (the image itself is rendered in WebGL) ==== */
+.ahero { position: relative; background: transparent; }
+.ahero__veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(246, 246, 246, .94) 0%, rgba(246, 246, 246, .8) 42%, rgba(246, 246, 246, 0) 62%,
+    rgba(246, 246, 246, 0) 86%, rgba(246, 246, 246, .88) 100%);
 }
-.is-ready .ahero .hs__media img { scale: 1; }
+body:not(.is-world) .ahero { background: var(--bg-2) url("../Images/hero-mobile.jpg") 50% 100% / cover; }
 
 .ahero__title span, .ahero__title em { overflow: hidden; padding-bottom: 0.06em; }
 .ahero__title i {
@@ -79,6 +84,12 @@
 @keyframes aheroCue { from { translate: 0 -100%; } to { translate: 0 260%; } }
 
 @media (min-aspect-ratio: 1/1) {
+  .ahero__veil {
+    background:
+      linear-gradient(90deg, rgba(246, 246, 246, .96) 0%, rgba(246, 246, 246, .86) 30%, rgba(246, 246, 246, 0) 58%),
+      linear-gradient(0deg, rgba(246, 246, 246, .7) 0%, rgba(246, 246, 246, 0) 18%);
+  }
+  body:not(.is-world) .ahero { background-image: url("../Images/hero-desktop.jpg"); background-position: 68% 50%; }
   .ahero__stats li:nth-child(4) { display: block; }
   .ahero__stats { grid-template-columns: repeat(4, auto); width: auto; gap: 2.5rem; font-size: 0.6875rem; }
   .ahero__stats li + li { padding-left: 2.5rem; }

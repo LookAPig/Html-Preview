@@ -26,23 +26,6 @@
     document.addEventListener('ascene', function (e) { if (e.detail.id === id) fn(e.detail.on); });
   };
 
-  var hero = document.getElementById('top');
-  if (!hero) return;
   window.TeswayCount(document.getElementById('heroStats'), 900);
-
-  var video = hero.querySelector('video');
-  var desktop = matchMedia('(min-aspect-ratio: 1/1)');
-  var on = true;
-  function sync() {
-    if (!video || calm || !desktop.matches) return;
-    if (!video.src) {
-      if (!on) return;
-      video.src = video.dataset.src;
-      video.addEventListener('playing', function () { video.classList.add('is-playing'); });
-    }
-    if (on) video.play().catch(function () {}); else video.pause();
-  }
-  setTimeout(sync, 1200);
-  desktop.addEventListener('change', sync);
-  window.TeswayOnScene('hero', function (v) { on = v; sync(); });
+  window.TeswayOnScene('map', function (on) { if (on) window.TeswayCount(document.getElementById('mapStats'), 200); });
 })();

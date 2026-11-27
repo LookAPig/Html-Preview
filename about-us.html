@@ -22,12 +22,12 @@
   <link rel="stylesheet" href="css/search.css?v=20">
   <link rel="stylesheet" href="css/dock.css?v=20">
   <link rel="stylesheet" href="css/scrollbar.css?v=20">
-  <link rel="stylesheet" href="css/about-stage.css?v=5">
-  <link rel="stylesheet" href="css/about-hero.css?v=4">
-  <link rel="stylesheet" href="css/about-map.css?v=6">
-  <link rel="stylesheet" href="css/about-time.css?v=5">
-  <link rel="stylesheet" href="css/about-craft.css?v=5">
-  <link rel="stylesheet" href="css/about-voice.css?v=4">
+  <link rel="stylesheet" href="css/about-stage.css?v=7">
+  <link rel="stylesheet" href="css/about-hero.css?v=7">
+  <link rel="stylesheet" href="css/about-hud.css?v=1">
+  <link rel="stylesheet" href="css/about-time.css?v=7">
+  <link rel="stylesheet" href="css/about-craft.css?v=7">
+  <link rel="stylesheet" href="css/about-voice.css?v=7">
   <link rel="stylesheet" href="css/btn.css?v=23">
 </head>
 <body>
@@ -72,18 +72,15 @@
     <section class="astage" id="about" aria-label="About TESWAY">
       <div class="astage__pin">
         <canvas class="aworld" id="aboutWorld" aria-hidden="true"></canvas>
-        <div class="aworld__tags" id="worldTags" aria-hidden="true"></div>
-        <div class="astage__dots" id="aboutDots" aria-hidden="true"></div>
+        <div class="ahud" id="aboutHud" aria-live="polite">
+          <i class="ahud__pin" id="hudPin" aria-hidden="true"></i>
+          <article class="ahud__card" id="hudCard"></article>
+        </div>
+
         <div class="asc asc--hero" id="top" aria-label="Introduction">
+          <div class="ahero__veil" aria-hidden="true"></div>
           <div class="hero ahero">
             <div class="hs is-on">
-              <div class="hs__media ahero__media" style="--pos:68% 50%;--posM:50% 100%">
-                <picture>
-                  <source media="(max-aspect-ratio: 999/1000)" srcset="Images/hero-mobile.jpg">
-                  <img src="Images/hero-desktop.jpg" alt="" fetchpriority="high">
-                </picture>
-                <video data-src="Images/hero.mp4" muted loop playsinline preload="none"></video>
-              </div>
               <div class="hs__copy ahero__copy">
                 <p class="hs__badge">About TESWAY · Since 2016</p>
                 <h1 class="hs__title ahero__title"><span><i>Built to go far.</i></span><em><i>Ridden worldwide.</i></em></h1>
@@ -107,42 +104,35 @@
         </div>
 
         <div class="asc asc--map" id="reach" aria-label="Global presence">
-          <div class="amap__copy">
-              <header class="sec-head">
-                <p class="eyebrow eyebrow--dot">Global presence</p>
-                <h2>Wherever <em>The Road Goes</em></h2>
-                <p class="sec-sub">Designed in Shenzhen and shipped from local warehouses, with dealers and service hubs close to every ride.</p>
-              </header>
-              <ul class="amap__stats" id="mapStats">
-                <li><b data-count="200" data-suffix="K+">0</b>Global riders</li>
-                <li><b data-count="40" data-suffix="+">0</b>Countries</li>
-                <li><b data-count="650" data-suffix="+">0</b>Dealers</li>
-                <li><b data-count="6">0</b>Warehouses</li>
-              </ul>
-              <div class="amap__regions" id="mapRegions"></div>
-          </div>
+          <header class="sec-head amap__head">
+            <p class="eyebrow eyebrow--dot">Global presence</p>
+            <h2>Wherever <em>The Road Goes</em></h2>
+            <p class="sec-sub">Designed in Shenzhen, shipped from local warehouses and serviced close to every ride.</p>
+          </header>
+          <ul class="amap__stats" id="mapStats">
+            <li><b data-count="200" data-suffix="K+">0</b>Global riders</li>
+            <li><b data-count="40" data-suffix="+">0</b>Countries</li>
+            <li><b data-count="650" data-suffix="+">0</b>Dealers</li>
+            <li><b data-count="6">0</b>Warehouses</li>
+          </ul>
         </div>
 
         <div class="asc asc--time" id="story" aria-label="Our story">
           <header class="sec-head atime__head">
             <p class="eyebrow eyebrow--dot">Our story</p>
             <h2>Ten Years <em>On The Road</em></h2>
-            <p class="sec-sub">Scroll to ride from our Shenzhen garage to 40+ countries, one milestone at a time.</p>
           </header>
           <ol class="atime__rail" id="timeRail"></ol>
           <ol class="sr-only" id="timeList"></ol>
         </div>
 
         <div class="asc asc--craft" id="craft" aria-label="Craftsmanship">
-          <div class="acraft__top">
-            <header class="sec-head">
-              <p class="eyebrow eyebrow--dot">Craftsmanship</p>
-              <h2>Engineered <em>To Last</em></h2>
-              <p class="sec-sub">Every frame is designed, formed and welded in-house, then tested far beyond the road.</p>
-            </header>
-            <ul class="acraft__stats" id="craftStats"></ul>
-          </div>
-          <div class="acraft__list" id="craftList"></div>
+          <header class="sec-head acraft__head">
+            <p class="eyebrow eyebrow--dot">Craftsmanship</p>
+            <h2>Engineered <em>To Last</em></h2>
+          </header>
+          <ul class="acraft__stats" id="craftStats"></ul>
+          <ol class="sr-only" id="craftList"></ol>
         </div>
 
         <div class="asc asc--voice" id="reviews" aria-label="Rider reviews">
@@ -176,15 +166,14 @@
   <script src="js/search.js?v=20" defer></script>
   <script src="js/dock.js?v=20" defer></script>
   <script src="js/scrollbar.js?v=20" defer></script>
-  <script src="js/about-data.js?v=3" defer></script>
+  <script src="js/about-data.js?v=4" defer></script>
   <script src="js/about-world.js?v=1" defer></script>
-  <script src="js/about-hero.js?v=4" defer></script>
-  <script src="js/about-map.js?v=6" defer></script>
-  <script src="js/about-time.js?v=6" defer></script>
-  <script src="js/about-craft.js?v=5" defer></script>
+  <script src="js/about-hero.js?v=5" defer></script>
+  <script src="js/about-time.js?v=7" defer></script>
+  <script src="js/about-craft.js?v=6" defer></script>
   <script src="js/about-voice.js?v=4" defer></script>
-  <script src="js/about-stage.js?v=6" defer></script>
-  <script type="module" src="js/a3d/main.js?v=2"></script>
+  <script src="js/about-stage.js?v=7" defer></script>
+  <script type="module" src="js/a3d/main.js?v=3"></script>
   <script src="js/xlink.js?v=1" defer></script>
 </body>
 </html>

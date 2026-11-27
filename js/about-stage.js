@@ -1,29 +1,31 @@
-/* ==== about-stage.js · scroll → smoothed progress → every scene on one sticky stage ==== */
+/* ==== about-stage.js · scroll → smoothed progress p → HTML overlays (3D world reads the same p) ==== */
 (function () {
   var sec = document.getElementById('about');
   if (!sec) return;
   var pin = sec.querySelector('.astage__pin');
   var bar = document.getElementById('aboutBar');
   var chap = document.getElementById('aboutChap');
-  var dots = document.getElementById('aboutDots');
   var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function (id) { return document.getElementById(id); };
   var S = { hero: $('top'), map: $('reach'), time: $('story'), craft: $('craft'), voice: $('reviews') };
-  var heroBox = S.hero.querySelector('.hero');
-  var crTop = S.craft.querySelector('.acraft__top');
-  var crCards = Array.prototype.slice.call(S.craft.querySelectorAll('.acard'));
   var vTop = S.voice.querySelector('.avoice__top');
+  var tHead = S.time.querySelector('.atime__head');
   var vRows = Array.prototype.slice.call(S.voice.querySelectorAll('.avoice__row'));
 
-  var TOTAL = 11.4, STORY = [3.55, 8.2];
+  /* one timeline shared with the 3D world (js/a3d reads window.TESWAY_T) */
+  var T = window.TESWAY_T = {
+    hero: [0, 1.6], map: [1.6, 4.6], regions: [1.9, 0.6], dive: [4.6, 6], ride: [6, 11],
+    third: [11, 11.8], tech: [11.8, 0.6], out: [14.2, 14.7], total: 15.4
+  };
+  var TOTAL = T.total;
   var CH = [
     { id: 'top', label: 'Intro', p: 0, from: 0 },
-    { id: 'reach', label: 'Global', p: 1.6, from: 0.9 },
-    { id: 'story', label: 'Story', p: 3.9, from: 2.5 },
-    { id: 'craft', label: 'Craft', p: 9.5, from: 8.6 },
-    { id: 'reviews', label: 'Voices', p: TOTAL, from: 10.3 }
+    { id: 'reach', label: 'Global', p: 2, from: 1.2 },
+    { id: 'story', label: 'Story', p: 6.25, from: 4.6 },
+    { id: 'craft', label: 'Craft', p: 12.05, from: 11 },
+    { id: 'reviews', label: 'Voices', p: TOTAL, from: 14.3 }
   ];
-  var stage = { p: 0 };
+  var stage = { p: 0, T: T };
   var rem = 16, U = 1, cur = 0, goal = 0, raf = 0, live = {}, chapOn = -1;
 
   chap.innerHTML = CH.map(function (c, i) { return '<button type="button" data-i="' + i + '"><span>' + c.label + '</span><i></i></button>'; }).join('');
@@ -43,58 +45,46 @@
     document.dispatchEvent(new CustomEvent('ascene', { detail: { id: id, on: on } }));
   }
 
+  function fade(el, a, b, c, d, p, lift) {
+    var i = io(seg(p, a, b)), o = io(seg(p, c, d));
+    el.style.opacity = (i * (1 - o)).toFixed(3);
+    el.style.transform = 'translate3d(0,' + px(((1 - i) - o) * rem * (lift || 1.5)) + ',0)';
+    return i * (1 - o);
+  }
+
   function apply(p) {
-    var H = U;
+    var h = 1 - seg(p, 0.04, 0.4);
+    S.hero.style.opacity = h.toFixed(3);
+    S.hero.style.transform = 'translate3d(0,' + px(-(1 - h) * rem * 2) + ',0)';
+    scene(S.hero, 'hero', h > 0, p < 0.3);
 
-    var ho = io(seg(p, 0.12, 1));
-    heroBox.style.transform = 'translate3d(0,' + px(-ho * H * 0.06) + ',0) scale(' + (1 - ho * 0.14).toFixed(4) + ')';
-    heroBox.style.borderRadius = px(ho * rem * 1.25);
-    heroBox.style.setProperty('--fade', (1 - seg(p, 0.04, 0.4)).toFixed(3));
-    heroBox.style.setProperty('--py', px(ho * H * 0.12));
-    S.hero.style.opacity = (1 - seg(p, 0.55, 0.92)).toFixed(3);
-    scene(S.hero, 'hero', p < 0.92, p < 0.5);
+    var m = fade(S.map, 1.25, 1.65, 4.45, 4.75, p);
+    scene(S.map, 'map', m > 0, p > 1.6 && p < 4.6);
 
-    var mi = eo(seg(p, 0.92, 1.4)), mo = io(seg(p, 2.3, 2.65));
-    S.map.style.opacity = (mi * (1 - mo)).toFixed(3);
-    S.map.style.transform = 'translate3d(0,' + px((1 - mi) * rem * 3 - mo * rem * 2) + ',0)';
-    scene(S.map, 'map', p > 0.92 && p < 2.65, p > 0.95 && p < 2.45);
+    var t = fade(S.time, 5.7, 6.05, 10.75, 11.05, p);
+    scene(S.time, 'time', t > 0, p > 6 && p < 10.9);
+    if (t > 0) tHead.style.opacity = (1 - io(seg(p, 6.7, 7.1))).toFixed(3);
 
-    var ti = io(seg(p, 3.2, 3.6)), to = io(seg(p, 8.1, 8.35));
-    S.time.style.opacity = (ti * (1 - to)).toFixed(3);
-    S.time.style.transform = 'translate3d(0,' + px((1 - ti) * rem * 2 - to * rem * 2) + ',0)';
-    scene(S.time, 'time', p > 3.2 && p < 8.35, p > 3.5 && p < 8.1);
+    var c = fade(S.craft, 11.45, 11.8, 14.1, 14.4, p);
+    scene(S.craft, 'craft', c > 0, p > 11.6 && p < 14.3);
 
-    var ci = eo(seg(p, 8.7, 9.3)), co = io(seg(p, 10, 10.45));
-    crTop.style.opacity = ci.toFixed(3);
-    crTop.style.transform = 'translate3d(0,' + px((1 - ci) * rem * 2.5) + ',0)';
-    crCards.forEach(function (c, k) {
-      var e = eo(seg(p, 8.75 + k * 0.12, 9.45 + k * 0.12));
-      c.style.opacity = Math.min(1, e * 2).toFixed(3);
-      c.style.transform = 'translate3d(0,' + px((1 - e) * rem * 2) + ',0) rotateX(' + ((1 - e) * 72).toFixed(2) + 'deg)';
-    });
-    dots.style.opacity = (seg(p, 8.45, 8.85) * (1 - seg(p, 10, 10.4))).toFixed(3);
-    S.craft.style.opacity = (1 - co).toFixed(3);
-    S.craft.style.transform = 'translate3d(0,' + px(-co * H * 0.08) + ',0) scale(' + (1 - co * 0.04).toFixed(4) + ')';
-    scene(S.craft, 'craft', p > 8.7 && p < 10.45, p > 8.75 && p < 10.2);
-
-    var vi = eo(seg(p, 10.25, 10.85));
+    var vi = eo(seg(p, 14.5, 15.1));
     vTop.style.opacity = vi.toFixed(3);
     vTop.style.transform = 'translate3d(0,' + px((1 - vi) * rem * 2.5) + ',0)';
     vRows.forEach(function (r, k) {
-      var e = eo(seg(p, 10.35 + k * 0.15, 11.1 + k * 0.15));
+      var e = eo(seg(p, 14.6 + k * 0.15, 15.3 + k * 0.1));
       r.style.opacity = e.toFixed(3);
       r.style.transform = 'translate3d(' + ((1 - e) * (k ? -16 : 16)).toFixed(2) + '%,0,0)';
     });
-    scene(S.voice, 'voice', p > 10.25, p > 10.6);
+    scene(S.voice, 'voice', p > 14.5, p > 14.8);
 
     stage.p = p;
-    if (window.Tesway3D) window.Tesway3D.set(p);
     bar.style.transform = 'scaleX(' + (p / TOTAL).toFixed(4) + ')';
-    var c = 0;
-    CH.forEach(function (ch, i) { if (p >= ch.from) c = i; });
-    if (c !== chapOn) {
-      chapOn = c;
-      chapBtns.forEach(function (b, i) { b.classList.toggle('is-on', i === c); b.setAttribute('aria-current', i === c ? 'step' : 'false'); });
+    var ci = 0;
+    CH.forEach(function (ch, i) { if (p >= ch.from) ci = i; });
+    if (ci !== chapOn) {
+      chapOn = ci;
+      chapBtns.forEach(function (b, i) { b.classList.toggle('is-on', i === ci); b.setAttribute('aria-current', i === ci ? 'step' : 'false'); });
     }
   }
 
@@ -105,14 +95,12 @@
   stage.step = function (now) {
     var dt = lastNow ? Math.min(0.05, (now - lastNow) / 1000) : 0.016;
     lastNow = now;
-    cur += (goal - cur) * (calm ? 1 : 1 - Math.exp(-dt * 7.5));
-    if (Math.abs(goal - cur) < 0.0003) cur = goal;
+    cur += (goal - cur) * (calm ? 1 : 1 - Math.exp(-dt * 6.5));
+    if (Math.abs(goal - cur) < 0.0002) cur = goal;
     if (cur !== shownP) { shownP = cur; apply(cur); }
     return cur !== goal;
   };
-  function tick(now) {
-    raf = stage.step(now) && !stage.ext ? requestAnimationFrame(tick) : 0;
-  }
+  function tick(now) { raf = stage.step(now) && !stage.ext ? requestAnimationFrame(tick) : 0; }
   function kick() { goal = read(); if (!raf && !stage.ext) raf = requestAnimationFrame(tick); }
 
   function size() {
@@ -120,6 +108,7 @@
     U = pin.clientHeight || innerHeight;
     sec.style.height = Math.round((TOTAL + 1) * U) + 'px';
     goal = cur = read();
+    shownP = cur;
     apply(cur);
   }
 
@@ -136,13 +125,13 @@
     var a = e.target.closest('a[href^="#"]');
     if (!a) return;
     var id = a.getAttribute('href').slice(1);
-    var c = CH.filter(function (ch) { return ch.id === id; })[0];
-    if (!c) return;
+    var ch = CH.filter(function (x) { return x.id === id; })[0];
+    if (!ch) return;
     e.preventDefault();
-    jump(c.p);
+    jump(ch.p);
   });
 
-  stage.story = function (u) { jump(STORY[0] + u * (STORY[1] - STORY[0])); };
+  stage.jump = jump;
   window.TeswayStage = stage;
   addEventListener('scroll', kick, { passive: true });
   var rw = innerWidth, rt = 0;

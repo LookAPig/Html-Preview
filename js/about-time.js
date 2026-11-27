@@ -4,7 +4,7 @@
   var srList = document.getElementById('timeList');
   var list = window.TESWAY_ABOUT && window.TESWAY_ABOUT.time;
   if (!rail || !list) return;
-  var n = list.length, last = -2;
+  var last = -2, lastU = -1;
 
   srList.innerHTML = list.map(function (t) { return '<li>' + t.year + ': ' + t.title + '. ' + t.text + '</li>'; }).join('');
   rail.innerHTML = '<li class="atime__fill" aria-hidden="true"><i></i></li>' + list.map(function (t, i) {
@@ -15,9 +15,10 @@
 
   window.TeswayTime = {
     update: function (u, on) {
+      u = Math.max(0, Math.min(1, u));
+      if (Math.abs(u - lastU) > 0.0005) { lastU = u; fill.style.transform = 'scaleX(' + u.toFixed(4) + ')'; }
       if (on === last) return;
       last = on;
-      fill.style.transform = 'scaleX(' + Math.max(0, on / (n - 1)).toFixed(4) + ')';
       dots.forEach(function (b, i) {
         b.classList.toggle('is-past', i <= on);
         b.classList.toggle('is-on', i === on);
@@ -28,6 +29,6 @@
   rail.addEventListener('click', function (e) {
     var b = e.target.closest('button');
     var stops = window.TeswayRideStops;
-    if (b && window.TeswayStage && stops) window.TeswayStage.story(stops[Number(b.dataset.i)]);
+    if (b && window.TeswayStage && stops) window.TeswayStage.jump(stops[Number(b.dataset.i)]);
   });
 })();
