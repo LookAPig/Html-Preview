@@ -88,7 +88,10 @@
 
   function jump() {
     var top = grid.getBoundingClientRect().top;
-    if (top < 0 || top > innerHeight) document.getElementById('coll').scrollIntoView({ behavior: 'smooth' });
+    if (top >= 0 && top <= innerHeight) return;
+    var coll = document.getElementById('coll');
+    if (window.TeswayScrollTo) window.TeswayScrollTo(coll, true);
+    else coll.scrollIntoView({ behavior: 'smooth' });
   }
 
   F.onChange(function (open) {

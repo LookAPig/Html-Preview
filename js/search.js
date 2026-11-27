@@ -326,7 +326,8 @@ window.TESWAY_SEARCH = {
     remember(input.value);
     close();
     var el = href && document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (el && window.TeswayScrollTo) window.TeswayScrollTo(el, true);
+    else if (el) el.scrollIntoView({ behavior: 'smooth' });
   }
 
   function hint() {
