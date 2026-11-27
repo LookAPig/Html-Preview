@@ -92,14 +92,22 @@
     }
   }
 
-  function read() { return Math.max(0, Math.min(TOTAL, -sec.getBoundingClientRect().top / U)); }
+  /* layout offset, not getBoundingClientRect: the footer reveal scales this section near the end */
+  function secTop() { var y = 0; for (var e = sec; e; e = e.offsetParent) y += e.offsetTop; return y; }
+  function read() { return Math.max(0, Math.min(TOTAL, (scrollY - secTop()) / U)); }
 
   /* frame-rate independent damping; the 3D loop calls step() so DOM and WebGL share one frame */
-  var lastNow = 0, shownP = -1;
+  var lastNow = 0, shownP = -1, touch = false;
+  addEventListener('touchstart', function () { touch = true; }, { passive: true });
+  addEventListener('wheel', function () { touch = false; }, { passive: true });
   stage.step = function (now) {
     var dt = lastNow ? Math.min(0.05, (now - lastNow) / 1000) : 0.016;
+    var lenis = window.TeswayLenis;
     lastNow = now;
-    cur += (goal - cur) * (calm ? 1 : 1 - Math.exp(-dt * 6.5));
+    /* Lenis already eases wheel input, so the stage only adds a light follow on top of it */
+    if (lenis && stage.ext) { lenis.ext = true; lenis.raf(now); goal = read(); if (goal >= TOTAL) cur = goal; }
+    var k = lenis && !touch && !lenis.isStopped ? 18 : 6.5;
+    cur += (goal - cur) * (calm ? 1 : 1 - Math.exp(-dt * k));
     if (Math.abs(goal - cur) < 0.0002) cur = goal;
     if (cur !== shownP) { shownP = cur; apply(cur); }
     return cur !== goal;
@@ -122,8 +130,9 @@
   }
 
   function jump(p) {
-    var top = sec.getBoundingClientRect().top + scrollY;
-    scrollTo({ top: Math.round(top + p * U) + 1, behavior: calm ? 'auto' : 'smooth' });
+    var y = Math.round(secTop() + p * U) + 1;
+    if (window.TeswayLenis) return window.TeswayLenis.scrollTo(y, { duration: 1.8, easing: function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; } });
+    scrollTo({ top: y, behavior: calm ? 'auto' : 'smooth' });
   }
 
   chap.addEventListener('click', function (e) {

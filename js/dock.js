@@ -115,7 +115,8 @@ window.TESWAY_DOCK = {
 
   topBtn.addEventListener('click', function () {
     setHelp(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.TeswayScrollTo) window.TeswayScrollTo(0, true);
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
   });
   help.addEventListener('click', function () { setHelp(!dock.classList.contains('is-help')); });
   dock.querySelector('.dock__x').addEventListener('click', function () { setHelp(false); help.focus(); });

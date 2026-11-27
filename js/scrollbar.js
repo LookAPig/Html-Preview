@@ -34,6 +34,7 @@
   }
 
   function jump(y, smooth) {
+    if (window.TeswayScrollTo) return window.TeswayScrollTo(y, smooth);
     window.scrollTo({ top: y, behavior: smooth ? 'smooth' : 'instant' });
   }
 
