@@ -3,7 +3,6 @@
   var sec = document.getElementById('about');
   if (!sec) return;
   var pin = sec.querySelector('.astage__pin');
-  var bar = document.getElementById('aboutBar');
   var chap = document.getElementById('aboutChap');
   var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function (id) { return document.getElementById(id); };
@@ -15,7 +14,7 @@
   /* one timeline shared with the 3D world (js/a3d reads window.TESWAY_T) */
   var T = window.TESWAY_T = {
     hero: [0, 1.6], map: [1.6, 4.6], regions: [1.9, 0.6], dive: [4.6, 6], ride: [6, 11],
-    third: [11, 11.8], tech: [11.8, 0.6], out: [14.2, 14.7], total: 15.4
+    third: [11, 11.8], tech: [11.8, 0.6], out: [14.1, 14.5], total: 15.7
   };
   var TOTAL = T.total;
   var CH = [
@@ -68,18 +67,17 @@
     var c = fade(S.craft, 11.45, 11.8, 14.1, 14.4, p);
     scene(S.craft, 'craft', c > 0, p > 11.6 && p < 14.3);
 
-    var vi = eo(seg(p, 14.5, 15.1));
+    var vi = eo(seg(p, 14.5, 15));
     vTop.style.opacity = vi.toFixed(3);
     vTop.style.transform = 'translate3d(0,' + px((1 - vi) * rem * 2.5) + ',0)';
     vRows.forEach(function (r, k) {
-      var e = eo(seg(p, 14.6 + k * 0.15, 15.3 + k * 0.1));
+      var e = eo(seg(p, 14.55 + k * 0.12, 15.05 + k * 0.08));
       r.style.opacity = e.toFixed(3);
       r.style.transform = 'translate3d(' + ((1 - e) * (k ? -16 : 16)).toFixed(2) + '%,0,0)';
     });
     scene(S.voice, 'voice', p > 14.5, p > 14.8);
 
     stage.p = p;
-    bar.style.transform = 'scaleX(' + (p / TOTAL).toFixed(4) + ')';
     var ci = 0;
     CH.forEach(function (ch, i) { if (p >= ch.from) ci = i; });
     if (ci !== chapOn) {
@@ -101,7 +99,12 @@
     return cur !== goal;
   };
   function tick(now) { raf = stage.step(now) && !stage.ext ? requestAnimationFrame(tick) : 0; }
-  function kick() { goal = read(); if (!raf && !stage.ext) raf = requestAnimationFrame(tick); }
+  /* once the pin starts to leave, the reviews must already be fully settled: skip the smoothing lag */
+  function kick() {
+    goal = read();
+    if (goal >= TOTAL && cur < TOTAL) { cur = goal; shownP = cur; apply(cur); }
+    if (!raf && !stage.ext) raf = requestAnimationFrame(tick);
+  }
 
   function size() {
     rem = parseFloat(getComputedStyle(document.documentElement).fontSize);

@@ -102,7 +102,9 @@ if (cv && data && world) {
     const show = p < T.out[1] + 0.02;
     if (show !== shown) {
       shown = show;
-      cv.style.visibility = hudBox.style.visibility = show ? 'visible' : 'hidden';
+      cv.style.visibility = show ? 'visible' : 'hidden';
+      hudBox.style.display = show ? '' : 'none';
+      hudBox.style.visibility = 'visible';
     }
     if (!show || document.hidden) return;
     const fade = 1 - seg(p, T.out[0], T.out[1]);

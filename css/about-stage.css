@@ -32,9 +32,6 @@ main > section.astage:last-child::after { content: none; }
   white-space: nowrap;
 }
 
-.astage__bar { position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; height: 2px; background: rgba(34, 34, 34, .06); }
-.astage__bar i { display: block; height: 100%; background: var(--volt); transform: scaleX(0); transform-origin: left; }
-
 .achap { display: none; }
 
 @media (min-aspect-ratio: 1/1) {
