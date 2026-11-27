@@ -9,6 +9,7 @@
   var S = { hero: $('top'), map: $('reach'), time: $('story'), craft: $('craft'), voice: $('reviews') };
   var vTop = S.voice.querySelector('.avoice__top');
   var tHead = S.time.querySelector('.atime__head');
+  var tCard = document.getElementById('timeCard');
   var vRows = Array.prototype.slice.call(S.voice.querySelectorAll('.avoice__row'));
 
   /* one timeline shared with the 3D world (js/a3d reads window.TESWAY_T) */
@@ -62,7 +63,12 @@
 
     var t = fade(S.time, 5.7, 6.05, 10.75, 11.05, p);
     scene(S.time, 'time', t > 0, p > 6 && p < 10.9);
-    if (t > 0) tHead.style.opacity = (1 - io(seg(p, 6.7, 7.1))).toFixed(3);
+    if (t > 0) {
+      tHead.style.opacity = (1 - io(seg(p, 6.7, 7.1))).toFixed(3);
+      var tc = io(seg(p, 6.85, 7.2));
+      tCard.style.opacity = tc.toFixed(3);
+      tCard.style.visibility = tc > 0 ? 'visible' : 'hidden';
+    }
 
     var c = fade(S.craft, 11.45, 11.8, 14.1, 14.4, p);
     scene(S.craft, 'craft', c > 0, p > 11.6 && p < 14.3);
