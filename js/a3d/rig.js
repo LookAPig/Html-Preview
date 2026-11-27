@@ -47,20 +47,15 @@ export function makeRig(o) {
     const s = o.END * (u - Math.sin(2 * Math.PI * u) / (2 * Math.PI));
     out.dist = s;
     out.kmh = 27 * (1 - Math.cos(2 * Math.PI * u)) / 2;
-    out.bike.set(o.xs - s, 0.02, P.z + LANE);
+    out.bike.set(o.xs - s, 0.04, P.z + LANE);
     let act = 0;
     o.panels.forEach(function (pn, i) { if (s >= pn.s - 16) act = i; });
     out.active = act;
     out.u = s / o.panels[o.panels.length - 1].s;
-    let yaw = 0, best = 0;
-    o.panels.forEach(function (pn) {
-      const ahead = pn.s - s, w = io(seg(ahead, 21, 11)) * (1 - io(seg(ahead, 7, 2)));
-      if (w > best) { best = w; yaw = Math.atan2(pn.side * 6.4 - LANE, Math.max(ahead, 2)) * 57.3 * w * 0.5; }
-    });
-    const bob = Math.sin(s * 2.1) * 0.012 * (out.kmh / 27);
+    const bob = Math.sin(s * 2.1) * 0.004 * (out.kmh / 27);
     v.set(out.bike.x + 0.3, out.bike.y + 1.5 + bob, out.bike.z);
-    out.roll = Math.sin(s * 0.7) * 0.006 * (out.kmh / 27);
-    return riderPose(v, 12.5 + Math.sin(s * 0.33) * 0.6, yaw);
+    out.roll = 0;
+    return riderPose(v, 12.5, 0);
   }
 
   function bikeAt(l, target) { return target.set(out.bike.x - l[2], out.bike.y + l[1], out.bike.z + l[0]); }
@@ -72,7 +67,7 @@ export function makeRig(o) {
     out.S = 1; out.dive = 0; out.roll = 0; out.offY = 0; out.fov = 30; out.tech = -1; out.techW = 0;
     out.sink = io(seg(p, 0.95, 1.45));
     ride(Math.max(p, RIDE[0]));
-    let ps, spread = 70, near = 0.5, far = 2400, fn = 900, ff = 2400;
+    let ps, spread = 70, near = 2, far = 2400, fn = 900, ff = 2400;
     out.shadow.set(0, 0, 0);
     const map = mapPose(30, aspect, frac, small, 0);
     map.t.x = mapX(p, small, map.d * th);
@@ -102,7 +97,7 @@ export function makeRig(o) {
       out.offY = mapOff * (1 - io(seg(k, 0, 0.4)));
       out.fov = lerp(30, fovRide, io(seg(k, 0.45, 1)));
       const L = 1 / CITY;
-      near = ll(0.5, 0.05 * L, k); far = ll(2400, 900 * L, k); fn = ll(900, 50 * L, k); ff = ll(2400, 430 * L, k);
+      near = ll(2, 0.05 * L, k); far = ll(2400, 900 * L, k); fn = ll(900, 50 * L, k); ff = ll(2400, 430 * L, k);
       spread = ll(70, 55 * L, k);
       out.shadow.copy(ps.t);
       ride(Math.max(p, RIDE[0]));

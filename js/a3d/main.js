@@ -28,10 +28,12 @@ if (cv && data && world) {
 
   const floorGeo = new THREE.PlaneGeometry(6000, 6000);
   floorGeo.rotateX(-Math.PI / 2);
-  const floorMat = new THREE.MeshBasicMaterial({ color: 0xF6F6F6, toneMapped: false });
+  /* ground never writes depth: it is drawn first like a backdrop, so nothing can z-fight with it */
+  const floorMat = new THREE.MeshBasicMaterial({ color: 0xF6F6F6, toneMapped: false, depthWrite: false });
   const floor = new THREE.Mesh(floorGeo, floorMat);
-  const shade = new THREE.Mesh(floorGeo, new THREE.ShadowMaterial({ color: 0x1E2226, opacity: 0.14 }));
-  shade.position.y = 0.004;
+  floor.renderOrder = -5;
+  const shade = new THREE.Mesh(floorGeo, new THREE.ShadowMaterial({ color: 0x1E2226, opacity: 0.14, depthWrite: false }));
+  shade.renderOrder = -4;
   shade.receiveShadow = true;
   scene.add(floor, shade);
   const page = new THREE.Color(0xF6F6F6), concrete = new THREE.Color(0xC9C6C0);
@@ -118,7 +120,7 @@ if (cv && data && world) {
     bike.group.position.copy(r.bike);
     bike.update(r.dist, r.kmh, data.time[r.active].year);
     floorMat.color.copy(page).lerp(concrete, seg(r.dive, 0.3, 0.8));
-    shade.visible = r.dive < 0.5;
+    shade.visible = r.dive < 0.1;
     sync(r);
     root.updateMatrixWorld();
     hud.update(r, root, camera, fade);

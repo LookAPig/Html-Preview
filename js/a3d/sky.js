@@ -61,15 +61,21 @@ export function buildSky(renderer, scene) {
   sun.shadow.normalBias = 0.03;
   scene.add(hemi, sun, sun.target);
 
-  const off = new THREE.Vector3();
-  /* the shadow box follows whatever the camera is looking at; spread is in world units */
+  const off = new THREE.Vector3(), snap = new THREE.Vector3();
+  const lz = SUN_DIR.clone().negate();
+  const lx = new THREE.Vector3().crossVectors(lz, new THREE.Vector3(0, 1, 0)).normalize();
+  const ly = new THREE.Vector3().crossVectors(lx, lz);
+  /* the shadow box follows the view, snapped to whole shadow texels so edges never crawl */
   function aim(target, spread, cam) {
     sky.position.copy(cam.position);
     const sh = sun.shadow.camera;
     sh.left = sh.bottom = -spread; sh.right = sh.top = spread;
     sh.near = 1; sh.far = spread * 6;
     sh.updateProjectionMatrix();
-    sun.target.position.copy(target).setY(0);
+    const tx = spread * 2 / sz;
+    snap.copy(target).setY(0);
+    const a = Math.round(snap.dot(lx) / tx) * tx, b = Math.round(snap.dot(ly) / tx) * tx, c = snap.dot(lz);
+    sun.target.position.copy(lx).multiplyScalar(a).addScaledVector(ly, b).addScaledVector(lz, c);
     off.copy(SUN_DIR).multiplyScalar(spread * 2.5);
     sun.position.copy(sun.target.position).add(off);
   }

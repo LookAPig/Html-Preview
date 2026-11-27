@@ -59,10 +59,10 @@ export function buildHero(scene) {
   layout();
   mobile.addEventListener('change', layout);
 
-  /* after the pull-back the billboard sinks away so the map has the stage */
+  /* after the pull-back the billboard folds down into the ground so the map has the stage */
   hero.update = function (sink) {
-    g.visible = sink < 1;
-    g.position.y = -(hero.bottom + hero.h + 2) * sink;
+    g.visible = sink < 0.999;
+    g.rotation.x = sink * Math.PI * 0.5;
   };
   return hero;
 }
@@ -78,7 +78,7 @@ export function buildPanels(wg, items, xs, zc) {
     const side = i % 2 ? 1 : -1;
     const s = FIRST + i * GAP;
     const p = new THREE.Group();
-    p.position.set(xs - s, 0.15, zc + side * 6.4);
+    p.position.set(xs - s, 0.16, zc + side * 6.4);
     p.rotation.y = side < 0 ? Math.PI / 3 : Math.PI * 2 / 3;
     const frame = new THREE.Mesh(plateGeo(W + 0.28, H + 0.28, 0.22, 0.08), steel);
     frame.position.set(0, B + H / 2, -0.12);
@@ -98,9 +98,9 @@ export function buildPanels(wg, items, xs, zc) {
     textures.push(yt);
     const yg = new THREE.PlaneGeometry(1.25, 2.6);
     yg.rotateX(-Math.PI / 2);
-    const year = new THREE.Mesh(yg, new THREE.MeshBasicMaterial({ map: yt, transparent: true, depthWrite: false, opacity: 0.85 }));
+    const year = new THREE.Mesh(yg, new THREE.MeshBasicMaterial({ map: yt, transparent: true, depthWrite: false, opacity: 0.85, polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -6 }));
     year.rotation.y = Math.PI / 2;
-    year.position.set(xs - s + 11, 0.035, zc + LANE);
+    year.position.set(xs - s + 11, 0.04, zc + LANE);
     g.add(year);
     return { s: s, side: side, obj: p, at: new THREE.Vector3(xs - s, B + H / 2, zc + side * 6.4) };
   });
