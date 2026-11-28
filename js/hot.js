@@ -8,7 +8,7 @@ window.TESWAY_HOT = {
       price: '$1,899', specs: '160 km range · 120 N·m',
       wheels: [{ x: 0.2349, y: 0.6007, r: 0.1641, rim: 0.1198 }, { x: 0.7693, y: 0.5979, r: 0.1632, rim: 0.1215 }],
       bb: { x: 0.5582, y: 0.6412 },
-      cta: [{ label: 'Explore', href: '#hot' }, { label: 'Shop now', href: 'collection.html' }]
+      cta: [{ label: 'Explore', href: 'product.html?id=dual' }, { label: 'Shop now', href: 'collection.html' }]
     },
     {
       model: 'Trail', name: 'X1 Trail Pro', img: 'Images/hot/bike-trail', scene: 'trail',
