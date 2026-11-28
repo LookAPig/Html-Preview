@@ -1,0 +1,184 @@
+/* ==== launch-hero.css · pinned opening scene ==== */
+.lh { height: 260svh; background: var(--ln-paper); }
+.lh__stick {
+  --a: clamp(0, var(--p) / .5, 1);
+  --c: clamp(0, (var(--p) - .6) / .4, 1);
+  --bw: 104vw;
+  --bx: 50vw;
+  --by: 31svh;
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.lh__sun {
+  position: absolute;
+  left: calc(var(--bx) - var(--bw) * .36);
+  top: calc(var(--by) + var(--bw) * .015);
+  width: calc(var(--bw) * .72);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--volt);
+  scale: calc(.62 + var(--a) * .3 + var(--c) * 4.2);
+  transform: scale(0);
+  transition: transform 1.2s .1s cubic-bezier(.16, 1, .3, 1);
+  will-change: scale;
+}
+
+.lh__word {
+  --mid: 4.5;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--by) - 4vw);
+  display: flex;
+  justify-content: center;
+  font-family: var(--font-en);
+  font-size: 19vw;
+  line-height: .9;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--ln-ink);
+  opacity: calc(1 - var(--c) * 2);
+  overflow: hidden;
+}
+.lh__word span {
+  display: block;
+  translate: calc((var(--i) - var(--mid)) * var(--a) * .16em) calc(var(--a) * -.1em);
+  transform: translateY(105%);
+  transition: transform .9s calc(.25s + var(--i) * .05s) var(--ease);
+}
+
+.lh__top {
+  position: absolute;
+  top: calc(var(--nav-top, var(--bar-h)) + 5rem);
+  left: var(--pad);
+  right: var(--pad);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  opacity: calc(1 - var(--c) * 2.5);
+}
+.lh__kick { font-size: 0.6875rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
+.lh__cd {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--r-pill);
+  background: var(--ln-ink);
+  color: #FFF;
+  font-size: 0.75rem;
+}
+.lh__cd b { font-variant-numeric: tabular-nums; }
+.lh__cd i { width: 0.375rem; height: 0.375rem; border-radius: 50%; background: var(--volt); animation: lh-blink 1.2s infinite; }
+
+.lh__bike {
+  position: absolute;
+  left: calc(var(--bx) - var(--bw) / 2);
+  top: var(--by);
+  width: var(--bw);
+  translate: 0 calc(var(--c) * -10svh);
+  scale: calc(1 + var(--a) * .1 + var(--c) * .3);
+  opacity: calc(1 - var(--c) * 1.6);
+}
+.lh__bike img { position: relative; display: block; width: 100%; height: auto; transform: translateX(80vw) skewX(-10deg); transition: transform 1.4s .35s cubic-bezier(.16, 1, .3, 1); }
+.lh__shadow {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: 15%;
+  height: 4%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .35);
+  filter: blur(0.75rem);
+  opacity: 0;
+  transition: opacity .8s 1.2s;
+}
+
+.lh__deal {
+  position: absolute;
+  top: calc(var(--by) + var(--bw) * .02);
+  left: min(calc(var(--bx) + var(--bw) * .26), calc(100vw - 6.5rem));
+  display: grid;
+  place-content: center;
+  width: 5.5rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--ln-ink);
+  color: #FFF;
+  text-align: center;
+  line-height: 1;
+  rotate: calc(-14deg + var(--a) * 40deg);
+  opacity: calc(1 - var(--c) * 2);
+  transform: scale(0);
+  transition: transform .7s 1.3s cubic-bezier(.34, 1.56, .64, 1);
+}
+.lh__deal small { font-size: 0.5625rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--ln-dim); }
+.lh__deal b { margin: 0.25rem 0; font-family: var(--font-en); font-size: 1.625rem; font-weight: 400; color: var(--volt); }
+
+.lh__foot {
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  translate: 0 calc(var(--c) * 3rem);
+  opacity: calc(1 - var(--c) * 2.5);
+}
+.lh__foot > * { transform: translateY(1.5rem); opacity: 0; transition: transform .8s var(--ease), opacity .8s; }
+.lh__foot > :nth-child(2) { transition-delay: .08s; }
+.lh__foot > :nth-child(3) { transition-delay: .16s; }
+.lh__foot > :nth-child(4) { transition-delay: .24s; }
+.lh__name { font-family: var(--font-en); font-size: 2.25rem; font-weight: 400; line-height: 1; text-transform: uppercase; }
+.lh__line { margin-top: 0.375rem; color: var(--muted); font-size: 0.875rem; }
+.lh__price { display: flex; align-items: baseline; gap: 0.5rem; margin-top: 0.5rem; }
+.lh__price b { font-size: 1.5rem; font-weight: 800; }
+.lh__price s { color: var(--muted); font-size: 0.9375rem; }
+.lh__cta { display: flex; gap: 0.5rem; margin-top: 0.875rem; }
+.lh__cta svg { width: 1rem; height: 1rem; margin-left: 0.375rem; }
+.hbtn.lh__go { border-color: var(--volt); background: var(--volt); }
+
+.lh__hint {
+  position: absolute;
+  right: var(--pad);
+  bottom: 2.5rem;
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  opacity: calc(1 - var(--p) * 8);
+}
+.lh__hint i { position: relative; width: 1px; height: 3rem; overflow: hidden; background: var(--line); }
+.lh__hint i::after { content: ""; position: absolute; inset: 0; background: var(--ln-ink); animation: lh-drop 1.6s var(--ease) infinite; }
+
+.ln-in .lh__sun, .ln-in .lh__word span, .ln-in .lh__bike img, .ln-in .lh__deal { transform: none; }
+.ln-in .lh__shadow { opacity: 1; }
+.ln-in .lh__foot > * { transform: none; opacity: 1; }
+
+@keyframes lh-blink { 50% { opacity: .25; } }
+@keyframes lh-drop { from { translate: 0 -100%; } to { translate: 0 100%; } }
+
+@media (min-aspect-ratio: 1/1) {
+  .lh { height: 280vh; }
+  .lh__stick { --bw: 56vw; --bx: 60vw; --by: 18vh; }
+  .lh__word { top: calc(var(--nav-top, var(--bar-h)) + 6rem); font-size: 14vw; -webkit-text-stroke-width: 2px; }
+  .lh__top { top: auto; bottom: 22rem; right: auto; flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .lh__kick { font-size: 0.8125rem; }
+  .lh__cd { font-size: 0.875rem; padding: 0.5rem 1rem; }
+  .lh__deal { width: 8rem; }
+  .lh__deal small { font-size: 0.75rem; }
+  .lh__deal b { font-size: 2.5rem; }
+  .lh__foot { right: auto; bottom: 3rem; width: 26rem; }
+  .lh__name { font-size: 4rem; }
+  .lh__line { font-size: 1rem; }
+  .lh__price b { font-size: 2rem; }
+  .lh__cta .hbtn { flex: none; height: 3.25rem; padding: 0 1.75rem; font-size: 0.9375rem; }
+  .lh__hint { display: flex; }
+}

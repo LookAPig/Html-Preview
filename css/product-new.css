@@ -242,7 +242,7 @@
 }
 
 @media (min-aspect-ratio: 1/1) {
-  .pn__grid { display: grid; grid-template-columns: minmax(0, 1fr) 26.5rem; gap: 3.5rem; align-items: start; }
+  .pn__grid { display: grid; grid-template-columns: minmax(0, 1fr) 40rem; gap: 3.5rem; align-items: start; }
   .pm {
     position: sticky;
     top: calc(var(--nav-top, var(--bar-h)) + 5rem);
