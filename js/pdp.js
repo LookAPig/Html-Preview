@@ -31,6 +31,7 @@ window.TESWAY_PDP_BUY = {
     note: 'Delivery times are estimates and may run longer during peak seasons or severe weather. Canadian orders include duties and taxes. For anything else, our riders\u2019 crew replies in minutes.'
   },
   svcFx: ['roll', 'tilt', 'pulse', 'hop'],
+  model: '<div class="sketchfab-embed-wrapper"> <iframe title="Legend Monza 2016 eBike" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/f2f0db4692aa43cda2bcb6bf0fab3c10/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/legend-monza-2016-ebike-f2f0db4692aa43cda2bcb6bf0fab3c10" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Legend Monza 2016 eBike </a> by <a href="https://sketchfab.com/phixel" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> phixel </a> on <a href="https://sketchfab.com" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>',
   deal: { name: 'Black Friday', sold: 33 },
   stock: { left: 7, of: 40 },
   bundle: ['battery', 'helmet', 'lock', 'bag'],
@@ -81,6 +82,11 @@ window.TESWAY_PDP_BUY = {
       '<div class="pm__bars" aria-hidden="true">' + shots.map(function (s, i) { return '<i' + (i ? '' : ' class="is-on"') + '></i>'; }).join('') + '</div>' +
       '<button class="arw pm__arw" type="button" data-dir="-1" aria-label="Previous photo">' + ico.prev + '</button>' +
       '<button class="arw pm__arw" type="button" data-dir="1" aria-label="Next photo">' + ico.next + '</button>' +
+      '<div class="pm__3d" aria-hidden="true" inert><p class="pm__load"><i></i>Loading 3D model</p></div>' +
+    '</div>' +
+    '<div class="pm__mode" role="group" aria-label="View mode"><i class="pm__pill" aria-hidden="true"></i>' +
+      '<button type="button" data-mode="photo" aria-pressed="true">' + icon('<rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="m3.5 16 5-5 4 4 2.5-2.5 5 5"/><circle cx="15.5" cy="9.5" r="1.5"/>') + 'Photos</button>' +
+      '<button type="button" data-mode="3d" aria-pressed="false">' + icon('<path d="M12 3.5 4.5 7.75v8.5L12 20.5l7.5-4.25v-8.5z"/><path d="m4.5 7.75 7.5 4.25 7.5-4.25M12 12v8.5"/>') + '3D view</button>' +
     '</div>';
 
   var track = media.querySelector('.pm__track');
@@ -98,9 +104,28 @@ window.TESWAY_PDP_BUY = {
     var i = Math.round(track.scrollLeft / track.clientWidth);
     if (i !== now) mark(i);
   }, { passive: true });
+  var box3d = media.querySelector('.pm__3d');
+  function view(m) {
+    var on = m === '3d';
+    if (on === media.classList.contains('is-3d')) return;
+    if (on && !box3d.querySelector('iframe')) {
+      box3d.insertAdjacentHTML('beforeend', N.model);
+      box3d.querySelector('iframe').addEventListener('load', function () { box3d.classList.add('is-ready'); });
+    }
+    media.classList.toggle('is-3d', on);
+    box3d.inert = !on;
+    box3d.setAttribute('aria-hidden', String(!on));
+    track.inert = on;
+    media.querySelectorAll('.pm__arw').forEach(function (a) { a.inert = on; });
+    media.querySelectorAll('[data-mode]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.mode === m)); });
+  }
   media.addEventListener('click', function (e) {
+    var v = e.target.closest('[data-mode]');
+    if (v) return view(v.dataset.mode);
     var b = e.target.closest('[data-i], [data-dir]');
-    if (b) go(b.dataset.i ? +b.dataset.i : now + +b.dataset.dir);
+    if (!b) return;
+    if (b.dataset.i) view('photo');
+    go(b.dataset.i ? +b.dataset.i : now + +b.dataset.dir);
   });
 
   /* buy column */
