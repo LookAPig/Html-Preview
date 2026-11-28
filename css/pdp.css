@@ -86,7 +86,8 @@
   transition: background .35s var(--ease), color .35s var(--ease), scale .4s cubic-bezier(.34, 1.4, .64, 1);
 }
 .pm__chips svg { width: 1rem; height: 1rem; overflow: visible; }
-.pm__chips svg > * { stroke-dasharray: 1; stroke-dashoffset: 1; animation: pm-draw .9s calc(.95s + var(--k) * .12s) cubic-bezier(.22, 1, .36, 1) forwards; }
+.pm__chips li { --draw: pm-draw .9s calc(.95s + var(--k) * .12s) cubic-bezier(.22, 1, .36, 1) forwards; }
+.pm__chips svg > * { stroke-dasharray: 1; stroke-dashoffset: 1; animation: var(--draw); }
 @keyframes pm-draw { to { stroke-dashoffset: 0; } }
 .pm__chips span { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; }
 .pm__chips b { font-size: 0.8125rem; font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; }
@@ -382,10 +383,13 @@
 .pb__buy { display: flex; gap: 0.5rem; }
 .pb__buy .pi__qty { height: 3rem; }
 .pb__buy .pi__qty button { width: 2.25rem; }
-.hbtn.pb__add { flex: 1.3; min-width: 0; padding: 0 0.75rem; }
+.hbtn.pi__add.pb__add { flex: 1.3; min-width: 0; padding: 0 0.75rem; border-color: var(--text); background: transparent; color: var(--text); }
+.hbtn.pi__add.pb__add::before { background: var(--volt); }
+.hbtn.pi__add.pb__add.is-done { background: var(--text); color: #FFF; }
+.pb__add .pi__sum { border-left-color: color-mix(in srgb, currentColor 30%, transparent); transition: border-color .35s var(--ease); }
 .pb__add > svg:first-child, .pb__add .pi__sum { display: none; }
 .hbtn.pb__now { flex: 1; min-width: 0; height: 3rem; padding: 0 0.75rem; font-size: 0.875rem; }
-.pb__add::after {
+.pb__now::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -394,7 +398,7 @@
   transform: translateX(-120%);
   pointer-events: none;
 }
-.pb__cta.is-in .pb__add::after { animation: pb-sheen 5s calc(var(--d, 0s) + .6s) var(--ease) infinite; }
+.pb__cta.is-in .pb__now::after { animation: pb-sheen 5s calc(var(--d, 0s) + .6s) var(--ease) infinite; }
 @keyframes pb-sheen { 0% { transform: translateX(-120%); } 22%, 100% { transform: translateX(120%); } }
 .pb__cta.is-in :is(.pi__qty, .pb__add, .pb__now) { animation: pb-up .6s calc(var(--d, 0s) + .1s) var(--ease) both; }
 .pb__cta.is-in .pb__add { animation-delay: calc(var(--d, 0s) + .18s); }
@@ -516,9 +520,10 @@
   .pb__svc li:hover .pb__svc-ico--tilt svg { animation: pb-tilt .9s var(--ease); }
   .pm__thumb:not(.is-on):hover { opacity: 1; }
   .pm__mode button[aria-pressed="false"]:hover { color: var(--text); }
+  .hbtn.pi__add.pb__add:hover { border-color: var(--volt); color: #FFF; }
   .pm__chips li:hover { translate: 0 -0.25rem; box-shadow: 0 0 0 1px rgba(254, 84, 22, .35), 0 0.75rem 1.5rem -0.75rem rgba(34, 34, 34, .3); }
   .pm__chips li:hover i { background: var(--volt); color: #FFF; scale: 1.1; }
-  .pm__chips li:hover svg > * { animation: pm-redraw .7s cubic-bezier(.22, 1, .36, 1); }
+  .pm__chips li:hover svg > * { animation: var(--draw), pm-redraw .7s cubic-bezier(.22, 1, .36, 1); }
   @keyframes pm-redraw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
   .pm__stage:hover .arw.pm__arw { opacity: 1; translate: 0 0; }
 }
@@ -591,7 +596,7 @@
   .pb__bundle ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pb__add > svg:first-child { display: block; }
   .pb__add .pi__sum { display: inline; }
-  .hbtn.pb__add, .hbtn.pb__now { padding: 0 1.25rem; }
+  .hbtn.pi__add.pb__add, .hbtn.pb__now { padding: 0 1.25rem; }
   .pb__buy .pi__qty button { width: 2.75rem; }
   .pb__ship { font-size: 0.875rem; }
 
