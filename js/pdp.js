@@ -11,7 +11,7 @@ window.TESWAY_PDP_BUY = {
       ['Ships 90% assembled', 'Ride in about 20 minutes. Bike weight ' + x.weight + ' kg, max load ' + x.load + ' kg.']
     ];
   },
-  show: 5,
+  show: 3,
   chips: function (p, x) {
     return [
       [p.range, 'km', 'Range', '<circle cx="6" cy="17.5" r="2"/><circle cx="18" cy="6.5" r="2"/><path d="M8 17.5h7.5a3 3 0 0 0 0-6h-7a3 3 0 0 1 0-6H16"/>'],
@@ -83,10 +83,6 @@ window.TESWAY_PDP_BUY = {
         return '<li class="pm__slide' + (s.cut ? ' is-cut' : '') + (i ? '' : ' is-on') + '"><img src="' + s.src + '" alt="' + s.alt + '"' + (i ? ' loading="lazy"' : '') + ' decoding="async"></li>';
       }).join('') + '</ul>' +
       (p.tag ? '<i class="pm__tag">' + p.tag + '</i>' : '') +
-      '<ul class="pm__chips">' + N.chips(p, x).map(function (c, i) {
-        return '<li style="--k:' + i + '"><i>' + icon(c[3].replace(/<(path|circle)/g, '<$1 pathLength="1"')) + '</i>' +
-          '<span><b data-to="' + c[0] + '">' + c[0] + '</b><small>' + c[1] + '</small><em>' + c[2] + '</em></span></li>';
-      }).join('') + '</ul>' +
       '<p class="pm__count"><b>01</b> / 0' + shots.length + '</p>' +
       '<button class="arw pm__zoom" type="button" aria-haspopup="dialog" aria-label="Enlarge photo">' + icon('<circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5M10.5 8v5M8 10.5h5"/>') + '</button>' +
       '<div class="pm__bars" aria-hidden="true">' + shots.map(function (s, i) { return '<i' + (i ? '' : ' class="is-on"') + '></i>'; }).join('') + '</div>' +
@@ -94,10 +90,15 @@ window.TESWAY_PDP_BUY = {
       '<button class="arw pm__arw" type="button" data-dir="1" aria-label="Next photo">' + ico.next + '</button>' +
       '<div class="pm__3d" aria-hidden="true" inert><p class="pm__load"><i></i>Loading 3D model</p></div>' +
     '</div>' +
+    '<div class="pm__bar">' +
+    '<ul class="pm__chips">' + N.chips(p, x).map(function (c, i) {
+      return '<li style="--k:' + i + '"><i>' + icon(c[3].replace(/<(path|circle)/g, '<$1 pathLength="1"')) + '</i>' +
+        '<span><b data-to="' + c[0] + '">' + c[0] + '</b><small>' + c[1] + '</small><em>' + c[2] + '</em></span></li>';
+    }).join('') + '</ul>' +
     '<div class="pm__mode" role="group" aria-label="View mode"><i class="pm__pill" aria-hidden="true"></i>' +
       '<button type="button" data-mode="photo" aria-pressed="true">' + icon('<rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="m3.5 16 5-5 4 4 2.5-2.5 5 5"/><circle cx="15.5" cy="9.5" r="1.5"/>') + 'Photos</button>' +
       '<button type="button" data-mode="3d" aria-pressed="false">' + icon('<path d="M12 3.5 4.5 7.75v8.5L12 20.5l7.5-4.25v-8.5z"/><path d="m4.5 7.75 7.5 4.25 7.5-4.25M12 12v8.5"/>') + '3D view</button>' +
-    '</div>';
+    '</div></div>';
 
   var track = media.querySelector('.pm__track');
   var now = 0;
@@ -244,7 +245,7 @@ window.TESWAY_PDP_BUY = {
   function mod(cls, html) { mods.push('<div class="pb__mod ' + cls + '">' + html + '</div>'); }
 
   var pts = N.points(p, x).map(function (t, i) {
-    return '<li style="--k:' + (i % N.show) + '">' + ico.tick + '<p><b>' + t[0] + '</b> ' + t[1] + '</p></li>';
+    return '<li style="--k:' + (i < N.show ? i : i - N.show) + '">' + ico.tick + '<p><b>' + t[0] + '</b> ' + t[1] + '</p></li>';
   });
   var more = pts.length > N.show;
 
