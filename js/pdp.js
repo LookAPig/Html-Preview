@@ -88,6 +88,7 @@ window.TESWAY_PDP_BUY = {
           '<span><b data-to="' + c[0] + '">' + c[0] + '</b><small>' + c[1] + '</small><em>' + c[2] + '</em></span></li>';
       }).join('') + '</ul>' +
       '<p class="pm__count"><b>01</b> / 0' + shots.length + '</p>' +
+      '<button class="arw pm__zoom" type="button" aria-haspopup="dialog" aria-label="Enlarge photo">' + icon('<circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5M10.5 8v5M8 10.5h5"/>') + '</button>' +
       '<div class="pm__bars" aria-hidden="true">' + shots.map(function (s, i) { return '<i' + (i ? '' : ' class="is-on"') + '></i>'; }).join('') + '</div>' +
       '<button class="arw pm__arw" type="button" data-dir="-1" aria-label="Previous photo">' + ico.prev + '</button>' +
       '<button class="arw pm__arw" type="button" data-dir="1" aria-label="Next photo">' + ico.next + '</button>' +
@@ -137,10 +138,99 @@ window.TESWAY_PDP_BUY = {
     box3d.inert = !on;
     box3d.setAttribute('aria-hidden', String(!on));
     track.inert = on;
-    media.querySelectorAll('.pm__arw').forEach(function (a) { a.inert = on; });
+    media.querySelectorAll('.pm__arw, .pm__zoom').forEach(function (a) { a.inert = on; });
     media.querySelectorAll('[data-mode]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.mode === m)); });
   }
+  /* photo lightbox */
+  var lb = null, lbI = 0, lbBack = null, lbX = 0, lbMoved = false;
+  function lbBuild() {
+    lb = document.createElement('div');
+    lb.className = 'lb';
+    lb.setAttribute('role', 'dialog');
+    lb.setAttribute('aria-modal', 'true');
+    lb.setAttribute('aria-label', 'Photo viewer');
+    lb.setAttribute('aria-hidden', 'true');
+    lb.inert = true;
+    lb.innerHTML = '<div class="lb__scrim" data-lb-close></div>' +
+      '<div class="lb__top"><p class="lb__count"><b>01</b> / 0' + shots.length + '</p>' +
+        '<button class="arw lb__x" type="button" data-lb-close aria-label="Close photo viewer">' + svg('M7 7l10 10M17 7 7 17') + '</button></div>' +
+      '<div class="lb__stage"><figure class="lb__fig"><img class="lb__img" alt="" decoding="async" draggable="false"></figure></div>' +
+      '<button class="arw lb__arw" type="button" data-lb-dir="-1" aria-label="Previous photo">' + ico.prev + '</button>' +
+      '<button class="arw lb__arw" type="button" data-lb-dir="1" aria-label="Next photo">' + ico.next + '</button>' +
+      '<div class="lb__thumbs">' + shots.map(function (s, i) {
+        return '<button class="lb__thumb' + (s.cut ? ' is-cut' : '') + '" type="button" data-lb-i="' + i + '" aria-label="Show photo ' + (i + 1) + '"><img src="' + s.src + '" alt="" decoding="async"></button>';
+      }).join('') + '</div>' +
+      '<p class="lb__hint">Click image to zoom</p>';
+    document.body.appendChild(lb);
+    var fig = lb.querySelector('.lb__fig');
+    function origin(e) {
+      var r = fig.getBoundingClientRect();
+      fig.style.setProperty('--ox', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+      fig.style.setProperty('--oy', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+    }
+    fig.addEventListener('pointerdown', function (e) { lbX = e.clientX; lbMoved = false; });
+    fig.addEventListener('pointermove', function (e) {
+      if (Math.abs(e.clientX - lbX) > 8 && e.buttons) lbMoved = true;
+      if (fig.classList.contains('is-zoom')) origin(e);
+    });
+    fig.addEventListener('pointerup', function (e) {
+      var dx = e.clientX - lbX;
+      if (!fig.classList.contains('is-zoom') && Math.abs(dx) > 60) lbShow(lbI + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+    });
+    fig.addEventListener('click', function (e) {
+      if (lbMoved) return;
+      origin(e);
+      var z = fig.classList.toggle('is-zoom');
+      lb.querySelector('.lb__hint').textContent = z ? 'Move to pan · click to zoom out' : 'Click image to zoom';
+    });
+    lb.addEventListener('click', function (e) {
+      if (e.target.closest('[data-lb-close]')) return lbOpen(false);
+      var d = e.target.closest('[data-lb-dir]'), t = e.target.closest('[data-lb-i]');
+      if (d) lbShow(lbI + +d.dataset.lbDir, +d.dataset.lbDir);
+      else if (t) lbShow(+t.dataset.lbI, +t.dataset.lbI > lbI ? 1 : -1);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('is-on')) return;
+      if (e.key === 'Escape') return lbOpen(false);
+      if (e.key === 'ArrowLeft') return lbShow(lbI - 1, -1);
+      if (e.key === 'ArrowRight') return lbShow(lbI + 1, 1);
+      if (e.key !== 'Tab') return;
+      var f = lb.querySelectorAll('button');
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    });
+  }
+  function lbShow(i, dir) {
+    lbI = (i + shots.length) % shots.length;
+    var s = shots[lbI], fig = lb.querySelector('.lb__fig'), img = lb.querySelector('.lb__img');
+    fig.classList.remove('is-zoom', 'is-swap');
+    fig.classList.toggle('is-cut', !!s.cut);
+    fig.style.setProperty('--dx', dir || 0);
+    img.src = s.src;
+    img.alt = s.alt;
+    void fig.offsetWidth;
+    fig.classList.add('is-swap');
+    lb.querySelector('.lb__count b').textContent = '0' + (lbI + 1);
+    lb.querySelector('.lb__hint').textContent = 'Click image to zoom';
+    lb.querySelectorAll('.lb__thumb').forEach(function (t, k) { t.classList.toggle('is-on', k === lbI); t.setAttribute('aria-current', String(k === lbI)); });
+  }
+  function lbOpen(on, i) {
+    if (!lb) { if (!on) return; lbBuild(); }
+    if (on === lb.classList.contains('is-on')) return;
+    if (on) { lbBack = document.activeElement; lbShow(i, 0); }
+    lb.classList.toggle('is-on', on);
+    lb.setAttribute('aria-hidden', String(!on));
+    lb.inert = !on;
+    document.body.style.overflow = on ? 'hidden' : '';
+    if (on) setTimeout(function () { lb.querySelector('.lb__x').focus({ preventScroll: true }); }, 60);
+    else {
+      track.scrollTo({ left: track.clientWidth * lbI, behavior: 'instant' });
+      if (lbBack) lbBack.focus({ preventScroll: true });
+    }
+  }
+
   media.addEventListener('click', function (e) {
+    if (e.target.closest('.pm__zoom, .pm__slide')) return lbOpen(true, now);
     var v = e.target.closest('[data-mode]');
     if (v) return view(v.dataset.mode);
     var b = e.target.closest('[data-i], [data-dir]');
