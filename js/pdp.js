@@ -90,7 +90,7 @@ window.TESWAY_PDP_BUY = {
       '<button class="arw pm__arw" type="button" data-dir="1" aria-label="Next photo">' + ico.next + '</button>' +
       '<div class="pm__3d" aria-hidden="true" inert><p class="pm__load"><i></i>Loading 3D model</p></div>' +
     '</div>' +
-    '<div class="pm__bar">' +
+    '<div class="pm__bar"><div class="pm__row">' +
     '<ul class="pm__chips">' + N.chips(p, x).map(function (c, i) {
       return '<li style="--k:' + i + '"><i>' + icon(c[3].replace(/<(path|circle)/g, '<$1 pathLength="1"')) + '</i>' +
         '<span><b data-to="' + c[0] + '">' + c[0] + '</b><small>' + c[1] + '</small><em>' + c[2] + '</em></span></li>';
@@ -98,7 +98,7 @@ window.TESWAY_PDP_BUY = {
     '<div class="pm__mode" role="group" aria-label="View mode"><i class="pm__pill" aria-hidden="true"></i>' +
       '<button type="button" data-mode="photo" aria-pressed="true">' + icon('<rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="m3.5 16 5-5 4 4 2.5-2.5 5 5"/><circle cx="15.5" cy="9.5" r="1.5"/>') + 'Photos</button>' +
       '<button type="button" data-mode="3d" aria-pressed="false">' + icon('<path d="M12 3.5 4.5 7.75v8.5L12 20.5l7.5-4.25v-8.5z"/><path d="m4.5 7.75 7.5 4.25 7.5-4.25M12 12v8.5"/>') + '3D view</button>' +
-    '</div></div>';
+    '</div></div></div>';
 
   var track = media.querySelector('.pm__track');
   var now = 0;
