@@ -30,6 +30,7 @@ window.TESWAY_PDP_BUY = {
     ],
     note: 'Delivery times are estimates and may run longer during peak seasons or severe weather. Canadian orders include duties and taxes. For anything else, our riders\u2019 crew replies in minutes.'
   },
+  svcFx: ['roll', 'tilt', 'pulse', 'hop'],
   deal: { name: 'Black Friday', sold: 33 },
   stock: { left: 7, of: 40 },
   bundle: ['battery', 'helmet', 'lock', 'bag'],
@@ -166,9 +167,11 @@ window.TESWAY_PDP_BUY = {
       return '<li title="' + y.name + '" style="--k:' + i + '">' + y.html + '</li>';
     }).join('') + '</ul>');
   mod('pb__svc',
+    '<p class="pb__label">The TESWAY promise<span>Included with every bike</span></p>' +
     '<ul>' + d.perks.map(function (k, i) {
       var paths = k.icon.split(/(?=M)/).map(function (s) { return '<path d="' + s + '" pathLength="1"/>'; }).join('');
-      return '<li style="--k:' + i + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + paths + '</svg><span><b>' + k.title + '</b><small>' + k.text + '</small></span></li>';
+      return '<li style="--k:' + i + '"><i class="pb__svc-ico pb__svc-ico--' + N.svcFx[i % N.svcFx.length] + '"><svg viewBox="0 0 24 24" aria-hidden="true">' +
+        '<g class="ico-base">' + paths + '</g><g class="ico-draw">' + paths + '</g></svg></i><span><b>' + k.title + '</b><small>' + k.text + '</small></span></li>';
     }).join('') + '</ul>');
   buy.innerHTML = mods.join('');
 
