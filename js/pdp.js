@@ -1,22 +1,27 @@
-/* ==== product-new-data.js ==== */
-window.TESWAY_PDP_NEW = {
-  desc: {
-    dual: 'Twin 750 W hubs drive both wheels, so it pulls through sand, snow and steep gravel. A 1200 Wh pack, hydraulic brakes and 4" fat tires make it the one bike for every road.',
-    trail: 'Full suspension, dual motors and 26" fat tires turn rough fire roads into flow. Built for long days off the map with 140 km of range on tap.',
-    city: 'A 22 kg alloy frame, silent belt drive and quick 500 W assist. Carry it up the stairs, charge it at your desk and beat the traffic every morning.',
-    family: 'A low step-through frame, rated child seat mount and calm, smooth power. The school run, the grocery run and the weekend run, all on one bike.',
-    citystep: 'An easy step-through frame in three sizes, so every rider fits. Light, nimble and ready for the daily commute with 110 km of range.',
-    cargo: 'Dual motors and dual batteries haul 200 kg for 160 km. A 50 kg rear rack and front basket mount turn it into your all-day delivery van.'
+/* ==== pdp-data.js ==== */
+window.TESWAY_PDP_BUY = {
+  points: function (p, x) {
+    return [
+      [x.motor, x.torque + ' N·m of torque for steep climbs and quick starts at every light.'],
+      ['Up to ' + p.range + ' km range', x.battery + ' pack, removable and IPX6 sealed. Full charge in ' + x.charge + ' h.'],
+      [x.tire, 'Grip and comfort on tarmac, gravel, sand and snow.'],
+      [x.brake, 'Steady one-finger stopping power, even fully loaded and in the rain.'],
+      [x.gears + ' · ' + x.sus, 'Smooth shifting and a planted, comfortable ride all day.'],
+      ['3.5" color display + app', '5 assist levels, cruise control and ride stats on your phone.'],
+      ['Ships 90% assembled', 'Ride in about 20 minutes. Bike weight ' + x.weight + ' kg, max load ' + x.load + ' kg.']
+    ];
   },
+  show: 5,
+  deal: { name: 'Black Friday', sold: 33 },
   stock: { left: 7, of: 40 },
   bundle: ['battery', 'helmet', 'lock', 'bag'],
   bundleNote: { battery: 'Doubles your range', helmet: 'MIPS · M/L', lock: 'Sold Secure Gold', bag: '24 L · Waterproof' }
 };
 
-/* ==== product-new.js ==== */
+/* ==== pdp.js ==== */
 (function () {
   var K = window.TeswayPDP;
-  var N = window.TESWAY_PDP_NEW;
+  var N = window.TESWAY_PDP_BUY;
   var C = window.TESWAY_CART;
   var $ = function (id) { return document.getElementById(id); };
   var media = $('pnMedia'), buy = $('pnBuy');
@@ -31,7 +36,8 @@ window.TESWAY_PDP_NEW = {
     prev: svg('M15 6l-6 6 6 6'), next: svg('M9 6l6 6-6 6'),
     minus: svg('M6 12h12'), plus: svg('M12 6v12M6 12h12'), done: svg('M6 12.5l4 4 8-9'),
     check: svg('M6 12.5l4 4 8-9', 2.4), lock: icon('<rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>'),
-    bolt: icon('<path d="M13 3 5.5 13.5H12L11 21l7.5-10.5H12z"/>')
+    bolt: icon('<path d="M13 3 5.5 13.5H12L11 21l7.5-10.5H12z"/>'),
+    tick: svg('M6 12.5l4 4 8-9', 2.2), down: svg('M6 9l6 6 6-6', 2)
   };
   var state = { color: p.colors[0], size: x.sizes[x.sizes.length > 2 ? 1 : 0], qty: 1, acc: {} };
   var hasSize = x.sizes[0] !== 'One';
@@ -81,20 +87,31 @@ window.TESWAY_PDP_NEW = {
   var mods = [];
   function mod(cls, html) { mods.push('<div class="pb__mod ' + cls + '">' + html + '</div>'); }
 
+  var pts = N.points(p, x).map(function (t, i) {
+    return '<li style="--k:' + (i % N.show) + '">' + ico.tick + '<p><b>' + t[0] + '</b> ' + t[1] + '</p></li>';
+  });
+  var more = pts.length > N.show;
+
   mod('pb__head',
     '<p class="eyebrow eyebrow--dot">X1 Series · ' + (p.motor === 'dual' ? 'Dual motor' : 'Single motor') + '</p>' +
-    '<h1 class="pb__name"><span>' + p.name + '</span></h1>' +
-    '<p class="pb__sub">' + p.line + '</p>');
-  mod('pb__desc', '<p>' + N.desc[p.id] + ' <a href="#highlights">Read more</a></p>');
+    '<div class="pb__top"><h1 class="pb__name"><span>' + p.name + '</span></h1>' +
+      '<a class="pb__rate" href="#reviews" aria-label="Rated ' + p.rate + ' out of 5 from ' + p.reviews + ' reviews">' + stars(p.rate) +
+        '<span><b>' + p.rate.toFixed(1) + '</b><small>' + p.reviews + ' reviews</small></span></a></div>' +
+    '<p class="pb__sub">' + p.line + '</p>' +
+    '<ul class="pb__pts">' + pts.slice(0, N.show).join('') + '</ul>' +
+    (more ? '<div class="pb__more" id="pnMore"><ul class="pb__pts">' + pts.slice(N.show).join('') + '</ul></div>' +
+      '<button class="pb__toggle" type="button" aria-expanded="false" aria-controls="pnMore"><span>Read more</span>' + ico.down + '</button>' : ''));
   mod('pb__price',
-    '<em data-from="' + (p.was || p.price) + '" data-to="' + p.price + '">' + money(p.price) + '</em>' +
-    (p.was ? '<s>' + money(p.was) + '</s><i class="pb__save">Save ' + money(p.was - p.price) + ' · ' + Math.round((1 - p.price / p.was) * 100) + '%</i>' : ''));
-  mod('pb__rate',
-    '<a href="#reviews">' + stars(p.rate) + '<b>' + p.rate.toFixed(1) + '</b><span>' + p.reviews + ' reviews</span></a>' +
-    '<small>' + (D.dist[0] + D.dist[1]) + '% would recommend</small>');
-  mod('pb__apr',
-    '<p>Pay <b>' + money(Math.ceil(p.price / d.apr.months)) + '/mo</b> for ' + d.apr.months + ' months at 0% APR with ' +
-      '<img src="' + d.apr.logo + '" alt="' + d.apr.by + '" width="420" height="167" decoding="async"></p><a href="#faq">Learn more</a>');
+    '<div class="pb__row"><em data-from="' + (p.was || p.price) + '" data-to="' + p.price + '">' + money(p.price) + '</em>' +
+      (p.was ? '<s>' + money(p.was) + '</s><i class="pb__save">Save ' + money(p.was - p.price) + '</i>' : '') + '</div>' +
+    '<p class="pb__apr">or <b>' + money(Math.ceil(p.price / d.apr.months)) + '/mo</b> for ' + d.apr.months + ' months at 0% APR with ' +
+      '<img src="' + d.apr.logo + '" alt="' + d.apr.by + '" width="420" height="167" decoding="async"></p>');
+  mod('pb__cd',
+    '<div class="pb__deal"><div class="pb__cd-copy"><p class="pb__cd-tag">' + ico.bolt + N.deal.name + ' deal</p>' +
+      '<p class="pb__cd-title">' + (p.was ? 'Save ' + money(p.was - p.price) + ' ' : 'Deal price ') + '<em>ends in</em></p></div>' +
+    '<div class="pb__flip" role="timer"></div>' +
+    '<div class="pb__stock"><p><span>Only <b>' + N.stock.left + '</b> left at this price</span><small>' + N.deal.sold + ' sold in 24 h</small></p>' +
+      '<i style="--w:' + (1 - N.stock.left / N.stock.of) + '"></i></div></div>');
   mod('pb__opts',
     '<div class="pb__opt"><p class="pb__label">Color <span id="pnColor">' + sw(state.color).name + '</span></p>' +
       '<div class="pb__sw" role="radiogroup" aria-label="Color">' + p.colors.map(function (k, i) {
@@ -106,26 +123,21 @@ window.TESWAY_PDP_NEW = {
         var on = s === state.size;
         return '<button class="pb__size' + (on ? ' is-on' : '') + '" type="button" role="radio" aria-checked="' + on + '" data-s="' + s + '" style="--k:' + i + '">' +
           '<b>' + (s === 'One' ? 'One size' : s) + '</b><small>' + D.sizes[s] + '</small></button>';
-      }).join('') + '</div></div>');
+      }).join('') + '</div></div>' +
+    '<div class="pb__opt pb__bundle"><p class="pb__label">Add-ons <span id="pnBundle">Pick ride-ready extras</span></p>' +
+      '<ul>' + N.bundle.map(function (id, i) {
+        var a = cat[id];
+        return '<li style="--k:' + i + '"><label class="pb__acc"><input type="checkbox" data-acc="' + id + '">' +
+          '<span class="pb__acc-ico">' + icon(a.icon) + '</span>' +
+          '<span class="pb__acc-txt"><b>' + a.name + '</b><small>' + N.bundleNote[id] + '</small></span>' +
+          '<span class="pb__acc-price">+' + money(a.price) + '</span><span class="pi__box">' + ico.check + '</span></label></li>';
+      }).join('') + '</ul></div>');
   mod('pb__cta',
     '<div class="pb__buy">' +
       '<div class="pi__qty" role="group" aria-label="Quantity"><button type="button" data-q="-1" aria-label="Decrease">' + ico.minus + '</button>' +
         '<output id="pnQty" aria-live="polite">1</output><button type="button" data-q="1" aria-label="Increase">' + ico.plus + '</button></div>' +
-      '<button class="hbtn pi__add pb__add" type="button" data-buy>' + ico.plus + ico.done + '<span>Add to cart</span><b class="pi__sum" id="pnSum"></b></button></div>' +
-    '<button class="hbtn pb__now" type="button" data-buy="now">Buy it now</button>');
-  mod('pb__cd',
-    '<p class="pb__cd-head">' + ico.bolt + '<b>Black Friday price</b><span>ends in</span></p>' +
-    '<div class="pb__flip" role="timer"></div>' +
-    '<p class="pb__stock"><span>Only <b>' + N.stock.left + '</b> left at this price</span><i style="--w:' + (N.stock.left / N.stock.of) + '"></i></p>');
-  mod('pb__bundle',
-    '<p class="pb__label">Build your bundle <span id="pnBundle">Pick ride-ready add-ons</span></p>' +
-    '<ul>' + N.bundle.map(function (id, i) {
-      var a = cat[id];
-      return '<li style="--k:' + i + '"><label class="pb__acc"><input type="checkbox" data-acc="' + id + '">' +
-        '<span class="pb__acc-ico">' + icon(a.icon) + '</span>' +
-        '<span class="pb__acc-txt"><b>' + a.name + '</b><small>' + N.bundleNote[id] + '</small></span>' +
-        '<span class="pb__acc-price">+' + money(a.price) + '</span><span class="pi__box">' + ico.check + '</span></label></li>';
-    }).join('') + '</ul>');
+      '<button class="hbtn pi__add pb__add" type="button" data-buy>' + ico.plus + ico.done + '<span>Add to cart</span><b class="pi__sum" id="pnSum"></b></button>' +
+      '<button class="hbtn pb__now" type="button" data-buy="now">Buy now</button></div>');
   mod('pb__pay',
     '<p class="pb__label">' + ico.lock + 'Guaranteed safe checkout</p>' +
     '<ul class="foot__pays" aria-label="Accepted payment methods">' + window.TESWAY_FOOT.pays.map(function (y, i) {
@@ -154,7 +166,7 @@ window.TESWAY_PDP_NEW = {
     var a = accs();
     $('pnQty').textContent = state.qty;
     $('pnSum').textContent = money(total());
-    $('pnBundle').textContent = a.length ? a.length + ' added · +' + money(total() - p.price * state.qty) : 'Pick ride-ready add-ons';
+    $('pnBundle').textContent = a.length ? a.length + ' added · +' + money(total() - p.price * state.qty) : 'Pick ride-ready extras';
     $('pbarMeta').textContent = sw(state.color).name + (hasSize ? ' · Size ' + state.size : '') + ' · ' + money(total());
     var sum = $('pnSum');
     sum.classList.remove('is-tick');
@@ -183,7 +195,16 @@ window.TESWAY_PDP_NEW = {
     }, 1600);
   }
 
+  function toggleMore(btn) {
+    var head = btn.closest('.pb__head');
+    var open = head.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', String(open));
+    btn.querySelector('span').textContent = open ? 'Read less' : 'Read more';
+  }
+
   buy.addEventListener('click', function (e) {
+    var tg = e.target.closest('.pb__toggle');
+    if (tg) return toggleMore(tg);
     var b = e.target.closest('[data-c], [data-s], [data-q], [data-buy]');
     if (!b) return;
     if (b.dataset.c) {
