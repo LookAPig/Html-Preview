@@ -364,7 +364,9 @@ window.TESWAY_PDP_BUY = {
   var bar = $('pbar');
   bar.innerHTML = '<img class="pbar__pic" src="' + p.img + '.webp" alt="" decoding="async">' +
     '<p class="pbar__txt"><b>' + p.name + '</b><small id="pbarMeta"></small></p>' +
-    '<button class="hbtn pi__add pbar__add" type="button" data-buy>' + ico.plus + ico.done + '<span>Add to cart</span></button>';
+    '<div class="pbar__cta">' +
+    '<button class="hbtn pi__add pbar__add" type="button" data-buy>' + ico.plus + ico.done + '<span>Add to cart</span></button>' +
+    '<button class="hbtn pbar__now" type="button" data-buy="now">Buy now</button></div>';
 
   function accs() { return N.bundle.filter(function (id) { return state.acc[id]; }); }
   function total() {
@@ -439,7 +441,7 @@ window.TESWAY_PDP_BUY = {
     state.acc[c.dataset.acc] = c.checked;
     sync();
   });
-  bar.addEventListener('click', function (e) { var b = e.target.closest('[data-buy]'); if (b) add(b); });
+  bar.addEventListener('click', function (e) { var b = e.target.closest('[data-buy]'); if (b) add(b, b.dataset.buy === 'now'); });
   sync();
 
   var cta = buy.querySelector('.pb__buy');
