@@ -12,6 +12,14 @@ window.TESWAY_PDP_BUY = {
     ];
   },
   show: 5,
+  chips: function (p, x) {
+    return [
+      [p.range, 'km', 'Range', '<circle cx="6" cy="17.5" r="2"/><circle cx="18" cy="6.5" r="2"/><path d="M8 17.5h7.5a3 3 0 0 0 0-6h-7a3 3 0 0 1 0-6H16"/>'],
+      [x.torque, 'N·m', 'Torque', '<path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4v3.5H16"/><path d="m12 12 3-2.5"/>'],
+      [x.speed, 'km/h', 'Top speed', '<path d="M4.5 16.5a7.5 7.5 0 1 1 15 0"/><path d="m12 16.5 3.5-4.5"/><path d="M7 16.5h.01M17 16.5h.01"/>'],
+      [x.charge, 'h', 'Full charge', '<path d="M13 3 5.5 13.5H12L11 21l7.5-10.5H12z"/>']
+    ];
+  },
   ship: {
     arrive: [5, 8],
     truck: 'M3.5 7.5h10v8h-10zM13.5 10.5h4l3 3v2h-7zM7 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM17 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z',
@@ -75,8 +83,9 @@ window.TESWAY_PDP_BUY = {
         return '<li class="pm__slide' + (s.cut ? ' is-cut' : '') + (i ? '' : ' is-on') + '"><img src="' + s.src + '" alt="' + s.alt + '"' + (i ? ' loading="lazy"' : '') + ' decoding="async"></li>';
       }).join('') + '</ul>' +
       (p.tag ? '<i class="pm__tag">' + p.tag + '</i>' : '') +
-      '<ul class="pm__chips">' + [[p.range, 'km range'], [x.torque, 'N·m'], [x.speed, 'km/h']].map(function (c, i) {
-        return '<li style="--k:' + i + '"><b>' + c[0] + '</b>' + c[1] + '</li>';
+      '<ul class="pm__chips">' + N.chips(p, x).map(function (c, i) {
+        return '<li style="--k:' + i + '"><i>' + icon(c[3].replace(/<(path|circle)/g, '<$1 pathLength="1"')) + '</i>' +
+          '<span><b data-to="' + c[0] + '">' + c[0] + '</b><small>' + c[1] + '</small><em>' + c[2] + '</em></span></li>';
       }).join('') + '</ul>' +
       '<p class="pm__count"><b>01</b> / 0' + shots.length + '</p>' +
       '<div class="pm__bars" aria-hidden="true">' + shots.map(function (s, i) { return '<i' + (i ? '' : ' class="is-on"') + '></i>'; }).join('') + '</div>' +
@@ -104,6 +113,18 @@ window.TESWAY_PDP_BUY = {
     var i = Math.round(track.scrollLeft / track.clientWidth);
     if (i !== now) mark(i);
   }, { passive: true });
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    media.querySelectorAll('.pm__chips b').forEach(function (b, i) {
+      var to = +b.dataset.to, dp = to % 1 ? 1 : 0, t0 = performance.now() + 900 + i * 120;
+      b.textContent = (0).toFixed(dp);
+      (function tick(t) {
+        var k = Math.min(Math.max((t - t0) / 1100, 0), 1);
+        b.textContent = (to * (1 - Math.pow(1 - k, 3))).toFixed(dp);
+        if (k < 1) requestAnimationFrame(tick);
+      })(performance.now());
+    });
+  }
+
   var box3d = media.querySelector('.pm__3d');
   function view(m) {
     var on = m === '3d';
