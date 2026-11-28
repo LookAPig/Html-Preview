@@ -12,6 +12,24 @@ window.TESWAY_PDP_BUY = {
     ];
   },
   show: 5,
+  ship: {
+    arrive: [5, 8],
+    truck: 'M3.5 7.5h10v8h-10zM13.5 10.5h4l3 3v2h-7zM7 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM17 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z',
+    zones: [
+      ['Contiguous US', '3–7 business days', 'Free'],
+      ['Alaska & Hawaii', '7–12 business days', '$199'],
+      ['Canada', '7–10 business days', '$149'],
+      ['Accessories only', '3–5 business days', 'Free over $2,000']
+    ],
+    info: [
+      ['M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17zM12 7.5V12l3 2', 'Order processing', 'Orders placed before 2 pm ET on business days ship within 48 hours. Weekend and holiday orders ship the next business day.'],
+      ['M12 20.5s-6.5-5.6-6.5-10.5a6.5 6.5 0 0 1 13 0c0 4.9-6.5 10.5-6.5 10.5zM12 12.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4z', 'Tracking', 'A tracking link is sent by email and SMS as soon as your order leaves our warehouse.'],
+      ['M4 8.5 12 4l8 4.5v7L12 20l-8-4.5zM4 8.5l8 4.5 8-4.5M12 13v7', 'Delivery & signature', 'Bikes ship in one box (about 38 kg) to your door. An adult signature may be required, so please inspect the box before signing.'],
+      ['M12 4 3.5 19h17zM12 10v4M12 16.6v.1', 'Damaged in transit', 'Report any shipping damage within 48 hours with photos. We send replacement parts or a new bike at no cost.'],
+      ['M4.5 19.5l1-4 10-10 3 3-10 10zM13.5 7.5l3 3', 'Address changes', 'Contact us before your order ships to update the address. We cannot deliver to PO boxes or freight forwarders.']
+    ],
+    note: 'Delivery times are estimates and may run longer during peak seasons or severe weather. Canadian orders include duties and taxes. For anything else, our riders\u2019 crew replies in minutes.'
+  },
   deal: { name: 'Black Friday', sold: 33 },
   stock: { left: 7, of: 40 },
   bundle: ['battery', 'helmet', 'lock', 'bag'],
@@ -39,6 +57,7 @@ window.TESWAY_PDP_BUY = {
     bolt: icon('<path d="M13 3 5.5 13.5H12L11 21l7.5-10.5H12z"/>'),
     tick: svg('M6 12.5l4 4 8-9', 2.2), down: svg('M6 9l6 6 6-6', 2)
   };
+  var day = function (n) { return new Date(Date.now() + n * 864e5).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); };
   var state = { color: p.colors[0], size: x.sizes[x.sizes.length > 2 ? 1 : 0], qty: 1, acc: {} };
   var hasSize = x.sizes[0] !== 'One';
 
@@ -137,7 +156,10 @@ window.TESWAY_PDP_BUY = {
       '<div class="pi__qty" role="group" aria-label="Quantity"><button type="button" data-q="-1" aria-label="Decrease">' + ico.minus + '</button>' +
         '<output id="pnQty" aria-live="polite">1</output><button type="button" data-q="1" aria-label="Increase">' + ico.plus + '</button></div>' +
       '<button class="hbtn pi__add pb__add" type="button" data-buy>' + ico.plus + ico.done + '<span>Add to cart</span><b class="pi__sum" id="pnSum"></b></button>' +
-      '<button class="hbtn pb__now" type="button" data-buy="now">Buy now</button></div>');
+      '<button class="hbtn pb__now" type="button" data-buy="now">Buy now</button></div>' +
+    '<p class="pb__ship">' + svg(N.ship.truck, 1.6) + '<span>Free delivery <b>' + day(N.ship.arrive[0]) + ' – ' + day(N.ship.arrive[1]) + '</b> · ships within 48 h</span>' +
+      '<button class="pb__info" type="button" data-ship aria-haspopup="dialog" aria-controls="ship" aria-label="Shipping policy">' +
+        icon('<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.6v.1"/>') + '</button></p>');
   mod('pb__pay',
     '<p class="pb__label">' + ico.lock + 'Guaranteed safe checkout</p>' +
     '<ul class="foot__pays" aria-label="Accepted payment methods">' + window.TESWAY_FOOT.pays.map(function (y, i) {
@@ -149,6 +171,53 @@ window.TESWAY_PDP_BUY = {
       return '<li style="--k:' + i + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + paths + '</svg><span><b>' + k.title + '</b><small>' + k.text + '</small></span></li>';
     }).join('') + '</ul>');
   buy.innerHTML = mods.join('');
+
+  /* delivery dialog */
+  var S = N.ship;
+  var ship = document.createElement('div');
+  ship.className = 'ship';
+  ship.id = 'ship';
+  ship.setAttribute('role', 'dialog');
+  ship.setAttribute('aria-modal', 'true');
+  ship.setAttribute('aria-labelledby', 'shipTitle');
+  ship.setAttribute('aria-hidden', 'true');
+  ship.inert = true;
+  ship.innerHTML = '<div class="ship__scrim" data-close></div>' +
+    '<div class="ship__panel">' +
+      '<header class="ship__head"><div><p class="eyebrow eyebrow--dot">Shipping policy</p><h2 id="shipTitle">Shipping <em>&amp; delivery</em></h2></div>' +
+        '<button class="ship__x" type="button" data-close aria-label="Close shipping policy">' + svg('M7 7l10 10M17 7 7 17') + '</button></header>' +
+      '<p class="ship__eta">' + svg(S.truck, 1.6) + '<span>Order today, get it <b>' + day(S.arrive[0]) + ' – ' + day(S.arrive[1]) + '</b></span></p>' +
+      '<table class="ship__zones"><thead><tr><th scope="col">Destination</th><th scope="col">Delivery</th><th scope="col">Cost</th></tr></thead><tbody>' +
+        S.zones.map(function (z, i) {
+          return '<tr style="--k:' + i + '"><th scope="row">' + z[0] + '</th><td>' + z[1] + '</td><td' + (z[2].indexOf('Free') === 0 ? ' class="is-free"' : '') + '>' + z[2] + '</td></tr>';
+        }).join('') + '</tbody></table>' +
+      '<ul class="ship__info">' + S.info.map(function (r, i) {
+        return '<li style="--k:' + i + '">' + svg(r[0], 1.6) + '<span><b>' + r[1] + '</b><small>' + r[2] + '</small></span></li>';
+      }).join('') + '</ul>' +
+      '<p class="ship__note">' + S.note + '</p>' +
+      '<button class="hbtn ship__ok" type="button" data-close>Got it</button>' +
+    '</div>';
+  document.body.appendChild(ship);
+  var shipBack = null;
+  function shipOpen(on) {
+    if (on === ship.classList.contains('is-on')) return;
+    if (on) shipBack = document.activeElement;
+    ship.classList.toggle('is-on', on);
+    ship.setAttribute('aria-hidden', String(!on));
+    ship.inert = !on;
+    document.body.style.overflow = on ? 'hidden' : '';
+    if (on) setTimeout(function () { ship.querySelector('.ship__x').focus({ preventScroll: true }); }, 60);
+    else if (shipBack) shipBack.focus({ preventScroll: true });
+  }
+  ship.addEventListener('click', function (e) { if (e.target.closest('[data-close]')) shipOpen(false); });
+  document.addEventListener('keydown', function (e) {
+    if (!ship.classList.contains('is-on')) return;
+    if (e.key === 'Escape') return shipOpen(false);
+    if (e.key !== 'Tab') return;
+    var f = ship.querySelectorAll('.ship__panel button');
+    if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+  });
 
   if (window.TeswayFlip && window.TESWAY_NOTICE) window.TeswayFlip.mount(buy.querySelector('.pb__flip'), window.TESWAY_NOTICE.deadline, ['Days', 'Hrs', 'Min', 'Sec']);
 
@@ -205,6 +274,7 @@ window.TESWAY_PDP_BUY = {
   buy.addEventListener('click', function (e) {
     var tg = e.target.closest('.pb__toggle');
     if (tg) return toggleMore(tg);
+    if (e.target.closest('[data-ship]')) return shipOpen(true);
     var b = e.target.closest('[data-c], [data-s], [data-q], [data-buy]');
     if (!b) return;
     if (b.dataset.c) {
