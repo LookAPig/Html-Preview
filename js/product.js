@@ -41,42 +41,47 @@ window.TESWAY_PDP = {
   ]
 };
 
-/* ==== product.js ==== */
-(function () {
+/* ==== product-kit.js ==== */
+window.TeswayPDP = (function () {
   var d = window.TESWAY_COLL;
   var D = window.TESWAY_PDP;
-  var $ = function (id) { return document.getElementById(id); };
-  var info = $('pdpInfo');
-  if (!d || !D || !info) return;
-
+  if (!d || !D) return null;
   var q = new URLSearchParams(location.search).get('id');
   var p = d.items.filter(function (x) { return x.id === q; })[0] || d.items[0];
   var x = D.bikes[p.id];
-  var BATTERY = 349;
-  var money = function (n) { return '$' + n.toLocaleString('en-US'); };
-  var svg = function (path, w) {
-    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (w || 1.8) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + path + '"/></svg>';
+  return {
+    d: d, D: D, p: p, x: x,
+    money: function (n) { return '$' + n.toLocaleString('en-US'); },
+    svg: function (path, w) {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (w || 1.8) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + path + '"/></svg>';
+    },
+    stars: function (r) { return '<span class="stars" style="--r:' + (r / 5 * 100) + '%" aria-hidden="true"></span>'; },
+    sw: function (k) { return d.swatches[k]; },
+    shots: [
+      { src: p.img + '.webp', alt: p.name + ', side view', cut: 1 },
+      { src: 'Images/' + x.scene + '.jpg', alt: p.name + ' on the road' },
+      { src: 'Images/' + x.story + '.jpg', alt: 'Out riding the ' + p.name },
+      { src: 'Images/brand-beyond.jpg', alt: 'TESWAY riders at sunrise' }
+    ]
   };
+})();
+
+/* ==== product.js ==== */
+(function () {
+  var K = window.TeswayPDP;
+  var $ = function (id) { return document.getElementById(id); };
+  var info = $('pdpInfo');
+  if (!K || !info) return;
+  var d = K.d, D = K.D, p = K.p, x = K.x, money = K.money, svg = K.svg, stars = K.stars, sw = K.sw, shots = K.shots;
+  var BATTERY = 349;
   var ico = {
     prev: svg('M15 6l-6 6 6 6'), next: svg('M9 6l6 6-6 6'),
     minus: svg('M6 12h12'), plus: svg('M12 6v12M6 12h12'), done: svg('M6 12.5l4 4 8-9'),
     truck: svg(d.perks[0].icon, 1.6), check: svg('M6 12.5l4 4 8-9', 2.4)
   };
-  var stars = function (r) { return '<span class="stars" style="--r:' + (r / 5 * 100) + '%" aria-hidden="true"></span>'; };
-  var sw = function (k) { return d.swatches[k]; };
   var state = { color: p.colors[0], size: x.sizes[x.sizes.length > 2 ? 1 : 0], qty: 1, extra: false };
 
-  document.title = p.name + ' | TESWAY · Go Far Away';
-  $('pdpCrumb').innerHTML = '<a href="index.html">Home</a><span aria-hidden="true">/</span><a href="collection.html">Bikes</a>' +
-    '<span aria-hidden="true">/</span><b aria-current="page">' + p.name + '</b>';
-
   /* gallery */
-  var shots = [
-    { src: p.img + '.webp', alt: p.name + ', side view', cut: 1 },
-    { src: 'Images/' + x.scene + '.jpg', alt: p.name + ' on the road' },
-    { src: 'Images/' + x.story + '.jpg', alt: 'Out riding the ' + p.name },
-    { src: 'Images/brand-beyond.jpg', alt: 'TESWAY riders at sunrise' }
-  ];
   var gal = $('pdpGallery');
   gal.style.setProperty('--tone', sw(state.color).hex);
   gal.innerHTML = '<div class="pg__stage">' + (p.tag ? '<i class="pg__tag">' + p.tag + '</i>' : '') +
@@ -222,6 +227,19 @@ window.TESWAY_PDP = {
   }
   addEventListener('scroll', barCheck, { passive: true });
   barCheck();
+})();
+
+/* ==== product-sections.js ==== */
+(function () {
+  var K = window.TeswayPDP;
+  var $ = function (id) { return document.getElementById(id); };
+  if (!K || !$('phiStats')) return;
+  var d = K.d, D = K.D, p = K.p, x = K.x, money = K.money, svg = K.svg, stars = K.stars, sw = K.sw;
+  var ico = { plus: svg('M12 6v12M6 12h12'), done: svg('M6 12.5l4 4 8-9') };
+
+  document.title = p.name + ' | TESWAY · Go Far Away';
+  $('pdpCrumb').innerHTML = '<a href="index.html">Home</a><span aria-hidden="true">/</span><a href="collection.html">Bikes</a>' +
+    '<span aria-hidden="true">/</span><b aria-current="page">' + p.name + '</b>';
 
   /* highlights */
   $('phiEyebrow').textContent = 'Why the ' + p.name;
