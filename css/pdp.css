@@ -817,7 +817,7 @@
 }
 
 @media (min-aspect-ratio: 1/1) {
-    .psub { margin-top: 2.5rem; }
+    .psub { margin-top: 100px; }
   .psub__in { height: 3.5rem; padding: 0 0.5rem 0 1.75rem; }
   .psub.is-stuck .psub__in { padding: 0 var(--pad); }
   .psub__name { flex: 1; max-width: none; opacity: 1; font-size: 1.0625rem; }
