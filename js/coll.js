@@ -52,7 +52,7 @@
         '<img class="pc__img" src="' + p.img + '.webp" alt="' + p.name + '" loading="lazy" decoding="async">' +
         '<img class="pc__frame" src="' + p.img + '-frame.webp" alt="" loading="lazy" decoding="async"></div>' +
       '<div class="pc__body">' + meta(p) +
-        '<h3 class="pc__name">' + p.name + '</h3>' +
+        '<h3 class="pc__name"><a href="product.html?id=' + p.id + '">' + p.name + '</a></h3>' +
         '<p class="pc__line">' + p.line + '</p>' +
         '<ul class="pc__specs">' + p.specs.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ul>' +
         '<div class="pc__row"><div class="pc__buy"><p class="pc__price"><em>' + money(p.price) + '</em>' + (p.was ? '<s>' + money(p.was) + '</s>' : '') + '</p>' +
